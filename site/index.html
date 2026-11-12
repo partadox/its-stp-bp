@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261112141038">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261113005911">
   <script type="importmap">
     { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
   </script>
@@ -35,6 +35,14 @@
     <img class="mark" src="assets/img/favicon-192.png" alt="ITS">
     <div id="nav"></div>
     <div class="spacer"></div>
+    <div class="rail-tools">
+      <div class="video-group" id="videoGroup">
+        <div class="video-menu" id="videoMenu" role="menu" hidden></div>
+        <button class="icon" type="button" id="videoToggle" aria-haspopup="menu" aria-expanded="false" aria-controls="videoMenu" aria-label="Videos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg><span class="tip" data-i18n="videosBtn">Videos</span></button>
+      </div>
+      <a class="dl" href="assets/stp-its-blueprint.pdf" download="STP-ITS-Blueprint.pdf" aria-label="Download PDF deck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6M9.5 14.5 12 17l2.5-2.5"/></svg><span class="tip" data-i18n="downloadPdf">Download PDF deck</span></a>
+      <button class="icon" type="button" id="teamToggle" aria-haspopup="dialog" aria-label="STP team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg><span class="tip" data-i18n="teamBtn">STP team</span></button>
+    </div>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="id" aria-pressed="false">ID</button>
@@ -63,13 +71,9 @@
       </header>
 
       <div class="hero-grid">
+        <div class="map-col">
         <div class="map-frame" id="map">
           <div class="map-ui tl">
-            <div class="seg" role="group" aria-label="Scenario" id="modeSeg">
-              <button type="button" data-mode="now" aria-pressed="true" data-i18n="modeNow">Now</button>
-              <button type="button" data-mode="d100" aria-pressed="false" data-i18n="modeD100">Day 100</button>
-              <button type="button" data-mode="y2030" aria-pressed="false" data-i18n="mode2030">2030</button>
-            </div>
             <div class="seg" role="tablist" aria-label="Map view" id="viewSeg">
               <button type="button" data-view="3d" aria-pressed="true" data-i18n="view3d">3D</button>
               <button type="button" data-view="2d" aria-pressed="false" data-i18n="view2d">2D map</button>
@@ -93,6 +97,15 @@
             </div>
           </div>
           <div class="map-ui br"><div class="hint" data-i18n="hint">Drag to rotate · Scroll to zoom · Click a building</div></div>
+        </div>
+        <div class="scenario-bar">
+          <span class="lbl" data-i18n="scenarioLbl">Scenario</span>
+          <div class="seg" role="group" aria-label="Scenario" id="modeSeg">
+            <button type="button" data-mode="now" aria-pressed="true" data-i18n="modeNow">Now</button>
+            <button type="button" data-mode="d100" aria-pressed="false" data-i18n="modeD100">Day 100</button>
+            <button type="button" data-mode="y2030" aria-pressed="false" data-i18n="mode2030">Big Plan</button>
+          </div>
+        </div>
         </div>
 
         <aside class="info-panel" aria-live="polite">
@@ -122,24 +135,17 @@
   </main>
 
   <div class="float-dock">
-    <div class="team-group" id="teamGroup">
-      <div class="team-menu" id="teamMenu" role="list" hidden></div>
-      <button class="team-toggle" type="button" id="teamToggle" aria-expanded="false" aria-controls="teamMenu" data-i18n-aria="teamBtn" aria-label="STP team">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg>
-      </button>
-    </div>
-    <div class="video-group" id="videoGroup">
-      <div class="video-menu" id="videoMenu" role="menu" hidden></div>
-      <button class="video-toggle" type="button" id="videoToggle" aria-haspopup="menu" aria-expanded="false" aria-controls="videoMenu">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        <span data-i18n="videosBtn">Videos</span>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
-      </button>
-    </div>
     <a class="access-card" href="https://its.id/stpbp" target="_blank" rel="noopener" aria-label="Access: its.id/stpbp">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
       <span><small>Access:</small><b>its.id/stpbp</b></span>
     </a>
+  </div>
+
+  <div class="vmodal tmodal" id="teamModal" hidden role="dialog" aria-modal="true" aria-labelledby="teamTitle">
+    <div class="vmodal-box">
+      <div class="vmodal-head"><h3 id="teamTitle"></h3><button class="vmodal-x" type="button" id="teamClose" aria-label="Close">×</button></div>
+      <div class="team-list" id="teamList"></div>
+    </div>
   </div>
 
   <div class="vmodal" id="vmodal" hidden role="dialog" aria-modal="true" aria-labelledby="vmodalTitle">
@@ -151,6 +157,6 @@
     </div>
   </div>
 
-  <script type="module" src="assets/js/app.js?v=20261112141038"></script>
+  <script type="module" src="assets/js/app.js?v=20261113005911"></script>
 </body>
 </html>

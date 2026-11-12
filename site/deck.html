@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>STP ITS Blueprint – Deck</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper: #fcfdff; --paper-2: #f3f7fc; --paper-3: #e9f1fa; --ink: #0d2643; --ink-2: #33475f; --muted: #6a7c91; --line: #d3e1ef; --line-2: #b9cfe5;
+      --its: #0067ac; --its-soft: #e3f0fa; --issue: #e8833a; --issue-soft: #fdf0e6; --ok: #2e9e6b; --ok-soft: #e6f5ee;
+      --head: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+    @page { size: 1280px 720px; margin: 0; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { margin: 0; background: #cfd9e4; }
+    body { font-family: var(--body); color: var(--ink); }
+    .slide { width: 1280px; height: 720px; position: relative; overflow: hidden; break-after: page; page-break-after: always; margin: 0 auto 16px;
+      background-color: var(--paper); background-image: linear-gradient(var(--paper-3) 1px, transparent 1px), linear-gradient(90deg, var(--paper-3) 1px, transparent 1px); background-size: 32px 32px; padding: 64px 56px 52px; }
+    @media print { html, body { background: none; } .slide { margin: 0; } }
+    .slide::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: var(--its); }
+    .hdr { position: absolute; top: 20px; left: 56px; right: 56px; display: flex; align-items: center; gap: 14px; font: 600 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .hdr img { height: 26px; }
+    .hdr .sec { margin-left: auto; color: var(--its); }
+    .ftr { position: absolute; bottom: 18px; left: 56px; right: 56px; display: flex; font: 500 11px var(--mono); color: var(--muted); letter-spacing: .08em; }
+    .ftr .pg { margin-left: auto; }
+    h1, h2, h3 { font-family: var(--head); text-transform: uppercase; margin: 0; letter-spacing: .05em; }
+    h2 { font-size: 40px; line-height: 1; letter-spacing: .1em; }
+    h2 .no { font: 600 16px var(--mono); color: var(--its); letter-spacing: .1em; display: block; margin-bottom: 6px; }
+    .lead { font-size: 18px; color: var(--ink-2); max-width: 1040px; margin: 12px 0 0; line-height: 1.45; }
+    .card { background: #fff; border: 1px solid var(--line-2); border-radius: 12px; padding: 14px 16px; }
+    .card h3 { font-size: 18px; }
+    .card p { margin: 4px 0 0; font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+    .tag { font: 600 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--its); }
+    .shot { border: 1px solid var(--line-2); border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 10px 30px rgba(13, 38, 67, .1); }
+    .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .row { display: flex; gap: 18px; }
+    .grid { display: grid; gap: 12px; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; background: #fff; border-radius: 12px; overflow: hidden; }
+    th { background: var(--ink); color: #fff; text-align: left; font: 700 12.5px var(--head); letter-spacing: .1em; text-transform: uppercase; padding: 9px 10px; }
+    td { padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top; color: var(--ink-2); line-height: 1.35; }
+    td:first-child { color: var(--ink); font-weight: 600; }
+    .chip { display: inline-block; border: 1px solid var(--line-2); border-radius: 999px; padding: 2px 9px; font-size: 11.5px; color: var(--muted); margin: 0 4px 4px 0; background: var(--paper-2); }
+    .chip.on { border-color: var(--its); color: var(--its); background: var(--its-soft); font-weight: 600; }
+    /* cover */
+    .cover { padding: 0; display: grid; grid-template-columns: 1.15fr 1fr; }
+    .cover .l { padding: 70px 40px 60px 76px; display: flex; flex-direction: column; }
+    .cover .logo { height: 86px; align-self: flex-start; }
+    .cover h1 { font-size: 78px; line-height: .95; letter-spacing: .12em; margin-top: 48px; }
+    .cover .tl { font: 600 18px var(--head); letter-spacing: .36em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
+    .cover .sub { font-size: 22px; color: var(--ink-2); margin-top: 26px; line-height: 1.35; }
+    .cover .team { margin-top: auto; font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
+    .cover .team b { font: 600 11px var(--mono); letter-spacing: .14em; color: var(--its); display: block; margin-bottom: 4px; text-transform: uppercase; }
+    .cover .r { position: relative; background: linear-gradient(160deg, #e3f0fa, #cfe5f6); }
+    .cover .r .bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .35; }
+    .cover .r .seno { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 640px; filter: drop-shadow(0 20px 30px rgba(13, 38, 67, .3)); }
+    .cover .r .badge { position: absolute; top: 40px; right: 40px; background: var(--its); color: #fff; font: 700 14px var(--head); letter-spacing: .14em; padding: 8px 14px; border-radius: 10px; text-transform: uppercase; }
+    /* outline */
+    .out { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+    .out .card { padding: 0; overflow: hidden; }
+    .out .card img { width: 100%; height: 190px; object-fit: cover; display: block; border-bottom: 1px solid var(--line); }
+    .out .card .b { padding: 16px 18px; }
+    .out .n { font: 700 40px var(--mono); color: var(--its); line-height: 1; }
+    .out h3 { font-size: 26px; margin-top: 6px; }
+    .out ul { margin: 10px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 15px; line-height: 1.5; }
+    /* section divider */
+    .divider { display: flex; flex-direction: column; justify-content: center; background: var(--ink); color: #fff; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); }
+    .divider .big { font: 700 150px var(--mono); color: #1b86cf; line-height: 1; }
+    .divider h2 { font-size: 72px; color: #fff; }
+    .divider p { font-size: 22px; color: #b9cfe5; max-width: 760px; }
+    .divider .seno { position: absolute; right: 70px; bottom: 0; height: 520px; }
+    /* issues */
+    .issues { grid-template-columns: repeat(4, 1fr); margin-top: 22px; }
+    .issues .card { border-top: 4px solid var(--issue); min-height: 232px; }
+    .issues .n { font: 700 13px var(--mono); color: var(--issue); }
+    .issues h3 { font-size: 17px; margin: 4px 0 6px; }
+    .issues .k { font: 600 10px var(--mono); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
+    .issues p { font-size: 12.5px; margin: 1px 0 0; }
+    /* priorities */
+    .pr { display: grid; grid-template-columns: 1.05fr 1fr; gap: 24px; margin-top: 16px; height: 540px; }
+    .pr .meta .big { font: 700 15px var(--mono); color: var(--its); }
+    .pr h2 { font-size: 38px; margin-top: 4px; }
+    .pr .why { font-size: 15.5px; color: var(--ink-2); line-height: 1.45; margin: 12px 0 8px; }
+    .pr .own { font-size: 13.5px; color: var(--ink-2); margin-bottom: 10px; }
+    .pr .own b { font: 600 10.5px var(--mono); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; display: block; }
+    .steps { display: grid; gap: 8px; }
+    .steps .card { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 10px 14px; }
+    .steps .d { font: 700 22px var(--mono); color: var(--its); }
+    .steps p { margin: 0; font-size: 13.5px; }
+    .pr .pics { display: grid; gap: 12px; align-content: start; }
+    .pr .pics .shot { height: 300px; }
+    .pr .pics.two .shot { height: 228px; }
+    .pr .cap { font-size: 12.5px; color: var(--muted); margin-top: -4px; }
+    .mile { margin-top: 10px; display: inline-block; font: 600 12px var(--mono); color: #b25a1a; background: var(--issue-soft); border: 1px solid #f3c9a6; border-radius: 6px; padding: 5px 10px; }
+    .closing { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+    .closing h1 { font-size: 92px; letter-spacing: .1em; }
+    .closing .url { font: 700 30px var(--mono); color: var(--its); margin-top: 18px; }
+    .closing .seno { height: 600px; justify-self: center; align-self: end; margin-bottom: -52px; }
+  </style>
+</head>
+<body>
+  <div id="deck"></div>
+  <script type="module">
+    import * as C from './assets/js/content.js';
+    const t = o => (o == null ? '' : typeof o === 'string' ? o : o.en);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const D = 'assets/deck/', LOGO = 'assets/img/logo-its.png';
+    const stepDays = p => { const [a, b] = p.days, n = b - a + 1, k = Math.round(n / 3); return [[a, a + k - 1], [a + k, a + 2 * k - 1], [a + 2 * k, b]]; };
+    const slides = [];
+    const S = (sec, body, cls = '') => slides.push({ sec, body, cls });
+
+    // 1 cover
+    slides.push({ raw: true, body: `<section class="slide cover">
+      <div class="l"><img class="logo" src="${LOGO}" alt="ITS">
+        <h1>STP ITS<br>Blueprint</h1><div class="tl">Diagnose · Plan · Activate</div>
+        <div class="sub">The 100-day plan and the big plan for the<br><b>Science Techno Park, Institut Teknologi Sepuluh Nopember</b></div>
+        <div class="team"><b>STP team · UTM–ITS STELLAR 2026</b>${C.TEAM.map(m => `${esc(m.n)} <span style="color:var(--muted)">· ${esc(t(m.u))}</span>`).join('<br>')}</div></div>
+      <div class="r"><div class="bg" style="background-image:url(${D}map-now.jpg)"></div><span class="badge">Guided Co-working Session</span><img class="seno" src="${D}cak-seno.png" alt="Cak Seno"></div>
+    </section>` });
+
+    // 2 outline
+    S('Outline', `<h2>Outline</h2>
+      <div class="out">
+        <div class="card"><img src="${D}map-now.jpg"><div class="b"><div class="n">01</div><h3>Now – existing condition</h3><ul><li>STP ITS site map today</li><li>Existing organisation (Bidang IV)</li><li>Diagnosis: 8 issues</li></ul></div></div>
+        <div class="card"><img src="${D}road.jpg"><div class="b"><div class="n">02</div><h3>100-day plan</h3><ul><li>Five priorities on one road (P1–P5)</li><li>Quick wins & milestones</li><li>Governance, resources, risks & policy</li></ul></div></div>
+        <div class="card"><img src="${D}map-big.jpg"><div class="b"><div class="n">03</div><h3>Big plan</h3><ul><li>Roadmap 2018 → 2045</li><li>BP1 · Semiconductor & Eco AI Data Center</li><li>BP2 · STP Living Lab</li></ul></div></div>
+      </div>`);
+
+    // 01 Now
+    slides.push({ raw: true, body: `<section class="slide divider"><div class="big">01</div><h2>Now</h2><p>Where STP ITS stands today – the site, the organisation and the issues that block it.</p><img class="seno" src="${D}cak-seno.png" alt=""></section>` });
+    const stp = C.SITES.stp;
+    S('01 · Now', `<h2><span class="no">01 · Now</span>STP ITS today</h2>
+      <div class="row" style="margin-top:18px;height:520px">
+        <div class="shot" style="flex:1.6"><img src="${D}map-now.jpg"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+          <div class="card"><span class="tag">Overview</span><p style="font-size:14.5px">${esc(t(stp.overview))}</p></div>
+          ${stp.facts.map(f => `<div class="card" style="padding:10px 14px"><p style="margin:0">✓ ${esc(t(f))}</p></div>`).join('')}
+          <div class="card" style="border-left:4px solid var(--issue)"><span class="tag" style="color:#b25a1a">Today</span><p>${esc(t(stp.now))}</p></div>
+        </div></div>`);
+    S('01 · Now', `<h2><span class="no">01 · Now</span>Existing organisation – Bidang IV</h2>
+      <div class="shot" style="margin-top:18px;height:440px;background:#fff"><img src="${D}org.jpg" style="object-fit:contain"></div>
+      <p class="lead" style="font-size:15.5px">${esc(t(C.ORG_NOTE))}</p>`);
+    S('01 · Now', `<h2><span class="no">01 · Now</span>Diagnosis – where STP stands today</h2>
+      <p class="lead" style="font-size:16px">${esc(t(C.DIAG_QUOTE))}</p>
+      <div class="grid issues">${C.ISSUES.map(i => `<div class="card"><span class="n">#${i.n} · ${i.p}</span><h3>${esc(t(i.t))}</h3>
+        <div class="k">Impact</div><p>${esc(t(i.i))}</p><div class="k">Root cause</div><p>${esc(t(i.r))}</p></div>`).join('')}</div>`);
+
+    // 02 100-day
+    slides.push({ raw: true, body: `<section class="slide divider"><div class="big">02</div><h2>100-day plan</h2><p>Five priorities run one after another on a single 100-day road – 20 days each. Every leg ends at a milestone.</p><img class="seno" src="${D}cak-seno.png" alt=""></section>` });
+    S('02 · 100-day plan', `<h2><span class="no">02 · 100-day plan</span>One road, five priorities</h2>
+      <div class="shot" style="margin-top:18px;height:300px;background:#fff"><img src="${D}road.jpg" style="object-fit:contain"></div>
+      <div class="grid" style="grid-template-columns:repeat(5,1fr);margin-top:16px">${C.PRIORITIES.map(p => `<div class="card"><span class="tag">${p.id} · Day ${p.days[0]}–${p.days[1]}</span><h3 style="font-size:16px;margin-top:4px">${esc(t(p.t))}</h3><p>Solves #${p.solves.join(', #')}</p></div>`).join('')}</div>`);
+    for (const p of C.PRIORITIES) {
+      const sd = stepDays(p), ms = C.MILESTONES.find(m => m.p === p.id);
+      const imgs = p.img || [];
+      S('02 · 100-day plan', `<div class="pr">
+        <div class="meta"><span class="big">${p.id} · Day ${p.days[0]}–${p.days[1]} · Solves #${p.solves.join(', #')}</span><h2>${esc(t(p.t))}</h2>
+          <p class="why">${esc(t(p.why))}</p><div class="own"><b>Owner</b>${esc(t(p.owner))}</div>
+          <div class="steps">${[p.s1, p.s2, p.s3].map((s, i) => `<div class="card"><span class="d">D${sd[i][0]}–${sd[i][1]}</span><p>${esc(t(s))}</p></div>`).join('')}</div>
+          ${ms ? `<span class="mile">◆ Day ${ms.d} · ${esc(t(ms.t))}</span>` : ''}</div>
+        <div class="pics ${imgs.length > 1 ? 'two' : ''}">${imgs.map(i => `<div class="shot"><img src="assets/img/priorities/${i.src}.webp"></div><div class="cap">${esc(t(i.cap))}</div>`).join('')}
+          <div>${Object.keys(C.QW).map(k => `<span class="chip ${p.qw.includes(k) ? 'on' : ''}">${esc(t(C.QW[k]))}</span>`).join('')}</div></div></div>`);
+    }
+    const keys = Object.keys(C.QW);
+    S('02 · 100-day plan', `<h2><span class="no">02 · 100-day plan</span>Quick-win selection</h2>
+      <table style="margin-top:22px"><thead><tr><th>Priority</th>${keys.map(k => `<th style="text-align:center">${esc(t(C.QW[k]))}</th>`).join('')}</tr></thead>
+      <tbody>${C.PRIORITIES.map(p => `<tr><td>${p.id} · ${esc(t(p.t))}</td>${keys.map(k => `<td style="text-align:center;color:var(--its);font:700 18px var(--mono)">${p.qw.includes(k) ? '✓' : ''}</td>`).join('')}</tr>`).join('')}</tbody></table>
+      <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:18px">${C.MILESTONES.filter(m => m.desc).map(m => `<div class="card" style="border-left:4px solid var(--issue)"><span class="tag" style="color:#b25a1a">Quick win · Day ${m.d}</span><h3 style="margin-top:4px">${esc(t(m.t))}</h3><p>${esc(t(m.desc))}</p></div>`).join('')}</div>`);
+    const tbl = d => `<table><thead><tr>${d.head.map(h => `<th>${esc(t(h))}</th>`).join('')}</tr></thead><tbody>${d.rows.map(r => `<tr>${r.map(c => `<td>${esc(t(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    S('02 · 100-day plan', `<h2><span class="no">02 · 100-day plan</span>Governance & accountability</h2><div style="margin-top:22px">${tbl(C.GOV)}</div>`);
+    S('02 · 100-day plan', `<h2><span class="no">02 · 100-day plan</span>Resource plan</h2><div style="margin-top:22px">${tbl(C.RES)}</div>`);
+    S('02 · 100-day plan', `<h2><span class="no">02 · 100-day plan</span>Risks & policy handover</h2>
+      <div class="row" style="margin-top:20px;align-items:start"><div style="flex:1.4">${tbl(C.RISK)}</div>
+        <div class="card" style="flex:1"><span class="tag">Policy handover</span><ol style="margin:8px 0 0;padding-left:20px;font-size:13.5px;line-height:1.45;color:var(--ink-2)">${C.POLICY.map(x => `<li>${esc(t(x))}</li>`).join('')}</ol></div></div>`);
+
+    // 03 big plan
+    slides.push({ raw: true, body: `<section class="slide divider"><div class="big">03</div><h2>Big plan</h2><p>${esc(t(C.FUTURE.lead))}</p><img class="seno" src="${D}cak-seno.png" alt=""></section>` });
+    S('03 · Big plan', `<h2><span class="no">03 · Big plan</span>Roadmap & the park in the big plan</h2>
+      <div class="shot" style="margin-top:16px;height:150px;background:#fff"><img src="${D}roadmap.jpg" style="object-fit:contain"></div>
+      <div class="row" style="margin-top:14px;height:360px"><div class="shot" style="flex:1.5"><img src="${D}map-big.jpg"></div>
+        <div style="flex:1;display:grid;gap:12px;align-content:start">${C.FUTURE.projects.map(p => `<div class="card" style="border-top:4px solid var(--its)"><span class="tag">${p.n} · ${esc(t(p.where))}</span><h3 style="margin-top:4px">${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p></div>`).join('')}</div></div>`);
+    const plist = l => `<div class="grid" style="grid-template-columns:1fr;gap:6px;margin-top:10px">${l.map(p => `<div class="card" style="padding:8px 12px"><b style="font:700 14px var(--head);letter-spacing:.06em;text-transform:uppercase">${esc(t(p.h))}</b><p style="margin:2px 0 0;font-size:12.5px">${esc(t(p.d))}</p></div>`).join('')}</div>`;
+    S('03 · Big plan', `<h2><span class="no">03 · Big plan · BP1 · ICT & Robotics Cluster</span>Semiconductor & Eco AI Data Center</h2>
+      <div class="row" style="margin-top:16px"><div style="flex:1"><div class="shot" style="height:250px"><img src="${D}eco.jpg" style="object-fit:contain"></div>${plist(C.FUTURE.parts)}</div>
+        <div style="flex:1"><div class="shot" style="height:250px"><img src="${D}cleanroom.jpg" style="object-fit:contain"></div>${plist(C.FUTURE.cleanroom.slice(0, 4))}</div></div>`);
+    S('03 · Big plan', `<h2><span class="no">03 · Big plan · BP2</span>STP Living Lab</h2>
+      <div class="shot" style="margin-top:16px;height:300px;background:#fff"><img src="${D}livinglab.jpg" style="object-fit:contain"></div>
+      <div class="grid" style="grid-template-columns:repeat(5,1fr);margin-top:14px">${C.FUTURE.livinglab.map(p => `<div class="card"><h3 style="font-size:16px">${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p></div>`).join('')}</div>`);
+
+    // closing
+    slides.push({ raw: true, body: `<section class="slide closing"><div><img src="${LOGO}" style="height:80px"><h1 style="margin-top:40px">Thank you</h1>
+      <p class="lead">Explore the interactive blueprint – 3D site map, 100-day road and big plan.</p><div class="url">its.id/stpbp</div>
+      <p style="margin-top:30px;color:var(--muted);font-size:14px">STP team · UTM–ITS STELLAR 2026</p></div><img class="seno" src="${D}cak-seno.png" alt="Cak Seno"></section>` });
+
+    let n = 0; const total = slides.length;
+    document.getElementById('deck').innerHTML = slides.map(s => { n++;
+      if (s.raw) return s.body.replace('</section>', n > 1 ? `<div class="ftr"><span>STP ITS Blueprint · its.id/stpbp</span><span class="pg">${n} / ${total}</span></div></section>` : '</section>');
+      return `<section class="slide ${s.cls}"><div class="hdr"><img src="${LOGO}" alt=""><span>STP ITS Blueprint</span><span class="sec">${s.sec}</span></div>${s.body}
+        <div class="ftr"><span>STP ITS Blueprint · its.id/stpbp</span><span class="pg">${n} / ${total}</span></div></section>`; }).join('');
+    await document.fonts.ready;
+    await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+    window.__deckReady = true;
+  </script>
+</body>
+</html>

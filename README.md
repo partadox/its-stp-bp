@@ -67,3 +67,13 @@ Rebuild after editing: `docker compose up -d --build`. Map tiles load from OpenS
 ## Sources
 
 DIKST ITS "Pengenalan Science Techno Park (STP) ITS" briefing; OTK ITS 2024 (Bidang IV); Rector Regulation No. 22/2026 on Science & Technology Park governance; DIKST and GRIT videos; UTM–ITS STELLAR 2026 Modules 6 and 10.
+
+## PDF deck
+
+The sidebar's download button serves `site/assets/stp-its-blueprint.pdf` (22 slides, 16:9). The deck is built from `site/deck.html` using live captures of the website. After changing content, regenerate it with the site running:
+
+```bash
+docker compose up -d --build
+cd tools && npm i puppeteer-core@23 && SITE=http://localhost:8091 node build-deck.js
+cd .. && docker compose up -d --build
+```

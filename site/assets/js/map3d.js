@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/OrbitControls.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/CSS2DRenderer.js';
 import { LAYOUT } from './layout.js';
+import { loadMascot, animateWalk } from './mascot.js';
 export { LAYOUT };
 
 export const STATUS_COLOR = { issue: 0xe8833a, active: 0x0067ac, mature: 0x2e9e6b, plan: 0x7fa6c9 };
@@ -288,7 +289,7 @@ export function createMap(container, { onSelect, labelFor }) {
     flow.visible = flowDot.visible = m !== 'now';
   }
 
-  const start = performance.now();
+  let start = performance.now();
   const DRIVE = { p0: new THREE.Vector3(-150, 12, -132), p1: new THREE.Vector3(-70, 14, -44), t0: new THREE.Vector3(-80, 4, -62), t1: new THREE.Vector3(-20, 3, 6) };
   let intro = true, tween = null;
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -300,21 +301,68 @@ export function createMap(container, { onSelect, labelFor }) {
     controls.autoRotate = false;
   }
 
+  /* ---------- Cak Seno mascot: click the ground or use WASD / arrow keys ---------- */
+  const MH = 9, SPEED = 22;
+  const mascot = { g: new THREE.Group(), target: null, keys: new Set(), moving: 0, hover: false };
+  mascot.g.position.set(-56, 0, -30); mascot.g.rotation.y = -0.8; scene.add(mascot.g);
+  const tagEl = document.createElement('div'); tagEl.className = 'mascot-tag'; tagEl.textContent = 'Cak Seno';
+  const tag = new CSS2DObject(tagEl); tag.position.set(0, MH + 1.2, 0); mascot.g.add(tag);
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(1.4, 24), new THREE.MeshBasicMaterial({ color: 0x0d2643, transparent: true, opacity: 0.18, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.2; mascot.g.add(shadow);
+  const marker = new THREE.Mesh(new THREE.RingGeometry(0.9, 1.3, 32), new THREE.MeshBasicMaterial({ color: 0x0067ac, transparent: true, opacity: 0.8, depthWrite: false, side: THREE.DoubleSide }));
+  marker.rotation.x = -Math.PI / 2; marker.visible = false; scene.add(marker);
+  loadMascot().then(make => { const body = make(MH); mascot.g.add(body); mascot.body = body; }).catch(e => console.warn('mascot failed', e));
+  const GB = { x0: G.x - G.w / 2 + 4, x1: G.x + G.w / 2 - 4, z0: G.z - G.d / 2 + 4, z1: G.z + G.d / 2 - 4 };
+  container.addEventListener('pointerenter', () => { mascot.hover = true; });
+  container.addEventListener('pointerleave', () => { mascot.hover = false; mascot.keys.clear(); });
+  const KEYS = { w: 'f', arrowup: 'f', s: 'b', arrowdown: 'b', a: 'l', arrowleft: 'l', d: 'r', arrowright: 'r' };
+  window.addEventListener('keydown', e => {
+    const k = KEYS[e.key.toLowerCase()]; if (!k || paused || !mascot.hover || /input|textarea|select/i.test(e.target.tagName)) return;
+    e.preventDefault(); mascot.keys.add(k); mascot.target = null; marker.visible = false; controls.autoRotate = false;
+  });
+  window.addEventListener('keyup', e => { const k = KEYS[e.key.toLowerCase()]; if (k) mascot.keys.delete(k); });
+  function stepMascot(dt, t) {
+    const v = new THREE.Vector3();
+    if (mascot.keys.size) {
+      const fwd = new THREE.Vector3(); camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize();
+      const right = new THREE.Vector3(-fwd.z, 0, fwd.x);
+      if (mascot.keys.has('f')) v.add(fwd); if (mascot.keys.has('b')) v.sub(fwd);
+      if (mascot.keys.has('r')) v.add(right); if (mascot.keys.has('l')) v.sub(right);
+    } else if (mascot.target) {
+      v.subVectors(mascot.target, mascot.g.position); v.y = 0;
+      if (v.length() < 0.6) { mascot.target = null; marker.visible = false; v.set(0, 0, 0); }
+    }
+    const moving = v.lengthSq() > 0;
+    mascot.moving += ((moving ? 1 : 0) - mascot.moving) * Math.min(1, dt * 8);
+    if (moving) {
+      v.normalize();
+      const p = mascot.g.position; p.addScaledVector(v, SPEED * dt);
+      p.x = THREE.MathUtils.clamp(p.x, GB.x0, GB.x1); p.z = THREE.MathUtils.clamp(p.z, GB.z0, GB.z1);
+      const yaw = Math.atan2(v.x, v.z); let d = yaw - mascot.g.rotation.y; d = Math.atan2(Math.sin(d), Math.cos(d));
+      mascot.g.rotation.y += d * Math.min(1, dt * 10);
+    }
+    if (mascot.body) animateWalk(mascot.body, t, mascot.moving, MH * 0.25);
+    if (marker.visible) marker.scale.setScalar(1 + 0.2 * Math.sin(t * 6));
+  }
+
   const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(); let down = null;
   const visiblePicks = () => pickables.filter(p => { let o = p; while (o) { if (!o.visible) return false; o = o.parent; } return true; });
   const setMouse = e => { const r = renderer.domElement.getBoundingClientRect(); mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(mouse, camera); };
   renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
   renderer.domElement.addEventListener('pointerup', e => {
     if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
-    setMouse(e); const hit = ray.intersectObjects(visiblePicks(), false)[0]; if (hit) onSelect(hit.object.userData.id);
+    setMouse(e); const hit = ray.intersectObjects(visiblePicks(), false)[0]; if (hit) { onSelect(hit.object.userData.id); return; }
+    const gh = ray.intersectObject(ground, false)[0];
+    if (gh) { mascot.target = gh.point.clone().setY(0); marker.position.set(gh.point.x, 0.3, gh.point.z); marker.visible = true; controls.autoRotate = false; }
   });
   renderer.domElement.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; setMouse(e); renderer.domElement.style.cursor = ray.intersectObjects(visiblePicks(), false)[0] ? 'pointer' : 'grab'; });
 
-  const clock = new THREE.Clock();
+  const clock = new THREE.Clock(); let last = performance.now();
   (function loop() {
     requestAnimationFrame(loop);
-    if (paused) return;
-    const now = performance.now(), el = clock.getElapsedTime();
+    if (paused) { last = performance.now(); return; }
+    const now = performance.now(), el = clock.getElapsedTime(), dt = Math.min(0.05, (now - last) / 1000); last = now;
+    stepMascot(dt, el);
     if (intro) {
       const T1 = 3400, T2 = 2600, dt = now - start;
       if (dt < T1) { const k = ease(dt / T1); camera.position.lerpVectors(DRIVE.p0, DRIVE.p1, k); controls.target.lerpVectors(DRIVE.t0, DRIVE.t1, k); }
@@ -346,6 +394,11 @@ export function createMap(container, { onSelect, labelFor }) {
       selected = id;
       Object.values(sites).forEach(s => s.el.classList.toggle('is-selected', s.def.id === id));
       if (fly && sites[id]) flyTo(sites[id].center, id === 'rc' ? 140 : id === 'circuit' ? 140 : 100);
+    },
+    replay() {
+      selected = null; Object.values(sites).forEach(s => s.el.classList.remove('is-selected'));
+      tween = null; controls.autoRotate = false;
+      camera.position.copy(DRIVE.p0); controls.target.copy(DRIVE.t0); start = performance.now(); intro = true;
     },
     reset() { selected = null; Object.values(sites).forEach(s => s.el.classList.remove('is-selected')); flyTo(HOME.target, HOME.pos.distanceTo(HOME.target)); },
     relabel(fn, cap) {

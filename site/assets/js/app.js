@@ -1,4 +1,5 @@
 import * as C from './content.js';
+let roadWalker = null;
 import { LAYOUT, webglAvailable } from './layout.js';
 
 /* ---------------- state & helpers ---------------- */
@@ -33,6 +34,15 @@ const I = {
   gpu: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8"/><path d="M8 1v3M16 1v3M8 20v3M16 20v3M1 8h3M1 16h3M20 8h3M20 16h3"/>',
   mon: '<path d="M4 18a8 8 0 1 1 16 0"/><path d="m12 18 4-6"/>',
   heat: '<path d="M8 21c-2-3 2-5 0-8M12 21c-2-3 2-5 0-8M16 21c-2-3 2-5 0-8"/><path d="M5 9h14"/>',
+  air: '<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h7"/>',
+  chip: '<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/><circle cx="12" cy="12" r="2.2"/>',
+  gown: '<circle cx="12" cy="5" r="2.5"/><path d="M8 10h8l2 11H6z"/><path d="M10 14h4"/>',
+  share: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6M8.2 13.2l7.6 3.6"/>',
+  iot: '<circle cx="12" cy="12" r="2"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"/>',
+  car: '<path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="16" r="1.5"/><circle cx="16.5" cy="16" r="1.5"/>',
+  wave: '<path d="M2 15c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 19c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M12 3v7M9 6l3-3 3 3"/>',
+  leaf: '<path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15"/><path d="M5 19 13 11"/>',
+  data: '<ellipse cx="12" cy="5" rx="7" ry="2.5"/><path d="M5 5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5"/><path d="M5 11v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/>',
 };
 const icon = (k, w = 22) => `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[k]}</svg>`;
 const secHead = (no, title) => `<div class="sec-head"><span class="no">${no}</span><h2>${esc(title)}</h2><span class="line"></span></div>`;
@@ -150,7 +160,7 @@ function applyScene() {
   document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
   document.querySelectorAll('[data-modes]').forEach(el => { el.hidden = !el.dataset.modes.split(' ').includes(m); });
   const pct = m === 'now' ? 0 : 100; $('#dayBar').style.width = pct + '%';
-  $('#dayVal').textContent = m === 'y2030' ? '2030' : `${pct}/100`;
+  $('#dayVal').textContent = m === 'y2030' ? t(C.UI.mode2030).toUpperCase() : `${pct}/100`;
 }
 function setMode(m) {
   if (m === S.mode) return;
@@ -232,20 +242,26 @@ function renderPlan() {
         <div class="chips">${Object.keys(C.QW).map(k => `<span class="chip ${p.qw.includes(k) ? 'on' : ''}">${esc(t(C.QW[k]))}</span>`).join('')}</div></div>
       <div class="days">${step(1, sd[0], p.s1)}${step(2, sd[1], p.s2)}${step(3, sd[2], p.s3)}</div>
     </div>
+    ${pimgHtml(p)}
     ${EXTRA[p.id] ? EXTRA[p.id]() : ''}`; })();
   $('#plan').innerHTML = `${secHead(secNo('plan'), S.lang === 'id' ? 'Rencana 100 hari (Module 11b)' : '100-day plan (Module 11b)')}
     <p class="sec-lead">${S.lang === 'id' ? 'Lima prioritas dijalankan berurutan dalam satu jalur 100 hari – masing-masing 20 hari, tanpa tumpang tindih. P1 didahulukan karena unit pengelola adalah tim yang menjalankan P2–P5. Setiap etape diakhiri satu milestone.' : 'Five priorities run one after another on a single 100-day road – 20 days each, no overlap. P1 comes first because the operating unit is the team that delivers P2–P5. Every leg ends at a milestone.'}</p>
     <div class="route-wrap reveal"><div class="route" role="tablist" aria-label="${S.lang === 'id' ? 'Ringkasan & prioritas' : 'Overview & priorities'}">
       <button type="button" role="tab" class="route-start ${ov ? 'is-active' : ''}" data-p="overview" aria-selected="${ov}" title="${esc(t(C.UI.tabOverview))}"><span class="pin">${flag}</span></button>
       <button type="button" class="leg-card ov ${ov ? 'is-active' : ''}" data-p="overview"><span class="d">${esc(t(C.UI.tabOverview))}</span><b>${S.lang === 'id' ? 'Quick win, tata kelola, sumber daya, risiko & kebijakan' : 'Quick wins, governance, resources, risks & policy'}</b><small>Module 11c–g</small></button>
-      <div class="route-signs">${C.MILESTONES.map((m, i) => `<span class="sign ${i % 2 ? 'hi' : ''} ${m.d >= span ? 'end' : ''} ${m.p === p.id ? 'on' : ''}" style="left:${m.d / span * 100}%"><em>◆ ${esc(t(m.t))}</em></span>`).join('')}</div>
+      <div class="route-signs">${C.MILESTONES.map((m, i) => `<span class="sign ${i % 2 ? 'hi' : ''} ${m.d >= span ? 'end' : ''} ${m.p === p.id ? 'on' : ''}" style="left:${m.d / span * 100}%"><em>◆ ${t(C.UI.day)} ${m.d} · ${esc(t(m.t))}</em></span>`).join('')}</div>
       <div class="route-road">${C.PRIORITIES.map(q => `<button type="button" role="tab" class="leg ${q.id === p.id ? 'is-active' : ''}" data-p="${q.id}" aria-selected="${q.id === p.id}" title="${esc(t(q.t))}"><span class="pin">${q.id}</span></button>`).join('')}</div>
-      <div class="route-ticks">${ticks.map(d => `<span style="left:${d / span * 100}%">${t(C.UI.day)} ${d}</span>`).join('')}</div>
+      <div class="route-ticks">${ticks.filter(d => !C.MILESTONES.some(m => m.d === d)).map(d => `<span style="left:${d / span * 100}%">${t(C.UI.day)} ${d}</span>`).join('')}</div>
       <div class="route-cards">${C.PRIORITIES.map(q => `<button type="button" class="leg-card ${q.id === p.id ? 'is-active' : ''}" data-p="${q.id}">
         <span class="d">${q.id} · ${t(C.UI.day)} ${q.days[0]}–${q.days[1]}</span><b>${esc(t(q.t))}</b><small>${esc(t(C.UI.solves))} #${q.solves.join(', #')}</small></button>`).join('')}</div>
     </div></div>
     ${detail}`;
   $('#plan').querySelectorAll('.route [data-p]').forEach(el => el.addEventListener('click', () => { S.prio = el.dataset.p; renderPlan(); }));
+  requestAnimationFrame(async () => {
+    const route = $('#plan .route'); if (!route || $('#plan').hidden || !route.offsetParent) return;
+    if (!roadWalker) { try { roadWalker = (await import('./mascot.js')).createRoadWalker(); } catch { return; } }
+    roadWalker.attach(route, route.querySelector(ov ? '.route-start .pin' : '.route-road .leg.is-active .pin'));
+  });
   $('#plan').querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => { S.ftab = b.dataset.f; renderPlan(); }));
   reveal();
 }
@@ -294,7 +310,20 @@ function extraP4() {
     <div class="pathway">${sc.path.map(p => `<span>${esc(t(p))}</span>`).join('')}</div>
     <div class="grid g4 kpi">${sc.kpi.map(k => `<div class="card"><div class="v">${k.v}</div><p>${esc(t(k.t))}</p></div>`).join('')}</div></div>`;
 }
-const EXTRA = { P1: extraP1, P2: extraP2, P4: extraP4 };
+function extraP3() {
+  const p = C.PRIORITIES.find(x => x.id === 'P3'), tr = p.tracks;
+  return `<div class="pextra reveal"><h3>${S.lang === 'id' ? 'P3 · Dua jalur tenant' : 'P3 · Two tenant tracks'}</h3>
+    <div class="table-wrap"><table><thead><tr>${tr.head.map(h => `<th>${esc(t(h))}</th>`).join('')}</tr></thead><tbody>${tr.rows.map(r => `<tr>${r.map(x => `<td>${esc(t(x))}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
+}
+function extraP5() {
+  const x = C.P5X, L = S.lang === 'id';
+  return `<div class="pextra reveal"><h3>${L ? 'P5 · Isi dashboard KPI & program STP Fellows' : 'P5 · KPI dashboard & STP Fellows'}</h3>
+    <div class="grid g3 kpi-mini">${x.kpi.map(k => `<div class="card"><span class="v">${k.v}</span><p>${esc(t(k.t))}</p></div>`).join('')}</div>
+    <h4 class="concept-h" style="margin-top:16px">STP Fellows</h4>
+    <ul class="fellows">${x.fellows.map(f => `<li>${esc(t(f))}</li>`).join('')}</ul></div>`;
+}
+const pimgHtml = p => p.img ? `<div class="pimg ${p.img.length > 1 ? 'two' : ''} reveal">${p.img.map(i => `<figure><img src="assets/img/priorities/${i.src}.webp" alt="${esc(t(i.cap))}" loading="lazy"><figcaption>${esc(t(i.cap))}</figcaption></figure>`).join('')}</div>` : '';
+const EXTRA = { P1: extraP1, P2: extraP2, P3: extraP3, P4: extraP4, P5: extraP5 };
 function ecoSvg() {
   const L = S.lang === 'id';
   return `<svg viewBox="0 0 640 380" role="img" aria-label="Eco AI Data Center Living Lab schematic" font-family="Barlow Condensed, sans-serif">
@@ -320,23 +349,76 @@ function ecoSvg() {
     <text x="30" y="282" font-size="12" fill="#6a7c91" font-family="JetBrains Mono, monospace">${L ? 'TARGET METRIK LIVING LAB (USULAN)' : 'LIVING-LAB METRIC TARGETS (PROPOSED)'}</text>
   </svg>`;
 }
+function cleanroomSvg() {
+  const L = S.lang === 'id';
+  const T = (x, y, s, sz = 15, c = '#0d2643', w = 700) => `<text x="${x}" y="${y}" text-anchor="middle" font-size="${sz}" font-weight="${w}" fill="${c}">${s}</text>`;
+  return `<svg viewBox="0 0 640 380" role="img" aria-label="Semiconductor clean room schematic" font-family="Barlow Condensed, sans-serif">
+    <defs><pattern id="g2" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#e3eef9"/></pattern>
+      <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#0067ac"/></marker></defs>
+    <rect width="640" height="380" fill="url(#g2)"/>
+    <rect x="140" y="40" width="470" height="230" rx="8" fill="#fff" stroke="#0067ac" stroke-width="2"/>
+    <rect x="140" y="40" width="470" height="26" rx="8" fill="#e3f0fa"/>
+    ${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${162 + i * 74}" y="46" width="56" height="14" rx="3" fill="#fff" stroke="#7fa6c9"/><path d="M${170 + i * 74} 53h40" stroke="#7fa6c9" stroke-dasharray="3 3"/>`).join('')}
+    ${T(375, 86, L ? 'FILTER HEPA / ULPA – ALIRAN UDARA LAMINAR' : 'HEPA / ULPA FILTERS – LAMINAR AIRFLOW', 12, '#0067ac', 600)}
+    ${[0, 1, 2, 3, 4, 5, 6].map(i => `<path d="M${180 + i * 64} 96v34" stroke="#9cc8ec" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#ar2)"/>`).join('')}
+    <g transform="translate(180 150)"><rect width="120" height="60" rx="4" fill="#0d2643"/><rect x="10" y="10" width="44" height="28" rx="3" fill="#1b86cf"/><rect x="62" y="10" width="48" height="10" rx="2" fill="#5f8fc4"/><rect x="62" y="26" width="48" height="10" rx="2" fill="#5f8fc4"/><rect x="0" y="60" width="120" height="8" fill="#5f8fc4"/></g>
+    ${T(240, 238, L ? 'LITOGRAFI' : 'LITHOGRAPHY')}
+    <g transform="translate(330 150)"><rect width="100" height="60" rx="4" fill="#fff" stroke="#0d2643" stroke-width="2"/><circle cx="50" cy="30" r="18" fill="none" stroke="#1b86cf" stroke-width="3"/><circle cx="50" cy="30" r="6" fill="#1b86cf"/></g>
+    ${T(380, 238, L ? 'ETSA & DEPOSISI' : 'ETCH & DEPOSITION')}
+    <g transform="translate(460 150)"><rect width="120" height="60" rx="4" fill="#fff" stroke="#0d2643" stroke-width="2"/>${[0, 1, 2, 3].map(i => `<rect x="${12 + i * 26}" y="14" width="18" height="18" rx="2" fill="#a6dcc1" stroke="#2e9e6b"/>`).join('')}<path d="M12 44h96" stroke="#7fa6c9" stroke-width="3"/></g>
+    ${T(520, 238, L ? 'UJI & PACKAGING' : 'TEST & PACKAGING')}
+    <g transform="translate(30 120)"><rect width="84" height="110" rx="6" fill="#fdf0e6" stroke="#e8833a" stroke-width="1.5"/>
+      <circle cx="42" cy="34" r="10" fill="#fff" stroke="#e8833a" stroke-width="2"/><path d="M28 86V58c0-6 6-10 14-10s14 4 14 10v28z" fill="#fff" stroke="#e8833a" stroke-width="2"/></g>
+    ${T(72, 252, 'GOWNING / AIRLOCK', 13, '#b25a1a')}
+    <path d="M114 175h22" stroke="#e8833a" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#ar2)"/>
+    <g transform="translate(140 290)"><rect width="470" height="64" rx="6" fill="#e3f0fa" stroke="#0067ac" stroke-width="1.5"/>
+      ${[['ISO', L ? 'kelas 5–7' : 'class 5–7'], ['ΔP', L ? 'positif' : 'positive'], ['RH', '45 ± 5 %'], ['T', '21 ± 1 °C']].map((m, i) => `<text x="${60 + i * 117}" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#0067ac" font-family="JetBrains Mono, monospace">${m[0]}</text><text x="${60 + i * 117}" y="48" text-anchor="middle" font-size="14" fill="#0d2643" font-family="JetBrains Mono, monospace">${m[1]}</text>`).join('')}</g>
+    <text x="140" y="282" font-size="12" fill="#6a7c91" font-family="JetBrains Mono, monospace">${L ? 'TARGET RUANG (USULAN)' : 'ROOM TARGETS (PROPOSED)'}</text>
+  </svg>`;
+}
+function livingLabSvg() {
+  const L = S.lang === 'id';
+  const zone = (x, y, w, h, fill, stroke, title, sub) => `<g transform="translate(${x} ${y})"><rect width="${w}" height="${h}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>
+    <text x="12" y="22" font-size="14" font-weight="700" fill="#0d2643">${title}</text><text x="12" y="40" font-size="12" fill="#33475f">${sub}</text></g>`;
+  const sensor = (x, y) => `<g transform="translate(${x} ${y})"><path d="M0 0v-18" stroke="#33475f" stroke-width="2"/><circle cy="-22" r="5" fill="#0067ac"/><path d="M-9 -30a12 12 0 0 1 18 0" fill="none" stroke="#1b86cf" stroke-width="1.6"/></g>`;
+  return `<svg viewBox="0 0 1200 350" role="img" aria-label="STP Living Lab schematic" font-family="Barlow Condensed, sans-serif">
+    <defs><pattern id="g3" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#e3eef9"/></pattern>
+      <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#0067ac"/></marker></defs>
+    <rect width="1200" height="350" fill="url(#g3)"/>
+    ${zone(30, 30, 250, 170, '#e6f5ee', '#2e9e6b', L ? 'ENERGI PINTAR & IoT' : 'SMART ENERGY & IoT', L ? 'smart grid mikro, meter & sensor' : 'micro smart-grid, meters & sensors')}
+    <g transform="translate(60 110)"><rect width="70" height="40" rx="3" fill="#1f4f86"/><path d="M0 13h70M0 26h70M23 0v40M47 0v40" stroke="#5f8fc4"/></g><g transform="translate(160 112)"><rect width="34" height="36" rx="4" fill="#fff" stroke="#0067ac" stroke-width="2"/><rect x="7" y="7" width="20" height="22" fill="#a6dcc1"/></g>${sensor(240, 180)}
+    ${zone(310, 30, 300, 170, '#e3f0fa', '#0067ac', L ? 'MOBILITAS LISTRIK & OTONOM' : 'ELECTRIC & AUTONOMOUS MOBILITY', L ? 'uji di sirkuit, pengisian daya' : 'trials on the circuit, charging')}
+    <path d="M340 160c40-40 120 20 170-10s60-20 80 0" fill="none" stroke="#4d5d72" stroke-width="12" stroke-linecap="round"/><path d="M340 160c40-40 120 20 170-10s60-20 80 0" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <g transform="translate(430 120)"><rect width="40" height="18" rx="5" fill="#0067ac"/><circle cx="9" cy="19" r="4" fill="#0d2643"/><circle cx="31" cy="19" r="4" fill="#0d2643"/></g>${sensor(590, 190)}
+    ${zone(640, 30, 250, 170, '#e9f3fb', '#1b86cf', L ? 'UJI MARITIM' : 'MARITIME TRIALS', L ? 'kolam uji, sensor perairan' : 'test pond, water sensors')}
+    <path d="M660 160c20-8 40 8 60 0s40-8 60 0 40 8 60 0" fill="none" stroke="#1b86cf" stroke-width="3"/><path d="M660 178c20-8 40 8 60 0s40-8 60 0 40 8 60 0" fill="none" stroke="#9cc8ec" stroke-width="3"/>
+    <path d="M740 140h50l-10 14h-30z" fill="#fff" stroke="#0d2643" stroke-width="2"/><path d="M765 140v-22l14 12z" fill="#e8833a"/>${sensor(860, 190)}
+    ${zone(920, 30, 250, 170, '#f3eedd', '#c98a1b', L ? 'PERTANIAN CERDAS' : 'SMART AGRICULTURE', L ? 'lahan uji, alsintan, drone' : 'test plots, farm machinery, drones')}
+    ${[0, 1, 2, 3, 4].map(i => `<path d="M${950 + i * 40} 180v-24" stroke="#2e9e6b" stroke-width="3"/><path d="M${950 + i * 40} 162c-8-2-10-8-10-12 6 0 10 4 10 12zM${950 + i * 40} 166c8-2 10-8 10-12-6 0-10 4-10 12z" fill="#7cc49e"/>`).join('')}${sensor(1150, 190)}
+    <g transform="translate(330 250)"><rect width="540" height="76" rx="8" fill="#0d2643"/>
+      <text x="270" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">${L ? 'PLATFORM DATA & MONITORING BERSAMA' : 'SHARED DATA & MONITORING PLATFORM'}</text>
+      <text x="270" y="54" text-anchor="middle" font-size="13" fill="#9cc8ec" font-family="JetBrains Mono, monospace">${L ? 'booking zona · dashboard · data terbuka untuk riset & tenant' : 'zone booking · dashboards · open data for research & tenants'}</text></g>
+    ${[155, 460, 765, 1045].map(x => { const tx = x < 600 ? 330 + (x < 300 ? 40 : 140) : 870 - (x > 900 ? 40 : 140); return `<path d="M${x} 205C${x} 232 ${tx} 226 ${tx} 248" fill="none" stroke="#0067ac" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar3)"/>`; }).join('')}
+  </svg>`;
+}
+const partsHtml = (list, cls = 'parts') => `<div class="${cls}">${list.map(p => `<div class="card reveal"><div class="ic">${icon(p.k)}</div><div><h3>${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p></div></div>`).join('')}</div>`;
 function renderFuture() {
   const f = C.FUTURE, L = S.lang === 'id';
   $('#future').innerHTML = `${secHead(secNo('future'), L ? 'Big project: fasilitas baru setelah 100 hari' : 'Big projects: new facilities after the 100 days')}
     <p class="sec-lead">${esc(t(f.lead))}</p>
     <div class="grid g2 bprojects">${f.projects.map(p => `<article class="card bp reveal"><span class="tag">${p.n} · ${esc(t(p.where))}</span><h3>${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p>
       <ul>${p.items.map(i => `<li>${esc(t(i))}</li>`).join('')}</ul></article>`).join('')}</div>
-    <h3 class="sub-h">${L ? 'BP1 · Eco AI Data Center – konsep' : 'BP1 · Eco AI Data Center – concept'}</h3>
-    <div class="future-grid">
-      <div><div class="eco reveal">${ecoSvg()}</div>
-        <ul class="gates">${f.gates.map((g, i) => `<li><b>G${i + 1}</b>${esc(t(g))}</li>`).join('')}</ul></div>
-      <div class="parts">${f.parts.map(p => `<div class="card reveal"><div class="ic">${icon(p.k)}</div><div><h3>${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p></div></div>`).join('')}</div>
+    <h3 class="sub-h">${L ? 'BP1 · Konsep area semikonduktor & Eco AI Data Center' : 'BP1 · Semiconductor & Eco AI Data Center – concept'}</h3>
+    <div class="grid g2 concept">
+      <div><h4 class="concept-h">Eco AI Data Center</h4><div class="eco reveal">${ecoSvg()}</div>${partsHtml(f.parts)}</div>
+      <div><h4 class="concept-h">${L ? 'Clean room semikonduktor' : 'Semiconductor clean room'}</h4><div class="eco reveal">${cleanroomSvg()}</div>${partsHtml(f.cleanroom)}</div>
     </div>
-    <div class="card digital reveal"><span class="tag">${L ? 'Promosi & kanal digital' : 'Promotion & digital channels'}</span><p style="margin-top:6px">${esc(t(f.digital))}</p></div>`;
+    <h3 class="sub-h">${L ? 'BP2 · Konsep STP Living Lab' : 'BP2 · STP Living Lab – concept'}</h3>
+    <div class="eco reveal">${livingLabSvg()}</div>
+    ${partsHtml(f.livinglab, 'parts parts-row')}`;
 }
 function renderFooter() {
-  $('#foot').innerHTML = `<p>${esc(t(C.UI.footerTeam))}</p><small>${esc(t(C.UI.footerNote))}</small>
-    <p style="margin-top:12px"><b>${esc(t(C.UI.sources))}</b></p><ul>${C.SOURCES.map(s => `<li>${esc(t(s))}</li>`).join('')}</ul>`;
+  $('#foot').innerHTML = '';
 }
 
 /* ---------------- videos dropdown + modal ---------------- */
@@ -361,18 +443,20 @@ function closeVideo() {
   $('#vmodal').hidden = true; $('#vmodalFrame').src = 'about:blank'; document.body.style.overflow = '';
   if (map) map.setPaused?.(S.view !== '3d');
 }
-const teamOpen = open => { $('#teamMenu').hidden = !open; $('#teamToggle').setAttribute('aria-expanded', String(open)); $('#teamGroup').classList.toggle('open', open); };
 function renderTeam() {
   $('#teamToggle').setAttribute('aria-label', t(C.UI.teamBtn));
-  $('#teamMenu').innerHTML = `<div class="team-head">${esc(t(C.UI.teamBtn))} · UTM–ITS STELLAR 2026</div>` + C.TEAM.map((m, i) => `<div class="team-row" role="listitem"><span class="av">${m.n.split(' ').map(w => w[0]).slice(0, 2).join('')}</span><span><b>${i + 1}. ${esc(m.n)}</b><small>${esc(t(m.u))}</small></span></div>`).join('');
+  $('#teamTitle').textContent = `${t(C.UI.teamBtn)} · UTM–ITS STELLAR 2026`;
+  $('#teamList').innerHTML = C.TEAM.map((m, i) => `<div class="team-row"><span class="av">${m.n.split(' ').map(w => w[0]).slice(0, 2).join('')}</span><span><b>${i + 1}. ${esc(m.n)}</b><small>${esc(t(m.u))}</small></span></div>`).join('');
 }
-$('#teamToggle').addEventListener('click', e => { e.stopPropagation(); menuOpen(false); teamOpen($('#teamMenu').hidden); });
-document.addEventListener('click', e => { if (!$('#teamGroup').contains(e.target)) teamOpen(false); });
-$('#videoToggle').addEventListener('click', e => { e.stopPropagation(); teamOpen(false); menuOpen($('#videoMenu').hidden); });
+const teamOpen = open => { $('#teamModal').hidden = !open; document.body.style.overflow = open ? 'hidden' : ''; if (open) $('#teamClose').focus(); };
+$('#teamToggle').addEventListener('click', e => { e.stopPropagation(); menuOpen(false); teamOpen(true); });
+$('#teamClose').addEventListener('click', () => teamOpen(false));
+$('#teamModal').addEventListener('click', e => { if (e.target.id === 'teamModal') teamOpen(false); });
+$('#videoToggle').addEventListener('click', e => { e.stopPropagation(); menuOpen($('#videoMenu').hidden); });
 document.addEventListener('click', e => { if (!$('#videoGroup').contains(e.target)) menuOpen(false); });
 $('#vmodal').addEventListener('click', e => { if (e.target.id === 'vmodal') closeVideo(); });
 $('#vmodalClose').addEventListener('click', closeVideo);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeVideo(); menuOpen(false); teamOpen(false); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeVideo(); menuOpen(false); if (!$('#teamModal').hidden) teamOpen(false); } });
 
 /* ---------------- behaviour ---------------- */
 let io;
@@ -409,12 +493,11 @@ document.querySelectorAll('#modeSeg button').forEach(b => b.addEventListener('cl
 $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { S.tab = b.dataset.tab; renderPanel(); } });
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => drawCoord(), 120); });
 document.fonts?.ready.then(() => drawCoord());
-$('#resetBtn').addEventListener('click', () => { if (S.view === '2d') map2d?.reset(); else if (S.view === '3d') selectSite('stp'); });
+$('#resetBtn').addEventListener('click', () => { if (S.view === '2d') { map2d?.reset(); return; } if (S.view !== '3d') return; S.site = 'stp'; renderPanel(); map?.replay(); });
 document.querySelectorAll('#viewSeg button').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
 
-const hashSec = C.NAV.find(n => n.id === location.hash.slice(1) && n.id !== 'top');
-if (hashSec) S.mode = hashSec.modes[0];
+// always open on the “Now” scenario; drop any section hash left from a previous visit
+if (location.hash) history.replaceState(null, '', location.pathname + location.search);
 renderAll();
-if (hashSec) requestAnimationFrame(() => document.getElementById(hashSec.id)?.scrollIntoView());
 setInterval(clock, 1000);
 initMap();
