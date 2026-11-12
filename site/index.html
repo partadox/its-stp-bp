@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261112094559">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261112104550">
   <script type="importmap">
     { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
   </script>
@@ -127,11 +127,30 @@
     </footer>
   </main>
 
-  <a class="access-card" href="https://its.id/stpbp" target="_blank" rel="noopener" aria-label="Access: its.id/stpbp">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
-    <span><small>Access:</small><b>its.id/stpbp</b></span>
-  </a>
+  <div class="float-dock">
+    <div class="video-group" id="videoGroup">
+      <div class="video-menu" id="videoMenu" role="menu" hidden></div>
+      <button class="video-toggle" type="button" id="videoToggle" aria-haspopup="menu" aria-expanded="false" aria-controls="videoMenu">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <span data-i18n="videosBtn">Videos</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+      </button>
+    </div>
+    <a class="access-card" href="https://its.id/stpbp" target="_blank" rel="noopener" aria-label="Access: its.id/stpbp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+      <span><small>Access:</small><b>its.id/stpbp</b></span>
+    </a>
+  </div>
 
-  <script type="module" src="assets/js/app.js?v=20261112094559"></script>
+  <div class="vmodal" id="vmodal" hidden role="dialog" aria-modal="true" aria-labelledby="vmodalTitle">
+    <div class="vmodal-box">
+      <div class="vmodal-head"><h3 id="vmodalTitle"></h3>
+        <a class="btn" id="vmodalYt" target="_blank" rel="noopener" data-i18n="openYoutube">Open on YouTube</a>
+        <button class="vmodal-x" type="button" id="vmodalClose" aria-label="Close">×</button></div>
+      <div class="vmodal-frame"><iframe id="vmodalFrame" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/app.js?v=20261112105852"></script>
 </body>
 </html>

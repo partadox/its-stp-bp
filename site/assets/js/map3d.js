@@ -7,7 +7,7 @@ export { LAYOUT };
 
 export const STATUS_COLOR = { issue: 0xe8833a, active: 0x0067ac, mature: 0x2e9e6b, plan: 0x7fa6c9 };
 const ROOF_TINT = { issue: 0xf7cfae, active: 0xa9d0f0, mature: 0xa6dcc1, plan: 0xdbe9f7 };
-const HOME = { target: new THREE.Vector3(-24, 0, -10), pos: new THREE.Vector3(46, 165, 150) };
+const HOME = { target: new THREE.Vector3(...LAYOUT.view.target), pos: new THREE.Vector3(...LAYOUT.view.pos) };
 
 function seeded(s) { return () => (s = (s * 16807) % 2147483647) / 2147483647; }
 
@@ -29,11 +29,11 @@ export function createMap(container, { onSelect, labelFor }) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, W() / H(), 1, 2000);
-  camera.position.set(-20, 300, 1);
+  camera.position.set(-150, 12, -132);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true; controls.dampingFactor = 0.08;
-  controls.maxPolarAngle = 1.3; controls.minDistance = 50; controls.maxDistance = 380;
-  controls.target.copy(HOME.target);
+  controls.maxPolarAngle = 1.3; controls.minDistance = 50; controls.maxDistance = 520;
+  controls.target.set(-80, 4, -62);
   controls.autoRotateSpeed = 0.3;
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0xdbe7f3, 1.1));
@@ -110,9 +110,35 @@ export function createMap(container, { onSelect, labelFor }) {
   const centre = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getSpacedPoints(300).map(p => p.setY(0.26))), new THREE.LineDashedMaterial({ color: 0xffffff, dashSize: 1, gapSize: 1 }));
   centre.computeLineDistances(); circuitGroup.add(centre);
   const L = LAYOUT.loop; circuitGroup.add(ribbon(circle(L.x, L.z, L.r), 3.2, M.asphalt, 0.2));
-  circuitGroup.add(ribbon(new THREE.CatmullRomCurve3([new THREE.Vector3(L.x + L.r - 0.5, 0, L.z), new THREE.Vector3(-72, 0, -59), new THREE.Vector3(-69, 0, -60)], false), 3.2, M.asphalt, 0.19));
   const circuitStatus = ribbon(curve, 5.6, new THREE.MeshBasicMaterial({ color: STATUS_COLOR.issue, transparent: true, opacity: 0.35, depthWrite: false, side: THREE.DoubleSide }), 0.12);
   circuitGroup.add(circuitStatus);
+
+  /* ---------- arc garden & STP gate ---------- */
+  const GD = LAYOUT.garden;
+  const inGarden = (x, z) => { const dx = x - GD.x, dz = z - GD.z, r = Math.hypot(dx, dz), a = Math.atan2(dz, dx); return r < GD.radii[0] + 2 && a > GD.a0 && a < GD.a1; };
+  {
+    const sh = new THREE.Shape(); sh.moveTo(GD.x, GD.z);
+    for (let i = 0; i <= 48; i++) { const a = GD.a0 + (GD.a1 - GD.a0) * i / 48; sh.lineTo(GD.x + GD.radii[0] * Math.cos(a), GD.z + GD.radii[0] * Math.sin(a)); }
+    const g = new THREE.ShapeGeometry(sh); g.rotateX(Math.PI / 2);
+    const lawn = new THREE.Mesh(g, std(0xd8ecdf, { roughness: 1, side: THREE.DoubleSide })); lawn.position.y = 0.09; lawn.receiveShadow = true; scene.add(lawn);
+    const arcPts = r => { const p = []; for (let i = 0; i <= 48; i++) { const a = GD.a0 + (GD.a1 - GD.a0) * i / 48; p.push(new THREE.Vector3(GD.x + r * Math.cos(a), 0, GD.z + r * Math.sin(a))); } return new THREE.CatmullRomCurve3(p, false); };
+    GD.radii.forEach(r => scene.add(ribbon(arcPts(r), 1.6, M.road, 0.14)));
+    // tree rows between the arc paths
+    const tg = new THREE.SphereGeometry(1, 10, 8);
+    [(GD.radii[0] + GD.radii[1]) / 2, (GD.radii[1] + GD.radii[2]) / 2].forEach(r => {
+      const n = Math.round(r * 1.2); for (let i = 0; i <= n; i++) {
+        const a = GD.a0 + 0.08 + (GD.a1 - GD.a0 - 0.16) * i / n; const t = new THREE.Mesh(tg, M.tree);
+        t.position.set(GD.x + r * Math.cos(a), 1.3, GD.z + r * Math.sin(a)); t.scale.set(1.3, 1.5, 1.3); t.castShadow = true; scene.add(t);
+      } });
+    const mon = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.6, 2.2, 24), M.body); mon.position.set(GD.x, 1.1, GD.z); withEdges(mon, edgeKey); scene.add(mon);
+  }
+  const GT = LAYOUT.gate;
+  {
+    const g = new THREE.Group(); g.position.set(GT.x, 0, GT.z); g.rotation.y = GT.ry;
+    for (const s of [-1, 1]) { const p = box(1.4, 6, 1.4, M.body); p.position.set(s * GT.span / 2, 3, 0); withEdges(p, edgeKey); p.castShadow = true; g.add(p); }
+    const beam = box(GT.span + 2, 1.4, 1.6, std(0x0067ac, { roughness: 0.5 })); beam.position.y = 6.4; beam.castShadow = true; g.add(beam);
+    scene.add(g);
+  }
 
   /* ---------- context ---------- */
   const rnd = seeded(11);
@@ -134,17 +160,21 @@ export function createMap(container, { onSelect, labelFor }) {
     withEdges(b, edgeCtx); scene.add(b);
   }
   const dm = new THREE.Object3D();
-  const R = LAYOUT.residential; const houses = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), M.house, 420); let hi = 0;
-  for (let i = 0; i < 1400 && hi < 420; i++) {
-    const x = R.x0 + rnd() * (R.x1 - R.x0), z = R.z0 + rnd() * (R.z1 - R.z0);
+  const RES = LAYOUT.residential; const houses = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), M.house, 700); let hi = 0;
+  const rayaZ = x => { const r = LAYOUT.roads.find(q => q.main); return r.z - (x - r.x) * Math.tan(r.ry); };
+  const inRes = (x, z, pad = 0) => RES.some(R => x > R.x0 - pad && x < R.x1 + pad && (R.raya ? z < rayaZ(x) - 4 + pad && z > rayaZ(x) - 22 : z > R.z0 - pad && z < R.z1 + pad));
+  for (const R of RES) for (let i = 0; i < 900 && hi < 700; i++) {
+    const x = R.x0 + rnd() * (R.x1 - R.x0); let z = R.z0 + rnd() * (R.z1 - R.z0);
+    if (R.raya) z = rayaZ(x) - 5 - rnd() * 16;
+    if (!R.raya && LAYOUT.track.some(([tx, tz]) => Math.hypot(tx - x, tz - z) < 9)) continue;
     const w = 2.2 + rnd() * 2.5, d = 2.2 + rnd() * 2.5, h = 1.5 + rnd() * 2.2;
-    dm.position.set(x, h / 2, z); dm.scale.set(w, h, d); dm.rotation.y = (rnd() - 0.5) * 0.2; dm.updateMatrix(); houses.setMatrixAt(hi++, dm.matrix);
+    dm.position.set(x, h / 2, z); dm.scale.set(w, h, d); dm.rotation.y = R.raya ? 0.24 : (rnd() - 0.5) * 0.2; dm.updateMatrix(); houses.setMatrixAt(hi++, dm.matrix);
   }
   houses.count = hi; houses.castShadow = true; houses.receiveShadow = true; scene.add(houses);
   const trees = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8), M.tree, 280); let ti = 0;
   for (let i = 0; i < 2500 && ti < 280; i++) {
-    const x = G.x - G.w / 2 + 3 + rnd() * (G.w - 6), z = R.z1 + 2 + rnd() * (G.z + G.d / 2 - R.z1 - 5);
-    if (occupied(x, z, 3)) continue;
+    const x = G.x - G.w / 2 + 3 + rnd() * (G.w - 6), z = G.z - G.d / 2 + 3 + rnd() * (G.d - 6);
+    if (occupied(x, z, 3) || inRes(x, z, 2) || inGarden(x, z)) continue;
     const inGreen = LAYOUT.green.some(g => inRect(g, x, z, 0));
     if (!inGreen && rnd() > 0.5) continue;
     const s = 0.9 + rnd() * 1.2; dm.position.set(x, s, z); dm.scale.set(s, s * 1.1, s); dm.rotation.set(0, 0, 0); dm.updateMatrix(); trees.setMatrixAt(ti++, dm.matrix);
@@ -153,7 +183,7 @@ export function createMap(container, { onSelect, labelFor }) {
 
   /* ---------- Research Center tower (DIKST · TTO · GRIT): two wings with outward-rising sloped tops ---------- */
   function buildRC(x, z, picks) {
-    const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = 0.45; g.scale.setScalar(0.85);
+    const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = 0.45; g.scale.setScalar(0.7);
     const roofs = [];
     const podium = box(28, 3, 20, M.body); podium.position.y = 1.5; withEdges(podium, edgeKey); g.add(podium);
     const pr = box(28.4, 0.4, 20.4, std(0xffffff)); pr.position.y = 3.2; g.add(pr); roofs.push(pr);
@@ -177,7 +207,7 @@ export function createMap(container, { onSelect, labelFor }) {
     can.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(lat), new THREE.LineBasicMaterial({ color: 0x4f78a3 })));
     const rear = box(6, 24, 5, M.wing); rear.position.set(0, 3 + 12, -8); withEdges(rear, edgeKey); g.add(rear);
     [podium, core, rear, can].forEach(m => { m.castShadow = true; picks.push(m); });
-    return { g, roofs, top: 40 };
+    return { g, roofs, top: 33 };
   }
 
   /* ---------- key sites ---------- */
@@ -188,7 +218,9 @@ export function createMap(container, { onSelect, labelFor }) {
     if (k.rcTower) { const rc = buildRC(k.rcTower.x, k.rcTower.z, picks); grp.add(rc.g); roofs.push(...rc.roofs); top = rc.top; cx = k.rcTower.x; cz = k.rcTower.z; n = 1; }
     for (const p of k.parts || []) {
       const mat = k.ghost ? M.ghost : (p.glass ? M.glass : M.body);
-      const b = box(p.w, p.h, p.d, mat); b.position.set(p.x, p.h / 2, p.z); b.castShadow = !k.ghost; b.receiveShadow = true; picks.push(b);
+      const b = box(p.w, p.h, p.d, mat); b.position.set(p.x, p.h / 2, p.z); b.rotation.y = p.ry || 0; b.castShadow = !k.ghost;
+      if (p.glassBand) { const gb = box(p.w * 0.86, p.h * 0.45, 0.2, M.glass); gb.position.set(0, -p.h * 0.18, p.d / 2 + 0.06); b.add(gb); }
+      if (p.bands) for (const yy of [-p.h * 0.18, p.h * 0.2]) { const bd = box(p.w + 0.1, 0.5, p.d + 0.1, M.win); bd.position.y = yy; b.add(bd); } b.receiveShadow = true; picks.push(b);
       const e = withEdges(b, k.ghost ? edgeGhost : edgeKey); if (k.ghost) e.computeLineDistances();
       if (p.hangar) {
         const r = new THREE.Mesh(new THREE.CylinderGeometry(p.d / 2, p.d / 2, p.w, 24, 1, false, 0, Math.PI), std(0xffffff, { roughness: 0.8 }));
@@ -218,13 +250,13 @@ export function createMap(container, { onSelect, labelFor }) {
   }
 
   /* ---------- GRIT → STP flow ---------- */
-  const flowCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(36, 12, 4), new THREE.Vector3(0, 36, 0), new THREE.Vector3(-36, 7, 8));
+  const flowCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-38, 14, 70), new THREE.Vector3(-30, 40, 20), new THREE.Vector3(-14, 7, -30));
   const flow = new THREE.Line(new THREE.BufferGeometry().setFromPoints(flowCurve.getPoints(80)), new THREE.LineDashedMaterial({ color: 0x0067ac, dashSize: 2, gapSize: 1.5 }));
   flow.computeLineDistances(); flow.visible = false; scene.add(flow);
   const flowDot = new THREE.Mesh(new THREE.SphereGeometry(0.9, 12, 10), new THREE.MeshBasicMaterial({ color: 0x0067ac })); flowDot.visible = false; scene.add(flowDot);
 
   const caption = (x, z) => { const d = document.createElement('div'); d.className = 'zone-caption'; const o = new CSS2DObject(d); o.position.set(x, 0.5, z); scene.add(o); return d; };
-  const capSTP = caption(-40, 47), capCampus = caption(52, 62), capRes = caption(-20, -86);
+  const capSTP = caption(-20, 46), capCampus = caption(-80, 92), capRes = caption(106, -60), capRaya = caption(-110, -150), capGate = caption(-48, -22);
 
   /* ---------- state ---------- */
   let selected = null, paused = false;
@@ -243,7 +275,8 @@ export function createMap(container, { onSelect, labelFor }) {
     flow.visible = flowDot.visible = m !== 'now';
   }
 
-  const start = performance.now(), from = camera.position.clone();
+  const start = performance.now();
+  const DRIVE = { p0: new THREE.Vector3(-150, 12, -132), p1: new THREE.Vector3(-70, 14, -44), t0: new THREE.Vector3(-80, 4, -62), t1: new THREE.Vector3(-20, 3, 6) };
   let intro = true, tween = null;
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   controls.addEventListener('start', () => { controls.autoRotate = false; intro = false; tween = null; });
@@ -270,9 +303,11 @@ export function createMap(container, { onSelect, labelFor }) {
     if (paused) return;
     const now = performance.now(), el = clock.getElapsedTime();
     if (intro) {
-      const t = Math.min(1, (now - start) / 2800), k = ease(t);
-      camera.position.lerpVectors(from, HOME.pos, k); camera.lookAt(controls.target);
-      if (t >= 1) { intro = false; controls.autoRotate = !matchMedia('(prefers-reduced-motion: reduce)').matches; }
+      const T1 = 3400, T2 = 2600, dt = now - start;
+      if (dt < T1) { const k = ease(dt / T1); camera.position.lerpVectors(DRIVE.p0, DRIVE.p1, k); controls.target.lerpVectors(DRIVE.t0, DRIVE.t1, k); }
+      else { const k = ease(Math.min(1, (dt - T1) / T2)); camera.position.lerpVectors(DRIVE.p1, HOME.pos, k); controls.target.lerpVectors(DRIVE.t1, HOME.target, k); }
+      camera.lookAt(controls.target);
+      if (dt >= T1 + T2) intro = false;
     }
     if (tween) {
       const t = Math.min(1, (now - tween.t0) / tween.dur), k = ease(t);
@@ -302,7 +337,7 @@ export function createMap(container, { onSelect, labelFor }) {
     reset() { selected = null; Object.values(sites).forEach(s => s.el.classList.remove('is-selected')); flyTo(HOME.target, HOME.pos.distanceTo(HOME.target)); },
     relabel(fn, cap) {
       Object.values(sites).forEach(s => { s.el.querySelector('span').textContent = fn(s.def.id); });
-      capSTP.textContent = cap.stp; capCampus.textContent = cap.campus; capRes.textContent = cap.res || '';
+      capSTP.textContent = cap.stp; capCampus.textContent = cap.campus; capRes.textContent = cap.res || ''; capRaya.textContent = cap.raya || ''; capGate.textContent = cap.gate || '';
     },
   };
 }

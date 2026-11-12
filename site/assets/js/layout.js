@@ -1,51 +1,65 @@
-/* Schematic layout of STP ITS, traced from Google Earth (Sukolilo campus).
-   Units ≈ 4 m. x = east (right), z = south (down on the plan). Top of the plan = the circuit / residential edge. */
+/* Schematic layout of STP ITS, traced from satellite imagery (north = up / −z).
+   1 unit ≈ 5 px of the annotated satellite image (≈ 4 m). x = east, z = south.
+   Only STP buildings are modelled, plus the Research Center tower (DIKST · TTO · GRIT). */
 export const LAYOUT = {
-  ground: { x: -20, z: -15, w: 230, d: 170 },
-  stpZone: { x0: -84, x1: 4, z0: -76, z1: 42 },
+  ground: { x: -17, z: -28, w: 300, d: 250 },
+  stpZone: { x0: -122, x1: 82, z0: -106, z1: 42 },
   key: [
-    { id: 'circuit', track: true, anchor: { x: -38, z: -64 } },
-    { id: 'creative', parts: [
-      { x: -26, z: -42, w: 16, d: 5, h: 8 }, { x: -33, z: -35, w: 5, d: 11, h: 8 }, { x: -19, z: -35, w: 5, d: 11, h: 8 }] },
-    { id: 'ict', parts: [{ x: -66, z: -26, w: 9, d: 9, h: 9, glass: true }] },
+    // test circuit – elongated north–south on the east edge, roundabout loop at the top
+    { id: 'circuit', track: true, anchor: { x: 62, z: -12 } },
+    // Automotive & Forensic Center – long two-storey hall (north-west of the arc)
+    { id: 'auto', parts: [
+      { x: -68, z: -71, w: 22, d: 12, h: 7, ry: -0.12, bands: true },
+      { x: -49, z: -76, w: 5, d: 5, h: 4 }] },
+    // ICT & Robotics cluster – ITS Robotics Center (big hall), Robotics Community block and the blue ICT cube
+    { id: 'ict', parts: [
+      { x: -41, z: -52, w: 20, d: 23, h: 8, glassBand: true },
+      { x: -21, z: -55, w: 18, d: 9, h: 6 },
+      { x: -7, z: -56, w: 9, d: 8, h: 6 },
+      { x: -10, z: -47, w: 8, d: 8, h: 4 },
+      { x: 8, z: -66, w: 7, d: 7, h: 7, glass: true }] },
+    // shared halls & workshops east of the gate
     { id: 'labs', parts: [
-      { x: -38, z: 8, w: 24, d: 14, h: 6, hangar: true }, { x: -44, z: -10, w: 8, d: 12, h: 5 }, { x: -32, z: -12, w: 9, d: 6, h: 4 }, { x: -18, z: -18, w: 12, d: 7, h: 4, hangar: true }] },
-    { id: 'maritime', parts: [{ x: -6, z: -44, w: 12, d: 9, h: 6, hangar: true }, { x: 0, z: -34, w: 10, d: 6, h: 7 }] },
-    { id: 'auto', parts: [{ x: -58, z: 30, w: 16, d: 10, h: 6 }, { x: -48, z: 37, w: 3, d: 3, h: 2 }] },
-    { id: 'rc', rcTower: { x: 40, z: 2 } },
-    { id: 'ilbi', parts: [
-      { x: 22, z: 30, w: 18, d: 5, h: 6, roof: 'tile' }, { x: 22, z: 44, w: 18, d: 5, h: 6, roof: 'tile' },
-      { x: 15, z: 37, w: 5, d: 9, h: 6, roof: 'tile' }, { x: 29, z: 37, w: 5, d: 9, h: 6, roof: 'tile' }] },
-    { id: 'ecodc', future: true, solar: { x: -100, z: 18, cols: 8, rows: 4 }, parts: [{ x: -100, z: 2, w: 12, d: 9, h: 5 }] },
-    { id: 'cleanroom', ghost: true, parts: [{ x: -58, z: -6, w: 12, d: 9, h: 6 }] },
+      { x: 7, z: -31, w: 17, d: 10, h: 6, ry: 0.35, hangar: true },
+      { x: 9, z: -18, w: 14, d: 6, h: 4 }] },
+    // Maritime cluster – workshop & laboratory group (south of the arc)
+    { id: 'maritime', parts: [
+      { x: 0, z: 10, w: 25, d: 6, h: 6, ry: 0.84, hangar: true },
+      { x: 11, z: 14, w: 9, d: 5, h: 5, ry: 0.5 },
+      { x: 24, z: 11, w: 7, d: 11, h: 6 },
+      { x: 27, z: 1, w: 5, d: 6, h: 4 },
+      { x: 12, z: 28, w: 16, d: 6, h: 5, ry: 0.3, hangar: true },
+      { x: -10, z: 25, w: 8, d: 8, h: 5 }] },
+    // Creative Center (ILBI is housed here) – north-west of the park
+    { id: 'creative', parts: [{ x: -108, z: -103, w: 28, d: 10, h: 9, ry: 0.24, glassBand: true }, { x: -112, z: -95, w: 10, d: 5, h: 5, ry: 0.24 }] },
+    { id: 'ilbi', parts: [{ x: -86, z: -109, w: 12, d: 8, h: 6, ry: 0.24, glassBand: true }] },
+    // Research Center tower – DIKST, TTO and GRIT (south-west, main campus)
+    { id: 'rc', rcTower: { x: -38, z: 74 } },
+    // future (shown in Day 100 / 2030)
+    { id: 'ecodc', future: true, solar: { x: -96, z: 6, cols: 8, rows: 4 }, parts: [{ x: -96, z: -12, w: 12, d: 9, h: 5 }] },
+    { id: 'cleanroom', ghost: true, parts: [{ x: -68, z: -30, w: 12, d: 9, h: 6 }] },
   ],
-  /* landmark context buildings (not interactive) */
-  context: [
-    // Faculty of Marine Technology – long orange roofs (north-east)
-    { x: 30, z: -58, w: 44, d: 7, h: 6, roof: 'tile', ry: -0.5 }, { x: 46, z: -46, w: 30, d: 12, h: 7, roof: 'tile', ry: -0.5 }, { x: 18, z: -44, w: 14, d: 8, h: 5, roof: 'tile' },
-    // Informatics (U-shape, red roof)
-    { x: 22, z: -14, w: 18, d: 5, h: 6, roof: 'red' }, { x: 15, z: -6, w: 5, d: 12, h: 6, roof: 'red' }, { x: 31, z: -6, w: 5, d: 12, h: 6, roof: 'red', ry: 0.3 },
-    // Grha Dewaruci (red roofs + plaza) south
-    { x: -2, z: 26, w: 18, d: 6, h: 7, roof: 'red', ry: 0.25 }, { x: -12, z: 36, w: 7, d: 12, h: 6, roof: 'red' }, { x: 6, z: 36, w: 10, d: 6, h: 5 },
-    // Library & east campus
-    { x: 66, z: -12, w: 12, d: 12, h: 7, roof: 'tile' }, { x: 62, z: 20, w: 9, d: 9, h: 8, roof: 'tile' }, { x: 54, z: 34, w: 22, d: 10, h: 5 }, { x: 46, z: 50, w: 14, d: 6, h: 5, roof: 'tile' },
-    { x: 58, z: -30, w: 16, d: 6, h: 5, roof: 'tile' }, { x: 74, z: 6, w: 10, d: 16, h: 6, roof: 'tile' },
-  ],
+  context: [],
   roads: [
-    { x: 6, z: -8, w: 5, d: 110, ry: 0.18 },      // main campus boulevard (diagonal)
-    { x: -40, z: -48, w: 60, d: 3 },              // road along the circuit
-    { x: -30, z: 22, w: 54, d: 3, ry: -0.12 },    // south road to Grha
-    { x: -26, z: -26, w: 3, d: 30, ry: 0.5 },     // radial roads inside the arc
-    { x: -12, z: -2, w: 34, d: 3, ry: -0.25 },
-    { x: 30, z: 14, w: 50, d: 3 },
+    { x: -40, z: -146, w: 270, d: 6, ry: 0.24, main: true },   // Jl. Raya ITS (north)
+    { x: -81, z: -58, w: 172, d: 4.4, ry: -0.81 },             // Jl. Teknik Kimia – from Jl. Raya ITS into the park gate
+    { x: -26, z: 52, w: 3.6, d: 96 },                          // continues south to the Research Center
+    { x: -71, z: 28, w: 112, d: 3, ry: 0.75 },                 // diagonal tree-lined road (SW)
+    { x: 6, z: -50, w: 57, d: 3, ry: 0.71 },                   // radial road from the gate garden to the circuit
+    { x: 22, z: -11, w: 57, d: 3 },                            // east road to the circuit
+    { x: 4, z: 21, w: 61, d: 3 },                              // south road to the Maritime cluster
   ],
-  arcs: [{ x: -34, z: -4, r: 40, a0: 1.75, a1: 4.6, w: 3.4 }],   // the big curved STP road (opens to the east)
-  roundabouts: [{ x: -40, z: 44, r: 3.5 }, { x: -8, z: 30, r: 5, plaza: true }],
-  water: [{ x: -114, z: -40, w: 18, d: 16 }, { x: -116, z: -16, w: 16, d: 20 }, { x: -96, z: -52, w: 14, d: 10 }],
-  green: [{ x: -104, z: -10, w: 44, d: 110 }, { x: -76, z: 50, w: 30, d: 22 }],
-  residential: { x0: -125, x1: 85, z0: -95, z1: -78 },
-  track: [[-64, -52], [-70, -59], [-65, -67], [-50, -71], [-32, -71], [-16, -69], [-6, -64], [-9, -57], [-18, -60], [-26, -58], [-23, -52], [-13, -51], [-15, -47], [-30, -47], [-48, -49]],
-  loop: { x: -80, z: -58, r: 6 },
+  arcs: [{ x: -40, z: -4, r: 77, a0: -1.05, a1: 0.38, w: 3.6 }],   // the curved STP ring road (east side)
+  roundabouts: [{ x: -92, z: -69, r: 3.2 }, { x: -61, z: -36, r: 3.2 }],
+  // arc garden at the STP gate (semicircle NE of Jl. Teknik Kimia)
+  garden: { x: -30, z: -4, radii: [20, 14, 8], a0: -2.36, a1: 0.78 },
+  gate: { x: -40, z: -15, ry: 0.76, span: 13 },
+  water: [{ x: 54, z: 72, w: 25, d: 14 }, { x: -110, z: -48, w: 16, d: 12 }, { x: -92, z: -48, w: 12, d: 12 }],
+  green: [{ x: -35, z: -92, w: 175, d: 22 }, { x: 103, z: 18, w: 42, d: 70 }, { x: -100, z: 20, w: 40, d: 60 }],
+  residential: [{ x0: 84, x1: 132, z0: -125, z1: -18 }, { x0: -166, x1: 132, z0: -152, z1: -128, raya: true }],
+  track: [[47, -72], [54, -72], [60, -60], [67, -36], [73, -12], [78, 12], [76, 28], [68, 38], [56, 38], [48, 33], [44, 24], [49, 16], [56, 22], [63, 20], [63, 11], [58, 4], [54, -6], [51, -24], [48, -44], [45, -59]],
+  loop: { x: 44, z: -68, r: 6.4 },
+  view: { target: [-34, 0, -50], pos: [-182, 172, -248], fallbackBox: '-168 -154 302 250' },
 };
 
 export function webglAvailable() {

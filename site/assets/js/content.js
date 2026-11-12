@@ -19,6 +19,8 @@ export const UI = {
   view3d: { en: '3D', id: '3D' },
   view2d: { en: '2D map', id: 'Peta 2D' },
   viewGif: { en: 'Profile', id: 'Profil' },
+  videosBtn: { en: 'Videos', id: 'Video' },
+  openYoutube: { en: 'Open on YouTube', id: 'Buka di YouTube' },
   gifCaption: { en: 'DIKST ITS profile video', id: 'Video profil DIKST ITS' },
   layerSat: { en: 'Satellite', id: 'Satelit' },
   layerStreet: { en: 'Street map', id: 'Peta jalan' },
@@ -74,7 +76,7 @@ export const SITES = {
     status: { now: 'issue', d100: 'active', y2030: 'mature' },
   },
   auto: {
-    name: { en: 'Automotive Center', id: 'Automotive Center' },
+    name: { en: 'Automotive & Forensic Center', id: 'Automotive & Forensic Center' },
     kind: { en: 'Automotive Innovation Cluster', id: 'Klaster Inovasi Otomotif' },
     overview: { en: 'Green energy and electric-vehicle conversion; PUI Automotive Control Systems (home of the EVITS electric motorcycle).', id: 'Energi hijau dan konversi kendaraan listrik; PUI Sistem Kontrol Otomotif (asal motor listrik EVITS).' },
     now: { en: 'Building and track in place, managed by lecturers on top of teaching duties; few external users.', id: 'Gedung dan lintasan tersedia, dikelola dosen di sela tugas mengajar; pengguna eksternal masih sedikit.' },
@@ -83,7 +85,7 @@ export const SITES = {
     status: { now: 'issue', d100: 'active', y2030: 'mature' },
   },
   ict: {
-    name: { en: 'ICT & Robotics Center', id: 'ICT & Robotics Center' },
+    name: { en: 'ICT & Robotics Center (Pusat Robotika)', id: 'ICT & Robotics Center (Pusat Robotika)' },
     kind: { en: 'ICT & Robotics Innovation Cluster', id: 'Klaster Inovasi TIK & Robotika' },
     overview: { en: 'IoT, AI and big-data solutions; PUI Mechatronics & Industrial Automation, PUI AI for Healthcare & Society, PUI Smart & Resilient Infrastructure.', id: 'Solusi IoT, AI, dan big data; PUI Mekatronika & Otomasi Industri, PUI AI for Healthcare & Society, PUI Smart & Resilient Infrastructure.' },
     now: { en: 'Modern glass building; space use and tenant services are not tracked.', id: 'Gedung kaca modern; pemakaian ruang dan layanan tenant belum tercatat.' },
@@ -93,7 +95,7 @@ export const SITES = {
   },
   creative: {
     name: { en: 'Creative Center', id: 'Creative Center' },
-    kind: { en: 'Creative Industry Innovation Cluster', id: 'Klaster Inovasi Industri Kreatif' },
+    kind: { en: 'Creative Industry Innovation Cluster · home of ILBI', id: 'Klaster Inovasi Industri Kreatif · lokasi ILBI' },
     overview: { en: 'Art meets technology: product, industrial and interior design; PUI Creative Design.', id: 'Seni bertemu teknologi: desain produk, industri, dan interior; PUI Desain Kreatif.' },
     now: { en: 'Three-storey facility with studios; no tenancy or booking system.', id: 'Fasilitas tiga lantai dengan studio; belum ada sistem tenancy atau booking.' },
     d100: { en: 'Studios and makerspace open for bookings; produces showcase and digital content.', id: 'Studio dan makerspace dibuka untuk booking; memproduksi konten showcase dan digital.' },
@@ -110,9 +112,9 @@ export const SITES = {
     status: { now: 'issue', d100: 'active', y2030: 'mature' },
   },
   labs: {
-    name: { en: 'Robotics Center & shared labs', id: 'Robotics Center & lab bersama' },
+    name: { en: 'Shared halls & labs', id: 'Hall & lab bersama' },
     kind: { en: 'Shared facilities inside the park ring road', id: 'Fasilitas bersama di dalam ring road kawasan' },
-    overview: { en: 'The large Robotics Center hall and surrounding workshops and laboratories inside the curved park road – facilities that clusters and tenants can share.', id: 'Hall besar Robotics Center serta workshop dan laboratorium di sekitarnya di dalam jalan melingkar kawasan – fasilitas yang bisa dipakai bersama klaster dan tenant.' },
+    overview: { en: 'Workshop halls and laboratories inside the curved park road – facilities that clusters and tenants can share.', id: 'Hall workshop dan laboratorium di dalam jalan melingkar kawasan – fasilitas yang bisa dipakai bersama klaster dan tenant.' },
     now: { en: 'No register of assets, no booking or technician schedule.', id: 'Belum ada register aset, booking, maupun jadwal teknisi.' },
     d100: { en: 'Asset register complete; online booking with access rules.', id: 'Register aset lengkap; booking online dengan aturan akses.' },
     y2030: { en: 'High-utilisation shared prototyping hub (SHARE model).', id: 'Hub prototipe bersama dengan utilisasi tinggi (model SHARE).' },
@@ -134,7 +136,7 @@ export const SITES = {
   },
   ilbi: {
     name: { en: 'ILBI – Incubator & Innovative Business Services', id: 'ILBI – Inkubator & Layanan Bisnis Inovatif' },
-    kind: { en: 'Incubation', id: 'Inkubasi' },
+    kind: { en: 'Incubation · located in the Creative Center', id: 'Inkubasi · berlokasi di Creative Center' },
     overview: { en: 'Start-up incubation with business, finance and legal support. 126 tenants (SIPENSI); 42 selected in 2020, 15 ADB–HETI funded in 2024, 8 AIBI 2025 awards. Sources: students 46 %, lecturers 28 %, alumni 16 %, public 10 %.', id: 'Inkubasi startup dengan dukungan bisnis, keuangan, dan legal. 126 tenant (SIPENSI); 42 lolos seleksi 2020, 15 didanai ADB–HETI 2024, 8 penghargaan AIBI 2025. Asal: mahasiswa 46 %, dosen 28 %, alumni 16 %, umum 10 %.' },
     now: { en: 'Active programme, but tenants are not systematically placed in the park’s cluster buildings.', id: 'Program aktif, namun tenant belum ditempatkan secara sistematis di gedung klaster kawasan.' },
     d100: { en: 'First cohort selected by criteria and onboarded in the cluster buildings (≥ 5 tenants).', id: 'Kohort pertama dipilih berdasarkan kriteria dan masuk ke gedung klaster (≥ 5 tenant).' },
@@ -396,4 +398,11 @@ export const SOURCES = [
   { en: 'Rector Regulation No. 22/2026 on Science & Technology Park governance', id: 'Peraturan Rektor No. 22/2026 tentang Tata Kelola Kawasan Sains dan Teknologi' },
   { en: 'DIKST ITS profile video; GRIT inauguration video (28 Dec 2021)', id: 'Video profil DIKST ITS; video peresmian GRIT (28 Des 2021)' },
   { en: 'UTM–ITS STELLAR 2026 Module 6 (Showcase) and Module 10 (Techno Park Operating Model)', id: 'UTM–ITS STELLAR 2026 Module 6 (Showcase) dan Module 10 (Model Operasi Techno Park)' },
+];
+
+/* Videos (floating dropdown → modal player). Add more entries here. */
+export const VIDEOS = [
+  { yt: 'wJPKQwYSAaE', t: { en: 'DIKST ITS profile', id: 'Profil DIKST ITS' }, d: { en: 'Units, clusters and the STP area', id: 'Unit, klaster, dan kawasan STP' } },
+  { yt: 'VtaKhcIeEHw', t: { en: 'GRIT gallery inauguration', id: 'Peresmian galeri GRIT' }, d: { en: 'Galeri Riset dan Inovasi Teknologi, 28 Dec 2021', id: 'Galeri Riset dan Inovasi Teknologi, 28 Des 2021' } },
+  { href: 'https://www.youtube.com/@DIKSTITS/videos', t: { en: 'DIKST ITS YouTube channel', id: 'Kanal YouTube DIKST ITS' }, d: { en: 'All videos – opens YouTube', id: 'Semua video – membuka YouTube' } },
 ];

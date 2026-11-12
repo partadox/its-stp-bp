@@ -9,6 +9,7 @@ It was built as the STP team's group assignment in the **UTM–ITS STELLAR 2026*
 ## What the site shows
 
 - **3D site plan of STP ITS.** A stylised map of the park area (test circuit, cluster buildings, Robotics Center, the Research Center tower that houses DIKST, the TTO and the GRIT gallery, and ILBI). You can switch between three scenarios: **Now**, **Day 100** and **2030**.
+- **Videos button** (bottom right, above the access link): a drop-up list of DIKST/GRIT YouTube videos that play in a pop-up player, plus a link to the DIKST channel. Edit `VIDEOS` in `content.js` to add more.
 - **Profile tab.** The DIKST ITS profile video (muted, looping, 720p, ~5 MB), loaded only when the tab is opened.
 - **2D map tab.** A real map (satellite imagery or OpenStreetMap streets) of the STP area. It has no points by default; add your own in `site/assets/js/map2d-points.js`.
 - **Diagnosis.** Eight current issues with their impact and root cause, plus the evidence from the OTK ITS 2024 organisation chart.

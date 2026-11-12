@@ -11,10 +11,10 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const MODE_KEY = { now: 'now', d100: 'd100', y2030: 'y2030' };
 const statusOf = (id, mode) => C.SITES[id]?.status[mode] ?? 'active';
 const SHORT = {
-  stp: { en: 'STP ITS', id: 'STP ITS' }, circuit: { en: 'Test Circuit', id: 'Sirkuit Uji' }, auto: { en: 'Automotive', id: 'Otomotif' },
-  ict: { en: 'ICT & Robotics', id: 'TIK & Robotika' }, creative: { en: 'Creative Center', id: 'Creative Center' }, maritime: { en: 'Maritime', id: 'Maritim' },
-  labs: { en: 'Robotics Center & Labs', id: 'Robotics Center & Lab' }, rc: { en: 'Research Center · DIKST · TTO · GRIT', id: 'Research Center · DIKST · TTO · GRIT' },
-  ilbi: { en: 'ILBI Incubator', id: 'Inkubator ILBI' }, ecodc: { en: 'Eco AI DC Lab', id: 'Eco AI DC Lab' }, cleanroom: { en: 'Clean Room (partner)', id: 'Clean Room (partner)' },
+  stp: { en: 'STP ITS', id: 'STP ITS' }, circuit: { en: 'Test Circuit', id: 'Sirkuit Uji' }, auto: { en: 'Automotive & Forensic', id: 'Otomotif & Forensik' },
+  ict: { en: 'ICT & Robotics (Pusat Robotika)', id: 'TIK & Robotika (Pusat Robotika)' }, creative: { en: 'Creative Center', id: 'Creative Center' }, maritime: { en: 'Maritime', id: 'Maritim' },
+  labs: { en: 'Shared Halls & Labs', id: 'Hall & Lab Bersama' }, rc: { en: 'Research Center · DIKST · TTO · GRIT', id: 'Research Center · DIKST · TTO · GRIT' },
+  ilbi: { en: 'ILBI (in Creative Center)', id: 'ILBI (di Creative Center)' }, ecodc: { en: 'Eco AI DC Lab', id: 'Eco AI DC Lab' }, cleanroom: { en: 'Clean Room (partner)', id: 'Clean Room (partner)' },
 };
 const STATUS_TXT = { issue: { en: 'Issue', id: 'Masalah' }, active: { en: 'Operating', id: 'Beroperasi' }, mature: { en: 'Mature', id: 'Matang' }, plan: { en: 'Planned', id: 'Rencana' }, hidden: { en: 'Not started', id: 'Belum dimulai' } };
 
@@ -60,7 +60,7 @@ async function initMap() {
   }
   renderFallback(box, LAYOUT);
 }
-const captions = () => ({ stp: S.lang === 'id' ? 'KAWASAN SAINS TEKNOLOGI' : 'SCIENCE TECHNO PARK AREA', campus: S.lang === 'id' ? 'KAMPUS UTAMA ITS SUKOLILO' : 'ITS SUKOLILO MAIN CAMPUS', res: S.lang === 'id' ? 'PERMUKIMAN' : 'RESIDENTIAL AREA' });
+const captions = () => ({ stp: S.lang === 'id' ? 'KAWASAN SAINS TEKNOLOGI' : 'SCIENCE TECHNO PARK AREA', campus: S.lang === 'id' ? 'KAMPUS UTAMA ITS SUKOLILO' : 'ITS SUKOLILO MAIN CAMPUS', res: S.lang === 'id' ? 'PERMUKIMAN' : 'RESIDENTIAL AREA', raya: 'JL. RAYA ITS', gate: S.lang === 'id' ? 'GERBANG STP · TAMAN BUSUR' : 'STP GATE · ARC GARDEN' });
 
 let fallbackOn = false;
 function renderFallback(box, L) {
@@ -79,11 +79,12 @@ function renderFallback(box, L) {
   }).join('');
   box.querySelector('.fallback')?.remove();
   box.insertAdjacentHTML('beforeend', `<div class="fallback"><p>${esc(t(C.UI.noWebgl))}</p>
-    <svg viewBox="-135 -100 230 170" role="img" aria-label="STP ITS site plan">
+    <svg viewBox="${L.view.fallbackBox}" role="img" aria-label="STP ITS site plan">
       <rect x="${L.stpZone.x0}" y="${L.stpZone.z0}" width="${L.stpZone.x1 - L.stpZone.x0}" height="${L.stpZone.z1 - L.stpZone.z0}" fill="#e8f1fa" stroke="#0067ac" stroke-width=".4" stroke-dasharray="2 1.4"/>
-      ${L.roads.map(r => `<rect x="${r.x - r.w / 2}" y="${r.z - r.d / 2}" width="${r.w}" height="${r.d}" fill="#dfe8f2"/>`).join('')}
+      ${L.roads.map(r => `<rect x="${r.x - r.w / 2}" y="${r.z - r.d / 2}" width="${r.w}" height="${r.d}" fill="#dfe8f2" transform="rotate(${(r.ry || 0) * -57.3} ${r.x} ${r.z})"/>`).join('')}
       ${L.arcs.map(c => { const p0 = [c.x + c.r * Math.cos(c.a0), c.z + c.r * Math.sin(c.a0)], p1 = [c.x + c.r * Math.cos(c.a1), c.z + c.r * Math.sin(c.a1)]; return `<path d="M${p0[0]} ${p0[1]} A${c.r} ${c.r} 0 0 1 ${p1[0]} ${p1[1]}" fill="none" stroke="#dfe8f2" stroke-width="${c.w}"/>`; }).join('')}
       ${L.context.map(r => `<rect x="${r.x - r.w / 2}" y="${r.z - r.d / 2}" width="${r.w}" height="${r.d}" fill="${r.roof === 'tile' ? '#e9bfa6' : r.roof === 'red' ? '#cf9a8e' : '#e4ebf3'}" transform="rotate(${(r.ry || 0) * -57.3} ${r.x} ${r.z})"/>`).join('')}
+      ${[L.garden].map(g => g.radii.map(r => { const p0 = [g.x + r * Math.cos(g.a0), g.z + r * Math.sin(g.a0)], p1 = [g.x + r * Math.cos(g.a1), g.z + r * Math.sin(g.a1)]; return `<path d="M${p0[0]} ${p0[1]} A${r} ${r} 0 0 1 ${p1[0]} ${p1[1]}" fill="none" stroke="#9fd0b4" stroke-width="1.6"/>`; }).join('')).join('')}
       ${L.water.map(r => `<rect x="${r.x - r.w / 2}" y="${r.z - r.d / 2}" width="${r.w}" height="${r.d}" fill="#cfe3f5"/>`).join('')}
       <polygon class="site" data-id="circuit" points="${track}" fill="none" stroke="#4d5d72" stroke-width="3.4" stroke-linejoin="round"/>
       ${parts}${labels}</svg></div>`);
@@ -276,6 +277,34 @@ function renderFooter() {
     <p style="margin-top:12px"><b>${esc(t(C.UI.sources))}</b></p><ul>${C.SOURCES.map(s => `<li>${esc(t(s))}</li>`).join('')}</ul>`;
 }
 
+/* ---------------- videos dropdown + modal ---------------- */
+function renderVideos() {
+  $('#videoMenu').innerHTML = C.VIDEOS.map((v, i) => v.yt
+    ? `<button type="button" role="menuitem" data-v="${i}"><img src="https://i.ytimg.com/vi/${v.yt}/mqdefault.jpg" alt="" loading="lazy"><span><b>${esc(t(v.t))}</b><small>${esc(t(v.d))}</small></span></button>`
+    : `<a role="menuitem" href="${v.href}" target="_blank" rel="noopener"><i class="yt">${icon('gallery', 18)}</i><span><b>${esc(t(v.t))}</b><small>${esc(t(v.d))}</small></span></a>`).join('');
+  $('#videoMenu').querySelectorAll('[data-v]').forEach(b => b.addEventListener('click', () => openVideo(C.VIDEOS[+b.dataset.v])));
+}
+const menuOpen = open => { $('#videoMenu').hidden = !open; $('#videoToggle').setAttribute('aria-expanded', String(open)); $('#videoGroup').classList.toggle('open', open); };
+function openVideo(v) {
+  menuOpen(false);
+  $('#vmodalTitle').textContent = t(v.t);
+  $('#vmodalYt').href = `https://www.youtube.com/watch?v=${v.yt}`;
+  $('#vmodalFrame').src = `https://www.youtube-nocookie.com/embed/${v.yt}?autoplay=1&rel=0&modestbranding=1`;
+  $('#vmodal').hidden = false; document.body.style.overflow = 'hidden';
+  if (map) map.setPaused?.(true);
+  $('#vmodalClose').focus();
+}
+function closeVideo() {
+  if ($('#vmodal').hidden) return;
+  $('#vmodal').hidden = true; $('#vmodalFrame').src = 'about:blank'; document.body.style.overflow = '';
+  if (map) map.setPaused?.(S.view !== '3d');
+}
+$('#videoToggle').addEventListener('click', e => { e.stopPropagation(); menuOpen($('#videoMenu').hidden); });
+document.addEventListener('click', e => { if (!$('#videoGroup').contains(e.target)) menuOpen(false); });
+$('#vmodal').addEventListener('click', e => { if (e.target.id === 'vmodal') closeVideo(); });
+$('#vmodalClose').addEventListener('click', closeVideo);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeVideo(); menuOpen(false); } });
+
 /* ---------------- behaviour ---------------- */
 let io;
 function reveal() {
@@ -294,7 +323,7 @@ function clock() {
   $('#clock').innerHTML = `${d.toLocaleDateString(loc, { day: '2-digit', month: 'short', year: 'numeric' })}<br>${d.toLocaleTimeString(loc, { hour12: false })}`;
 }
 function renderAll() {
-  renderStatic(); renderPanel(); renderStrip(); renderDiagnosis(); renderRoadmap(); renderPlan(); renderFramework(); renderShowcase(); renderFuture(); renderFooter();
+  renderStatic(); renderPanel(); renderStrip(); renderDiagnosis(); renderRoadmap(); renderPlan(); renderFramework(); renderShowcase(); renderFuture(); renderFooter(); renderVideos();
   map2d?.relabel();
   if (map) map.relabel(id => t(SHORT[id]), captions()); else if (fallbackOn) renderFallback($('#map'), LAYOUT);
   reveal(); scrollSpy(); clock();
