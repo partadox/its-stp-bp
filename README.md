@@ -4,7 +4,8 @@ An interactive website that presents the **100-day blueprint for the Science Tec
 
 It was built as the STP team's group assignment in the **UTM–ITS STELLAR 2026** programme (Science & Technology Ecosystem Leadership for Acceleration & Research Translation), covering Module 6 (Innovation Showcase), Module 10 (Techno Park Operating Model) and Module 11 b–g (100-Day TTO & TP Launch Blueprint).
 
-**Access:** [its.id/stpbp](https://its.id/stpbp)
+**Access:** [bit.ly/stpbp](https://bit.ly/stpbp)
+<!-- ITS shortener (kept for later): [its.id/stpbp](https://its.id/stpbp) -->
 
 ## What the site shows
 

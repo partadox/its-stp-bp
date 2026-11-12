@@ -187,14 +187,14 @@
 
     // closing
     slides.push({ raw: true, body: `<section class="slide closing"><div><img src="${LOGO}" style="height:80px"><h1 style="margin-top:40px">Thank you</h1>
-      <p class="lead">Explore the interactive blueprint – 3D site map, 100-day road and big plan.</p><div class="url">its.id/stpbp</div>
+      <p class="lead">Explore the interactive blueprint – 3D site map, 100-day road and big plan.</p><div class="url">bit.ly/stpbp</div><!-- ITS shortener: its.id/stpbp -->
       <p style="margin-top:30px;color:var(--muted);font-size:14px">STP team · UTM–ITS STELLAR 2026</p></div><img class="seno" src="${D}cak-seno.png" alt="Cak Seno"></section>` });
 
     let n = 0; const total = slides.length;
     document.getElementById('deck').innerHTML = slides.map(s => { n++;
-      if (s.raw) return s.body.replace('</section>', n > 1 ? `<div class="ftr"><span>STP ITS Blueprint · its.id/stpbp</span><span class="pg">${n} / ${total}</span></div></section>` : '</section>');
+      if (s.raw) return s.body.replace('</section>', n > 1 ? `<div class="ftr"><span>STP ITS Blueprint · bit.ly/stpbp</span><span class="pg">${n} / ${total}</span></div></section>` : '</section>');
       return `<section class="slide ${s.cls}"><div class="hdr"><img src="${LOGO}" alt=""><span>STP ITS Blueprint</span><span class="sec">${s.sec}</span></div>${s.body}
-        <div class="ftr"><span>STP ITS Blueprint · its.id/stpbp</span><span class="pg">${n} / ${total}</span></div></section>`; }).join('');
+        <div class="ftr"><span>STP ITS Blueprint · bit.ly/stpbp</span><span class="pg">${n} / ${total}</span></div></section>`; }).join('');
     await document.fonts.ready;
     await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
     window.__deckReady = true;
