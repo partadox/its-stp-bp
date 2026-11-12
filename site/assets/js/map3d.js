@@ -227,7 +227,7 @@ export function createMap(container, { onSelect, labelFor }) {
   const capSTP = caption(-40, 47), capCampus = caption(52, 62), capRes = caption(-20, -86);
 
   /* ---------- state ---------- */
-  let selected = null;
+  let selected = null, paused = false;
   function applyMode(m, getStatus) {
     for (const [id, s] of Object.entries(sites)) {
       const st = getStatus(id, m), hidden = st === 'hidden';
@@ -267,6 +267,7 @@ export function createMap(container, { onSelect, labelFor }) {
   const clock = new THREE.Clock();
   (function loop() {
     requestAnimationFrame(loop);
+    if (paused) return;
     const now = performance.now(), el = clock.getElapsedTime();
     if (intro) {
       const t = Math.min(1, (now - start) / 2800), k = ease(t);
@@ -292,6 +293,7 @@ export function createMap(container, { onSelect, labelFor }) {
 
   return {
     setMode: applyMode,
+    setPaused(v) { paused = v; },
     select(id, fly = true) {
       selected = id;
       Object.values(sites).forEach(s => s.el.classList.toggle('is-selected', s.def.id === id));

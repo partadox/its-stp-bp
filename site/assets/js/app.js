@@ -4,7 +4,7 @@ import { LAYOUT, webglAvailable } from './layout.js';
 /* ---------------- state & helpers ---------------- */
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch { /* ignore */ } } };
 const qsLang = new URLSearchParams(location.search).get('lang');
-const S = { lang: (qsLang === 'id' || qsLang === 'en') ? qsLang : (store.get('stp-lang') || 'en'), mode: 'now', site: 'stp', tab: 'overview', prio: 'P1', ftab: 'qw' };
+const S = { view: '3d', lang: (qsLang === 'id' || qsLang === 'en') ? qsLang : (store.get('stp-lang') || 'en'), mode: 'now', site: 'stp', tab: 'overview', prio: 'P1', ftab: 'qw' };
 const t = o => (o == null ? '' : typeof o === 'string' ? o : (o[S.lang] ?? o.en));
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -88,6 +88,27 @@ function renderFallback(box, L) {
       <polygon class="site" data-id="circuit" points="${track}" fill="none" stroke="#4d5d72" stroke-width="3.4" stroke-linejoin="round"/>
       ${parts}${labels}</svg></div>`);
   box.querySelectorAll('.fallback .site').forEach(el => el.addEventListener('click', () => selectSite(el.dataset.id)));
+}
+
+/* ---------------- 2D map tab ---------------- */
+let map2d = null;
+async function setView(v) {
+  S.view = v;
+  document.querySelectorAll('#viewSeg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+  const frame = $('#map'), el = $('#map2d'), gif = $('#mapgif');
+  frame.classList.toggle('is-2d', v !== '3d'); el.hidden = v !== '2d'; gif.hidden = v !== 'gif';
+  const vid = gif.querySelector('video');
+  if (v === 'gif') { if (!vid.getAttribute('src')) vid.src = vid.dataset.src; vid.play().catch(() => {}); } else vid.pause();
+  if (map) map.setPaused?.(v !== '3d');
+  if (v === '2d') {
+    if (!map2d) {
+      try {
+        const mod = await import('./map2d.js');
+        map2d = await mod.createMap2D(el, { onSelect: id => selectSite(id, false), labelText: o => t(o), layerNames: () => ({ sat: t(C.UI.layerSat), street: t(C.UI.layerStreet) }) });
+      } catch (e) { console.warn('2D map failed', e); el.innerHTML = `<p class="fallback-msg">${S.lang === 'id' ? 'Peta 2D gagal dimuat (periksa koneksi internet).' : '2D map could not load (check the internet connection).'}</p>`; }
+    }
+    map2d?.show();
+  }
 }
 
 /* ---------------- panel ---------------- */
@@ -274,6 +295,7 @@ function clock() {
 }
 function renderAll() {
   renderStatic(); renderPanel(); renderStrip(); renderDiagnosis(); renderRoadmap(); renderPlan(); renderFramework(); renderShowcase(); renderFuture(); renderFooter();
+  map2d?.relabel();
   if (map) map.relabel(id => t(SHORT[id]), captions()); else if (fallbackOn) renderFallback($('#map'), LAYOUT);
   reveal(); scrollSpy(); clock();
 }
@@ -281,7 +303,8 @@ function renderAll() {
 document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => { S.lang = b.dataset.lang; store.set('stp-lang', S.lang); renderAll(); }));
 document.querySelectorAll('#modeSeg button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
 document.querySelectorAll('#tabs button').forEach(b => b.addEventListener('click', () => { S.tab = b.dataset.tab; renderPanel(); }));
-$('#resetBtn').addEventListener('click', () => selectSite('stp'));
+$('#resetBtn').addEventListener('click', () => { if (S.view === '2d') map2d?.reset(); else if (S.view === '3d') selectSite('stp'); });
+document.querySelectorAll('#viewSeg button').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
 
 renderAll();
 setInterval(clock, 1000);

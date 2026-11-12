@@ -9,6 +9,8 @@ It was built as the STP team's group assignment in the **UTM–ITS STELLAR 2026*
 ## What the site shows
 
 - **3D site plan of STP ITS.** A stylised map of the park area (test circuit, cluster buildings, Robotics Center, the Research Center tower that houses DIKST, the TTO and the GRIT gallery, and ILBI). You can switch between three scenarios: **Now**, **Day 100** and **2030**.
+- **Profile tab.** The DIKST ITS profile video (muted, looping, 720p, ~5 MB), loaded only when the tab is opened.
+- **2D map tab.** A real map (satellite imagery or OpenStreetMap streets) of the STP area. It has no points by default; add your own in `site/assets/js/map2d-points.js`.
 - **Diagnosis.** Eight current issues with their impact and root cause, plus the evidence from the OTK ITS 2024 organisation chart.
 - **Roadmap.** The STP ITS roadmap, from 2018 to 2045.
 - **100-day plan.** Five priorities (P1–P5) with Day 30/60/100 outputs, owners and a Gantt chart.
@@ -39,11 +41,27 @@ site/
   assets/css/style.css     styles (white paper + ITS blue)
   assets/js/content.js     all text, EN/ID
   assets/js/layout.js      map layout (x = east, z = south)
-  assets/js/map3d.js       three.js scene
+  assets/js/map3d.js       three.js scene (3D tab, default)
+  assets/js/map2d.js       Leaflet map (2D tab)
+  assets/js/map2d-points.js  points for the 2D map – empty, fill in yourself
   assets/js/app.js         page logic
   assets/vendor/three/     three.js r160 (MIT), vendored
+  assets/vendor/leaflet/   Leaflet 1.9.4 (BSD-2), vendored
 Dockerfile · docker-compose.yml · nginx.conf · .env.example
 ```
+
+## Adding points to the 2D map
+
+Edit `site/assets/js/map2d-points.js` and add entries to `points`:
+
+```js
+{ lat: -7.2790, lng: 112.7985, site: 'circuit', label: { en: 'Test Circuit', id: 'Sirkuit Uji' }, status: 'issue' }
+```
+
+- `site` links the point to a panel (ids: `stp, circuit, auto, ict, creative, maritime, labs, rc, ilbi, ecodc, cleanroom`).
+- `status` sets the colour: `issue`, `active`, `mature` or `plan`.
+
+Rebuild after editing: `docker compose up -d --build`. Map tiles load from OpenStreetMap and Esri, so the 2D tab needs internet access.
 
 ## Sources
 

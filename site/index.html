@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261112085706">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261112094559">
   <script type="importmap">
     { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
   </script>
@@ -70,7 +70,17 @@
               <button type="button" data-mode="d100" aria-pressed="false" data-i18n="modeD100">Day 100</button>
               <button type="button" data-mode="y2030" aria-pressed="false" data-i18n="mode2030">2030</button>
             </div>
+            <div class="seg" role="tablist" aria-label="Map view" id="viewSeg">
+              <button type="button" data-view="3d" aria-pressed="true" data-i18n="view3d">3D</button>
+              <button type="button" data-view="2d" aria-pressed="false" data-i18n="view2d">2D map</button>
+              <button type="button" data-view="gif" aria-pressed="false" data-i18n="viewGif">Profile</button>
+            </div>
           </div>
+          <div class="map2d" id="map2d" hidden></div>
+          <figure class="mapgif" id="mapgif" hidden>
+            <video muted loop playsinline preload="none" poster="assets/video/dikst-profile-poster.jpg" data-src="assets/video/dikst-profile.mp4" aria-label="DIKST ITS profile – aerial tour of the Science Techno Park"></video>
+            <figcaption data-i18n="gifCaption">DIKST ITS profile video</figcaption>
+          </figure>
           <div class="map-ui tr">
             <button class="btn" type="button" id="resetBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span data-i18n="resetView">Reset view</span></button>
           </div>
@@ -122,6 +132,6 @@
     <span><small>Access:</small><b>its.id/stpbp</b></span>
   </a>
 
-  <script type="module" src="assets/js/app.js?v=20261112085706"></script>
+  <script type="module" src="assets/js/app.js?v=20261112094559"></script>
 </body>
 </html>
