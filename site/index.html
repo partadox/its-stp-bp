@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STP ITS Blueprint</title>
+  <meta name="description" content="100-day blueprint for the Science Techno Park (STP) of Institut Teknologi Sepuluh Nopember – diagnosis, priorities, governance and an interactive 3D site plan.">
+  <meta name="theme-color" content="#0067ac">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:title" content="STP ITS Blueprint">
+  <meta property="og:description" content="Diagnose · Plan · Activate – the 100-day plan for the Science Techno Park ITS.">
+  <meta property="og:image" content="assets/img/logo-its.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=202611120730">
+  <script type="importmap">
+    { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <svg class="traces" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900">
+    <path d="M120 70 H460 l40 -40 H760"/><circle cx="760" cy="30" r="4"/>
+    <path d="M1440 120 H1300 l-30 30 V340"/><circle cx="1270" cy="340" r="4"/>
+    <path d="M90 880 V720 l30 -30 V560"/><circle cx="120" cy="560" r="4"/>
+    <path d="M1440 760 H1340 l-40 40 H1120"/><circle cx="1120" cy="800" r="4"/>
+    <rect x="1380" y="40" width="10" height="10"/><rect x="1396" y="56" width="6" height="6"/><rect x="1366" y="60" width="6" height="6"/>
+    <rect x="96" y="610" width="8" height="8"/><rect x="110" y="626" width="5" height="5"/>
+  </svg>
+
+  <nav class="rail" aria-label="Sections">
+    <img class="mark" src="assets/img/favicon-192.png" alt="ITS">
+    <div id="nav"></div>
+    <div class="spacer"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="id" aria-pressed="false">ID</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="top">
+      <header class="topbar">
+        <div class="brand">
+          <img src="assets/img/logo-its.png" alt="Institut Teknologi Sepuluh Nopember" width="84" height="54">
+          <span class="rule" aria-hidden="true"></span>
+          <div>
+            <h1 data-i18n="title">STP ITS Blueprint</h1>
+            <p data-i18n="tagline">Diagnose · Plan · Activate</p>
+          </div>
+        </div>
+        <div class="right">
+          <div class="card-mini">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            <div><div class="k" data-i18n="planChip">100-Day Plan</div><div class="bar"><i id="dayBar"></i></div></div>
+            <div class="v" id="dayVal">0/100</div>
+          </div>
+          <div class="card-mini clock" id="clock" aria-hidden="true"></div>
+        </div>
+      </header>
+
+      <div class="hero-grid">
+        <div class="map-frame" id="map">
+          <div class="map-ui tl">
+            <div class="seg" role="group" aria-label="Scenario" id="modeSeg">
+              <button type="button" data-mode="now" aria-pressed="true" data-i18n="modeNow">Now</button>
+              <button type="button" data-mode="d100" aria-pressed="false" data-i18n="modeD100">Day 100</button>
+              <button type="button" data-mode="y2030" aria-pressed="false" data-i18n="mode2030">2030</button>
+            </div>
+          </div>
+          <div class="map-ui tr">
+            <button class="btn" type="button" id="resetBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span data-i18n="resetView">Reset view</span></button>
+          </div>
+          <div class="map-ui bl">
+            <div class="legend">
+              <span><i style="background:var(--issue)"></i><b data-i18n="legendIssue">Issue</b></span>
+              <span><i style="background:var(--its)"></i><b data-i18n="legendActive">Operating</b></span>
+              <span><i style="background:var(--ok)"></i><b data-i18n="legendMature">Mature</b></span>
+              <span><i style="border:1.5px dashed var(--plan)"></i><b data-i18n="legendPlan">Planned</b></span>
+            </div>
+          </div>
+          <div class="map-ui br"><div class="hint" data-i18n="hint">Drag to rotate · Scroll to zoom · Click a building</div></div>
+        </div>
+
+        <aside class="info-panel" aria-live="polite">
+          <div class="tabs" role="tablist" id="tabs">
+            <button role="tab" type="button" data-tab="overview" aria-selected="true" data-i18n="tabOverview">Overview</button>
+            <button role="tab" type="button" data-tab="now" aria-selected="false" data-i18n="tabNow">Now</button>
+            <button role="tab" type="button" data-tab="d100" aria-selected="false" data-i18n="tabD100">Day 100</button>
+            <button role="tab" type="button" data-tab="y2030" aria-selected="false" data-i18n="tab2030">2030</button>
+          </div>
+          <div class="panel-body" id="panel"></div>
+        </aside>
+      </div>
+
+      <div>
+        <div class="strip-head"><h3 data-i18n="priorities">100-day priorities</h3><span class="line"></span></div>
+        <div class="strip" id="strip"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="diagnosis"></section>
+    <section class="sec" id="roadmap"></section>
+    <section class="sec" id="plan"></section>
+    <section class="sec" id="framework"></section>
+    <section class="sec" id="showcase"></section>
+    <section class="sec" id="future"></section>
+
+    <footer>
+      <div class="in">
+        <img src="assets/img/logo-its.png" alt="ITS">
+        <div id="foot"></div>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="assets/js/app.js?v=202611120730"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+services:
+  stp-blueprint:
+    build: .
+    image: stp-its-blueprint:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-stp-blueprint}-web
+    restart: unless-stopped
+    ports:
+      - "${STP_BIND:-0.0.0.0}:${STP_PORT:-8080}:80"

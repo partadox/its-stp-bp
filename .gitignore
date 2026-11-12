@@ -1,0 +1,20 @@
+# Environment (keep .env.example in the repo)
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Dependencies & build output (not used by this static site, kept for safety)
+node_modules/
+dist/
+*.log
+npm-debug.log*
+
+# Docker local overrides
+docker-compose.override.yml
