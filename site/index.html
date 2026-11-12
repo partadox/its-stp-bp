@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261112104550">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261112180000">
   <script type="importmap">
     { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
   </script>
@@ -96,28 +96,22 @@
         </div>
 
         <aside class="info-panel" aria-live="polite">
-          <div class="tabs" role="tablist" id="tabs">
-            <button role="tab" type="button" data-tab="overview" aria-selected="true" data-i18n="tabOverview">Overview</button>
-            <button role="tab" type="button" data-tab="now" aria-selected="false" data-i18n="tabNow">Now</button>
-            <button role="tab" type="button" data-tab="d100" aria-selected="false" data-i18n="tabD100">Day 100</button>
-            <button role="tab" type="button" data-tab="y2030" aria-selected="false" data-i18n="tab2030">2030</button>
-          </div>
+          <div class="tabs" role="tablist" id="tabs"></div>
           <div class="panel-body" id="panel"></div>
         </aside>
       </div>
 
-      <div>
-        <div class="strip-head"><h3 data-i18n="priorities">100-day priorities</h3><span class="line"></span></div>
-        <div class="strip" id="strip"></div>
-      </div>
     </section>
 
-    <section class="sec" id="diagnosis"></section>
-    <section class="sec" id="roadmap"></section>
-    <section class="sec" id="plan"></section>
-    <section class="sec" id="framework"></section>
-    <section class="sec" id="showcase"></section>
-    <section class="sec" id="future"></section>
+
+    <!-- Now: current state only -->
+    <section class="sec" id="org" data-modes="now"></section>
+    <section class="sec" id="diagnosis" data-modes="now"></section>
+    <!-- Day 100: the road – Overview (Module 11c–g) + P1–P5 tabs -->
+    <section class="sec" id="plan" data-modes="d100" hidden></section>
+    <!-- 2030: long term -->
+    <section class="sec" id="roadmap" data-modes="y2030" hidden></section>
+    <section class="sec" id="future" data-modes="y2030" hidden></section>
 
     <footer>
       <div class="in">
@@ -151,6 +145,6 @@
     </div>
   </div>
 
-  <script type="module" src="assets/js/app.js?v=20261112105852"></script>
+  <script type="module" src="assets/js/app.js?v=20261112180000"></script>
 </body>
 </html>

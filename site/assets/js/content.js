@@ -31,6 +31,7 @@ export const UI = {
   owner: { en: 'Owner', id: 'Penanggung jawab' },
   solves: { en: 'Solves', id: 'Menjawab' },
   day: { en: 'Day', id: 'Hari' },
+  step: { en: 'Step', id: 'Langkah' },
   quickWin: { en: 'Quick win', id: 'Quick win' },
   footerTeam: { en: 'Prepared by the Science Techno Park (STP) team · UTM–ITS STELLAR 2026 · Guided Co-working Session', id: 'Disusun oleh tim Science Techno Park (STP) · UTM–ITS STELLAR 2026 · Guided Co-working Session' },
   footerNote: { en: 'Map is a stylised schematic based on aerial footage, not a survey drawing. Targets are proposals for discussion.', id: 'Peta adalah skema yang disederhanakan dari foto udara, bukan gambar survei. Target adalah usulan untuk didiskusikan.' },
@@ -38,13 +39,12 @@ export const UI = {
 };
 
 export const NAV = [
-  { id: 'top', icon: 'map', label: { en: 'Site map', id: 'Peta kawasan' } },
-  { id: 'diagnosis', icon: 'alert', label: { en: 'Diagnosis', id: 'Diagnosis' } },
-  { id: 'roadmap', icon: 'route', label: { en: 'Roadmap', id: 'Roadmap' } },
-  { id: 'plan', icon: 'calendar', label: { en: '100-day plan', id: 'Rencana 100 hari' } },
-  { id: 'framework', icon: 'layers', label: { en: 'Governance & risk', id: 'Tata kelola & risiko' } },
-  { id: 'showcase', icon: 'gallery', label: { en: 'Showcase & operating model', id: 'Showcase & model operasi' } },
-  { id: 'future', icon: 'bolt', label: { en: 'Future infrastructure', id: 'Infrastruktur masa depan' } },
+  { id: 'top', icon: 'map', label: { en: 'Site map', id: 'Peta kawasan' }, modes: ['now', 'd100', 'y2030'] },
+  { id: 'org', icon: 'org', label: { en: 'Existing organisation', id: 'Struktur organisasi saat ini' }, modes: ['now'] },
+  { id: 'diagnosis', icon: 'alert', label: { en: 'Diagnosis', id: 'Diagnosis' }, modes: ['now'] },
+  { id: 'plan', icon: 'calendar', label: { en: '100-day plan', id: 'Rencana 100 hari' }, modes: ['d100'] },
+  { id: 'roadmap', icon: 'route', label: { en: 'Roadmap', id: 'Roadmap' }, modes: ['y2030'] },
+  { id: 'future', icon: 'bolt', label: { en: 'Future infrastructure', id: 'Infrastruktur masa depan' }, modes: ['y2030'] },
 ];
 
 /* ---------- Site map: buildings & status per mode ---------- */
@@ -196,28 +196,79 @@ export const DIAG_QUOTE = {
   id: 'Hardware (gedung HETI–ADB) dan aturan (Perek 22/2026) sudah ada. Yang belum ada adalah software-nya: orang, kewenangan, sistem, dan tindak lanjut.',
 };
 export const ORG_NOTE = {
-  en: 'Evidence from OTK ITS 2024 (Bidang IV): there is no box for a park operating unit, and the cluster, incubator and TTO manager posts are marked “filled by lecturers”. The Asset Management Bureau (BMA) sits outside Bidang IV.',
-  id: 'Bukti dari OTK ITS 2024 (Bidang IV): tidak ada kotak untuk unit pengelola kawasan, dan jabatan Manajer Klaster, Inkubator, serta TTO bertanda “diisi oleh dosen”. Biro Manajemen Aset (BMA) berada di luar Bidang IV.',
+  en: 'What the chart shows: there is no box for a park operating unit, and the Cluster Manager, Incubator and TTO senior manager posts are all lecturer posts. The Asset Management Bureau (BMA), which holds the park assets, sits outside Bidang IV.',
+  id: 'Yang terlihat dari bagan: tidak ada kotak untuk unit pengelola kawasan, dan jabatan Manajer Klaster, Manajer Senior Inkubator, serta Manajer Senior KTT semuanya diisi dosen. Biro Manajemen Aset (BMA), pemegang aset kawasan, berada di luar Bidang IV.',
 };
+/* Existing structure – OTK ITS 2024, Bidang IV (faithful to the official chart).
+   lect = filled by lecturers, staff = filled by administrative staff,
+   co = dotted coordination line (same key = same bracket), kidsDashed = dotted link to children. */
+const KABAG_TU = { t: { en: 'Head of Administration & Finance', id: 'Kepala Bagian Tata Usaha dan Keuangan' }, staff: true,
+  kids: [{ t: { en: 'Head of Treasury & Financial Reporting Subdivision', id: 'Kepala Subbagian Perbendaharaan dan Pelaporan Keuangan' }, staff: true }] };
 export const ORG = {
   root: { en: 'Rector ITS', id: 'Rektor ITS' },
-  wr: { en: 'Vice Rector IV – Research, Innovation, Partnerships & Alumni', id: 'Wakil Rektor IV – Riset, Inovasi, Kerjasama dan Kealumnian' },
+  wr: { en: 'Vice Rector IV – Research, Innovation, Partnerships & Alumni', id: 'Wakil Rektor IV – Bidang Riset, Inovasi, Kerjasama dan Kealumnian' },
   cols: [
-    { h: { en: 'Director of Research & Community Service', id: 'Direktur Riset dan Pengabdian kepada Masyarakat' }, dim: true },
-    { h: { en: 'Director of Innovation & Science-Technology Park (DIKST)', id: 'Direktur Inovasi dan Kawasan Sains Teknologi (DIKST)' }, focus: true,
+    { h: { en: 'Director of Research & Community Service', id: 'Direktur Riset dan Pengabdian kepada Masyarakat' },
       items: [
-        { t: { en: 'Head of Administration & Finance', id: 'Kepala Bagian Tata Usaha dan Keuangan' }, staff: true },
-        { t: { en: 'Cluster Manager', id: 'Manajer Klaster' }, lect: true },
-        { t: { en: 'PUI (Centres of Excellence)', id: 'PUI' } },
-        { t: { en: 'Senior Manager, Incubator & Innovative Business Services', id: 'Manajer Senior Inkubator dan Layanan Bisnis Inovatif' }, lect: true },
-        { t: { en: 'Senior Manager, Technology Transfer Office', id: 'Manajer Senior Kantor Transfer Teknologi' }, lect: true },
-        { t: { en: 'STP operating unit – missing', id: 'Unit pengelola STP – belum ada' }, missing: true },
+        KABAG_TU,
+        { t: { en: 'Head of Research Sub-directorate', id: 'Kepala Subdit Riset' }, lect: true,
+          kids: [
+            { t: { en: 'Head of Study Centre', id: 'Kepala Pusat Studi' }, lect: true, co: 'ps' },
+            { t: { en: 'Deputy Head of Study Centre', id: 'Wakil Kepala Pusat Studi' }, lect: true, co: 'ps' },
+          ] },
+        { t: { en: 'Head of Community Service Sub-directorate', id: 'Kepala Subdit Pengabdian kepada Masyarakat' }, lect: true, co: 'ps',
+          kids: [{ t: { en: 'Programme Manager, KKN & Social Projects', id: 'Manajer Program KKN & Proyek Sosial' }, lect: true }] },
+        { t: { en: 'Head of Data & Scientific Services Sub-directorate', id: 'Kepala Subdit Data & Layanan Ilmiah' }, lect: true },
       ] },
-    { h: { en: 'Head of Alumni Relations', id: 'Kepala Unit Hubungan Alumni' }, dim: true },
-    { h: { en: 'Director of Partnerships & Business Management', id: 'Direktur Kerjasama dan Pengelolaan Usaha' }, dim: true },
+    { h: { en: 'Director of Innovation & Science-Technology Park (DIKST)', id: 'Direktur Inovasi dan Kawasan Sains Teknologi (DIKST)' }, focus: true,
+      tag: { en: 'Home of STP ITS', id: 'Rumah STP ITS' },
+      items: [
+        KABAG_TU,
+        { t: { en: 'Cluster Manager', id: 'Manajer Klaster' }, lect: true, co: 'dikst', kidsDashed: true,
+          kids: [{ t: { en: 'PUI (Centres of Excellence)', id: 'PUI' }, staff: true }] },
+        { t: { en: 'Senior Manager, Incubator & Innovative Business Services', id: 'Manajer Senior Inkubator dan Layanan Bisnis Inovatif' }, lect: true, co: 'dikst' },
+        { t: { en: 'Senior Manager, Technology Transfer Office', id: 'Manajer Senior Kantor Transfer Teknologi' }, lect: true, co: 'dikst' },
+      ] },
+    { h: { en: 'Head of Alumni Relations Unit', id: 'Kepala Unit Hubungan Alumni' } },
+    { h: { en: 'Director of Partnerships & Business Management', id: 'Direktur Kerjasama dan Pengelolaan Usaha' },
+      subs: { t: { en: 'Subsidiaries', id: 'Anak Perusahaan' },
+        items: [{ en: 'Board of Directors, PT ITS Tekno Sains', id: 'Direksi PT ITS Tekno Sains' }, { en: 'Board of Directors, PT ITS Kemitraan', id: 'Direksi PT ITS Kemitraan' }] },
+      items: [
+        KABAG_TU,
+        { t: { en: 'Senior Manager, Independent Business Management', id: 'Manajer Senior Pengelolaan Usaha Mandiri' }, lect: true, row: true,
+          kids: [
+            { t: { en: 'Operations Manager, Independent Business Unit', id: 'Manajer Operasional Unit Usaha Mandiri' }, staff: true },
+            { t: { en: 'Assistant Operations Manager, Independent Business Unit', id: 'Asisten Manajer Operasional Unit Usaha Mandiri' }, staff: true },
+          ] },
+        { t: { en: 'Senior Manager, Partnerships Management', id: 'Manajer Senior Pengelolaan Kerjasama' }, lect: true },
+      ] },
   ],
-  legendLect: { en: 'Filled by lecturers', id: 'Diisi oleh dosen' },
-  legendStaff: { en: 'Filled by administrative staff', id: 'Diisi oleh tenaga kependidikan' },
+  legendLect: { en: 'Filled by lecturers', id: 'Jabatan diisi oleh dosen' },
+  legendStaff: { en: 'Filled by administrative staff', id: 'Jabatan diisi oleh tenaga kependidikan' },
+  legendCo: { en: 'Dotted line = coordination / non-structural link', id: 'Garis putus-putus = koordinasi / hubungan non-struktural' },
+  source: { en: 'Source: Organisasi dan Tata Kerja (OTK) Institut Teknologi Sepuluh Nopember (ITS) 2024', id: 'Sumber: Organisasi dan Tata Kerja (OTK) Institut Teknologi Sepuluh Nopember (ITS) Tahun 2024' },
+};
+
+/* Day 100 proposal (P1): STP Operating Unit added inside DIKST. plan = proposed new box. */
+export const ORG_D100 = {
+  h: { en: 'Director of Innovation & Science-Technology Park (DIKST)', id: 'Direktur Inovasi dan Kawasan Sains Teknologi (DIKST)' },
+  items: [
+    { t: { en: 'Head of Administration & Finance', id: 'Kepala Bagian Tata Usaha dan Keuangan' }, staff: true },
+    { t: { en: 'NEW · STP Operating Unit (Rector decree)', id: 'BARU · Unit Pengelola STP (SK Rektor)' }, plan: true,
+      kids: [
+        { t: { en: 'Park Manager (non-lecturer)', id: 'Park Manager (non-dosen)' }, plan: true },
+        { t: { en: 'Tenant Officer', id: 'Petugas Tenant' }, plan: true },
+        { t: { en: 'Facility Officer', id: 'Petugas Fasilitas' }, plan: true },
+        { t: { en: 'Data Officer', id: 'Petugas Data' }, plan: true },
+      ] },
+    { t: { en: 'Cluster Manager – advisory role', id: 'Manajer Klaster – peran advisory' }, lect: true, kidsDashed: true,
+      kids: [{ t: { en: 'PUI (Centres of Excellence)', id: 'PUI' }, staff: true }] },
+    { t: { en: 'Senior Manager, Incubator & Innovative Business Services', id: 'Manajer Senior Inkubator dan Layanan Bisnis Inovatif' }, lect: true },
+    { t: { en: 'Senior Manager, Technology Transfer Office', id: 'Manajer Senior Kantor Transfer Teknologi' }, lect: true },
+  ],
+  title: { en: 'P1 target structure at Day 100 (proposal)', id: 'Target struktur P1 di Hari 100 (usulan)' },
+  lead: { en: 'The gap in today’s chart is closed by a dedicated STP Operating Unit inside DIKST, staffed by four professionals. Lecturer managers keep their posts and move to advisory roles in the clusters.', id: 'Celah pada bagan saat ini ditutup dengan Unit Pengelola STP khusus di DIKST, diisi empat tenaga profesional. Manajer dosen tetap menjabat dan beralih ke peran advisory di klaster.' },
+  legendPlan: { en: 'Proposed new post', id: 'Jabatan baru (usulan)' },
 };
 
 /* ---------- Roadmap ---------- */
@@ -230,47 +281,49 @@ export const ROADMAP = [
   { y: '2045', s: { en: 'Revenue & impact', id: 'Pendapatan & dampak' }, d: { en: 'Knowledge-based economy and regional competitiveness', id: 'Ekonomi berbasis pengetahuan dan daya saing regional' } },
 ];
 
-/* ---------- 100-day priorities (Module 11b) ---------- */
+/* ---------- 100-day priorities (Module 11b) ----------
+   Sequential road: one priority at a time, 20 days each (days = [first, last]).
+   s1/s2/s3 = the three steps inside that window. */
 export const PRIORITIES = [
-  { id: 'P1', site: 'rc', solves: [1, 2],
+  { id: 'P1', days: [1, 20], site: 'rc', solves: [1, 2],
     t: { en: 'STP operating unit & dedicated staff', id: 'Unit pengelola STP & staf dedicated' },
     why: { en: 'Without an owner and professional staff no other priority can be delivered.', id: 'Tanpa pemilik dan staf profesional, prioritas lain tidak bisa berjalan.' },
     owner: { en: 'Director of DIKST · sponsor: Vice Rector IV', id: 'Direktur DIKST · sponsor: Wakil Rektor IV' },
-    d30: { en: 'Draft Rector decree for an STP Operating Unit (from Regulation 22/2026); job descriptions for 4 posts', id: 'Draft SK Rektor Unit Pengelola STP (turunan Perek 22/2026); job description 4 posisi' },
-    d60: { en: 'Assign or recruit a non-lecturer park manager, tenant, facility and data officers', id: 'Penugasan/rekrut park manager non-dosen, petugas tenant, fasilitas, dan data' },
-    d100: { en: 'Unit operating; lecturers move to advisory roles in the clusters', id: 'Unit beroperasi; dosen beralih ke peran advisory di klaster' },
+    s1: { en: 'Draft Rector decree for an STP Operating Unit (from Regulation 22/2026); job descriptions for 4 posts', id: 'Draft SK Rektor Unit Pengelola STP (turunan Perek 22/2026); job description 4 posisi' },
+    s2: { en: 'Assign or recruit a non-lecturer park manager, tenant, facility and data officers', id: 'Penugasan/rekrut park manager non-dosen, petugas tenant, fasilitas, dan data' },
+    s3: { en: 'Unit operating; lecturers move to advisory roles in the clusters', id: 'Unit beroperasi; dosen beralih ke peran advisory di klaster' },
     qw: ['impact', 'policy'] },
-  { id: 'P2', site: 'circuit', solves: [3, 8],
+  { id: 'P2', days: [21, 40], site: 'circuit', solves: [3, 8],
     t: { en: 'Asset clarity & future infrastructure', id: 'Kejelasan aset & infrastruktur masa depan' },
     why: { en: 'Idle or unmanaged assets cost money; unclear roles block revenue.', id: 'Aset yang menganggur atau tidak terkelola membebani biaya; peran tak jelas menghambat pendapatan.' },
     owner: { en: 'Director of DIKST + Head of BMA + Automotive Cluster Manager', id: 'Direktur DIKST + Kepala BMA + Manajer Klaster Otomotif' },
-    d30: { en: 'Register of park assets (buildings, labs, circuit, equipment) and who manages each', id: 'Register aset kawasan (gedung, lab, sirkuit, peralatan) dan pengelolanya' },
-    d60: { en: 'BMA–STP agreement: “BMA owns, STP operates”, tariff card and safety SOP', id: 'Kesepakatan BMA–STP: “BMA pemilik, STP operator”, daftar tarif, SOP keselamatan' },
-    d100: { en: 'Circuit Open Day; concept note for the Eco AI Data Center Living Lab; clean room decision = PARTNER', id: 'Sirkuit Open Day; concept note Eco AI Data Center Living Lab; keputusan clean room = PARTNER' },
+    s1: { en: 'Register of park assets (buildings, labs, circuit, equipment) and who manages each', id: 'Register aset kawasan (gedung, lab, sirkuit, peralatan) dan pengelolanya' },
+    s2: { en: 'BMA–STP agreement: “BMA owns, STP operates”, tariff card and safety SOP', id: 'Kesepakatan BMA–STP: “BMA pemilik, STP operator”, daftar tarif, SOP keselamatan' },
+    s3: { en: 'Circuit Open Day; concept note for the Eco AI Data Center Living Lab; clean room decision = PARTNER', id: 'Sirkuit Open Day; concept note Eco AI Data Center Living Lab; keputusan clean room = PARTNER' },
     qw: ['impact', 'visible', 'policy', 'revenue', 'partner'] },
-  { id: 'P3', site: 'ilbi', solves: [5],
+  { id: 'P3', days: [41, 60], site: 'ilbi', solves: [5],
     t: { en: 'Tenant & incubation launch', id: 'Peluncuran tenant & inkubasi' },
     why: { en: 'Secure incubation space early to attract corporate partners and investors.', id: 'Amankan ruang inkubasi sejak awal untuk menarik mitra korporat dan investor.' },
     owner: { en: 'Senior Manager, Incubator & Innovative Business Services', id: 'Manajer Senior Inkubator dan Layanan Bisnis Inovatif' },
-    d30: { en: 'Prepare facilities: spaces in the 4 cluster buildings; tenancy and incubation SOPs', id: 'Siapkan fasilitas: ruang di 4 gedung klaster; SOP tenancy dan inkubasi' },
-    d60: { en: 'Select first tenants: open call, criteria-based selection', id: 'Pilih tenant pertama: open call, seleksi berbasis kriteria' },
-    d100: { en: 'Incubation begins: ≥ 5 tenants onboarded with signed agreements', id: 'Inkubasi dimulai: ≥ 5 tenant onboarding dengan perjanjian ditandatangani' },
+    s1: { en: 'Prepare facilities: spaces in the 4 cluster buildings; tenancy and incubation SOPs', id: 'Siapkan fasilitas: ruang di 4 gedung klaster; SOP tenancy dan inkubasi' },
+    s2: { en: 'Select first tenants: open call, criteria-based selection', id: 'Pilih tenant pertama: open call, seleksi berbasis kriteria' },
+    s3: { en: 'Incubation begins: ≥ 5 tenants onboarded with signed agreements', id: 'Inkubasi dimulai: ≥ 5 tenant onboarding dengan perjanjian ditandatangani' },
     qw: ['impact', 'visible', 'pipeline', 'revenue', 'partner'] },
-  { id: 'P4', site: 'rc', solves: [6, 7],
+  { id: 'P4', days: [61, 80], site: 'rc', solves: [6, 7],
     t: { en: 'GRIT innovation gateway & digital revamp', id: 'GRIT sebagai gateway inovasi & pembaruan digital' },
     why: { en: 'Visible early credibility; turns visits into pipeline.', id: 'Kredibilitas yang terlihat sejak awal; mengubah kunjungan menjadi pipeline.' },
     owner: { en: 'Gallery coordinator (STP unit) + Senior Manager, TTO', id: 'Koordinator galeri (unit STP) + Manajer Senior KTT' },
-    d30: { en: 'Gallery mandate, exhibit register, IP / disclosure clearance form', id: 'Mandat galeri, register exhibit, form IP / disclosure clearance' },
-    d60: { en: 'Re-curate by cluster, QR tech sheets, GRIT → STP visit route, new STP web & YouTube content calendar', id: 'Kurasi ulang per klaster, tech sheet ber-QR, rute GRIT → STP, web STP baru & kalender konten YouTube' },
-    d100: { en: 'ITS Technology Industry Day: 10 technologies × 20 companies, MoU/NDA; every lead followed up ≤ 5 working days', id: 'ITS Technology Industry Day: 10 teknologi × 20 perusahaan, MoU/NDA; setiap lead ditindaklanjuti ≤ 5 hari kerja' },
+    s1: { en: 'Gallery mandate, exhibit register, IP / disclosure clearance form', id: 'Mandat galeri, register exhibit, form IP / disclosure clearance' },
+    s2: { en: 'Re-curate by cluster, QR tech sheets, GRIT → STP visit route, new STP web & YouTube content calendar', id: 'Kurasi ulang per klaster, tech sheet ber-QR, rute GRIT → STP, web STP baru & kalender konten YouTube' },
+    s3: { en: 'ITS Technology Industry Day: 10 technologies × 20 companies, MoU/NDA; every lead followed up ≤ 5 working days', id: 'ITS Technology Industry Day: 10 teknologi × 20 perusahaan, MoU/NDA; setiap lead ditindaklanjuti ≤ 5 hari kerja' },
     qw: ['impact', 'low', 'visible', 'pipeline', 'partner'] },
-  { id: 'P5', site: 'labs', solves: [4, 5],
+  { id: 'P5', days: [81, 100], site: 'labs', solves: [4, 5],
     t: { en: 'Operating system, KPIs & STP Fellows', id: 'Sistem operasi, KPI & STP Fellows' },
     why: { en: 'Data and new contributors make the park run beyond a few people.', id: 'Data dan kontributor baru membuat kawasan berjalan tidak hanya oleh segelintir orang.' },
     owner: { en: 'STP Operating Unit (data officer)', id: 'Unit Pengelola STP (petugas data)' },
-    d30: { en: 'Choose tools: facility booking, tenant register, lead CRM', id: 'Pilih alat: booking fasilitas, register tenant, CRM lead' },
-    d60: { en: 'KPI dashboard live; open call for “STP Fellows” with workload credit or honorarium', id: 'Dashboard KPI aktif; open call “STP Fellows” dengan kredit beban kerja atau honor' },
-    d100: { en: 'First KPI report to Vice Rector IV; ≥ 10 new contributors beyond the usual names', id: 'Laporan KPI pertama ke Wakil Rektor IV; ≥ 10 kontributor baru di luar wajah lama' },
+    s1: { en: 'Choose tools: facility booking, tenant register, lead CRM', id: 'Pilih alat: booking fasilitas, register tenant, CRM lead' },
+    s2: { en: 'KPI dashboard live; open call for “STP Fellows” with workload credit or honorarium', id: 'Dashboard KPI aktif; open call “STP Fellows” dengan kredit beban kerja atau honor' },
+    s3: { en: 'First KPI report to Vice Rector IV; ≥ 10 new contributors beyond the usual names', id: 'Laporan KPI pertama ke Wakil Rektor IV; ≥ 10 kontributor baru di luar wajah lama' },
     qw: ['low', 'policy', 'pipeline'] },
 ];
 
@@ -285,9 +338,11 @@ export const QW = {
 };
 
 export const MILESTONES = [
-  { d: 70, t: { en: 'Circuit Open Day', id: 'Sirkuit Open Day' } },
-  { d: 85, t: { en: 'ITS Technology Industry Day', id: 'ITS Technology Industry Day' } },
-  { d: 100, t: { en: 'First cohort & KPI report', id: 'Kohort pertama & laporan KPI' } },
+  { d: 20, p: 'P1', t: { en: 'STP Operating Unit running', id: 'Unit Pengelola STP berjalan' } },
+  { d: 40, p: 'P2', id: 'circuit', t: { en: 'Circuit Open Day', id: 'Sirkuit Open Day' } },
+  { d: 60, p: 'P3', t: { en: 'First tenant cohort onboarded', id: 'Kohort tenant pertama masuk' } },
+  { d: 80, p: 'P4', id: 'industry', t: { en: 'ITS Technology Industry Day', id: 'ITS Technology Industry Day' } },
+  { d: 100, p: 'P5', t: { en: 'First KPI report', id: 'Laporan KPI pertama' } },
 ];
 
 /* ---------- Module 11 c–g ---------- */
