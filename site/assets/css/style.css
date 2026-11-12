@@ -345,3 +345,20 @@ footer ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--m
   .pathway span + span { border-left: 0; border-top: 1px solid var(--line); }
   footer .in { grid-template-columns: 1fr; }
 }
+
+/* floating access card – always on top */
+.access-card {
+  position: fixed; right: 16px; bottom: 16px; z-index: 2147483000;
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 7px;
+  background: #fff; color: var(--ink); text-decoration: none;
+  border: 1px solid var(--line-2); border-left: 3px solid var(--its); border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(13, 38, 67, .14), 0 1px 3px rgba(13, 38, 67, .08);
+  font: 500 12.5px/1.2 var(--body); transition: transform .15s, box-shadow .15s;
+}
+.access-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 103, 172, .2); }
+.access-card svg { width: 14px; height: 14px; color: #fff; background: var(--its); border-radius: 8px; padding: 5px; box-sizing: content-box; flex: none; }
+.access-card span { display: flex; flex-direction: column; line-height: 1.25; white-space: nowrap; }
+.access-card small { font: 600 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.access-card b { font: 700 13px var(--mono); color: var(--its); }
+@media (max-width: 760px) { .access-card { bottom: 72px; right: 10px; padding: 6px 10px 6px 8px; } }
+@media print { .access-card { display: none; } }
