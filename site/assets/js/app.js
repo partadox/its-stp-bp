@@ -14,7 +14,7 @@ const SHORT = {
   stp: { en: 'STP ITS', id: 'STP ITS' }, circuit: { en: 'Test Circuit', id: 'Sirkuit Uji' }, auto: { en: 'Automotive & Forensic', id: 'Otomotif & Forensik' },
   ict: { en: 'ICT & Robotics (Pusat Robotika)', id: 'TIK & Robotika (Pusat Robotika)' }, creative: { en: 'Creative Center', id: 'Creative Center' }, maritime: { en: 'Maritime', id: 'Maritim' },
   labs: { en: 'Shared Halls & Labs', id: 'Hall & Lab Bersama' }, rc: { en: 'Research Center · DIKST · TTO · GRIT', id: 'Research Center · DIKST · TTO · GRIT' },
-  ilbi: { en: 'ILBI (in Creative Center)', id: 'ILBI (di Creative Center)' }, ecodc: { en: 'Eco AI DC Lab', id: 'Eco AI DC Lab' }, cleanroom: { en: 'Clean Room (partner)', id: 'Clean Room (partner)' },
+  ilbi: { en: 'ILBI (in Creative Center)', id: 'ILBI (di Creative Center)' }, ecodc: { en: 'BP1 · Eco AI Data Center', id: 'BP1 · Eco AI Data Center' }, cleanroom: { en: 'BP1 · Semiconductor Clean Room', id: 'BP1 · Clean Room Semikonduktor' }, livinglab: { en: 'BP2 · STP Living Lab', id: 'BP2 · STP Living Lab' },
 };
 const STATUS_TXT = { issue: { en: 'Issue', id: 'Masalah' }, active: { en: 'Operating', id: 'Beroperasi' }, mature: { en: 'Mature', id: 'Matang' }, plan: { en: 'Planned', id: 'Rencana' }, hidden: { en: 'Not started', id: 'Belum dimulai' } };
 
@@ -261,7 +261,7 @@ function frameworkHtml() {
     body = `<div class="table-wrap qw"><table><thead><tr><th>${S.lang === 'id' ? 'Prioritas' : 'Priority'}</th>${keys.map(k => `<th>${esc(t(C.QW[k]))}</th>`).join('')}</tr></thead><tbody>
       ${C.PRIORITIES.map(p => `<tr><td>${p.id} · ${esc(t(p.t))}</td>${keys.map(k => `<td>${p.qw.includes(k) ? '<span class="yes">✓</span>' : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
       <div class="grid g2" style="margin-top:12px">${C.MILESTONES.filter(m => m.id).map(m => `<div class="card"><span class="tag">${esc(t(C.UI.quickWin))} · ${t(C.UI.day)} ${m.d}</span><h3 style="margin-top:6px">${esc(t(m.t))}</h3>
-        <p>${m.id === 'industry' ? (S.lang === 'id' ? 'Showcase 10 teknologi terbaik ITS kepada 20 perusahaan di GRIT, dilanjutkan tur kawasan STP dan penandatanganan MoU/NDA.' : 'Showcase of ITS’s top 10 technologies to 20 companies at GRIT, followed by an STP site tour and MoU/NDA signing.') : (S.lang === 'id' ? 'Uji coba kendaraan listrik dan otomotif bersama mitra di sirkuit, sekaligus meluncurkan tarif dan SOP layanan sirkuit.' : 'EV and automotive trials with partners on the circuit, launching the circuit tariff and service SOP.')}</p></div>`).join('')}</div>`;
+        <p>${esc(t(m.desc))}</p></div>`).join('')}</div>`;
   } else if (S.ftab === 'gov') body = table(C.GOV);
   else if (S.ftab === 'res') body = table(C.RES);
   else if (S.ftab === 'risk') body = table(C.RISK);
@@ -288,7 +288,7 @@ function extraP2() {
 }
 function extraP4() {
   const sc = C.SHOWCASE;
-  return `<div class="pextra reveal"><h3>${S.lang === 'id' ? 'P4 · Showcase (Module 6): GRIT sebagai gateway inovasi' : 'P4 · Showcase (Module 6): GRIT as the innovation gateway'}</h3>
+  return `<div class="pextra reveal"><h3>${S.lang === 'id' ? 'P4 · Showcase (Module 6): pusat GRIT + pojok showcase di tiap klaster' : 'P4 · Showcase (Module 6): GRIT hub + a showcase corner in every cluster'}</h3>
     <p class="lead">${esc(t(sc.lead))}</p>
     <div class="flow">${sc.visit.map((v, i) => `<div class="card"><div class="step">0${i + 1}</div><h3>${esc(t(v.h))}</h3><p>${esc(t(v.d))}</p></div>`).join('')}</div>
     <div class="pathway">${sc.path.map(p => `<span>${esc(t(p))}</span>`).join('')}</div>
@@ -321,15 +321,18 @@ function ecoSvg() {
   </svg>`;
 }
 function renderFuture() {
-  const f = C.FUTURE;
-  $('#future').innerHTML = `${secHead(secNo('future'), S.lang === 'id' ? 'Infrastruktur masa depan: Eco AI Data Center Living Lab' : 'Future infrastructure: Eco AI Data Center Living Lab')}
+  const f = C.FUTURE, L = S.lang === 'id';
+  $('#future').innerHTML = `${secHead(secNo('future'), L ? 'Big project: fasilitas baru setelah 100 hari' : 'Big projects: new facilities after the 100 days')}
     <p class="sec-lead">${esc(t(f.lead))}</p>
+    <div class="grid g2 bprojects">${f.projects.map(p => `<article class="card bp reveal"><span class="tag">${p.n} · ${esc(t(p.where))}</span><h3>${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p>
+      <ul>${p.items.map(i => `<li>${esc(t(i))}</li>`).join('')}</ul></article>`).join('')}</div>
+    <h3 class="sub-h">${L ? 'BP1 · Eco AI Data Center – konsep' : 'BP1 · Eco AI Data Center – concept'}</h3>
     <div class="future-grid">
       <div><div class="eco reveal">${ecoSvg()}</div>
         <ul class="gates">${f.gates.map((g, i) => `<li><b>G${i + 1}</b>${esc(t(g))}</li>`).join('')}</ul></div>
       <div class="parts">${f.parts.map(p => `<div class="card reveal"><div class="ic">${icon(p.k)}</div><div><h3>${esc(t(p.h))}</h3><p>${esc(t(p.d))}</p></div></div>`).join('')}</div>
     </div>
-    <div class="card digital reveal"><span class="tag">${S.lang === 'id' ? 'Kanal digital' : 'Digital channels'}</span><p style="margin-top:6px">${esc(t(f.digital))}</p></div>`;
+    <div class="card digital reveal"><span class="tag">${L ? 'Promosi & kanal digital' : 'Promotion & digital channels'}</span><p style="margin-top:6px">${esc(t(f.digital))}</p></div>`;
 }
 function renderFooter() {
   $('#foot').innerHTML = `<p>${esc(t(C.UI.footerTeam))}</p><small>${esc(t(C.UI.footerNote))}</small>
@@ -358,11 +361,18 @@ function closeVideo() {
   $('#vmodal').hidden = true; $('#vmodalFrame').src = 'about:blank'; document.body.style.overflow = '';
   if (map) map.setPaused?.(S.view !== '3d');
 }
-$('#videoToggle').addEventListener('click', e => { e.stopPropagation(); menuOpen($('#videoMenu').hidden); });
+const teamOpen = open => { $('#teamMenu').hidden = !open; $('#teamToggle').setAttribute('aria-expanded', String(open)); $('#teamGroup').classList.toggle('open', open); };
+function renderTeam() {
+  $('#teamToggle').setAttribute('aria-label', t(C.UI.teamBtn));
+  $('#teamMenu').innerHTML = `<div class="team-head">${esc(t(C.UI.teamBtn))} · UTM–ITS STELLAR 2026</div>` + C.TEAM.map((m, i) => `<div class="team-row" role="listitem"><span class="av">${m.n.split(' ').map(w => w[0]).slice(0, 2).join('')}</span><span><b>${i + 1}. ${esc(m.n)}</b><small>${esc(t(m.u))}</small></span></div>`).join('');
+}
+$('#teamToggle').addEventListener('click', e => { e.stopPropagation(); menuOpen(false); teamOpen($('#teamMenu').hidden); });
+document.addEventListener('click', e => { if (!$('#teamGroup').contains(e.target)) teamOpen(false); });
+$('#videoToggle').addEventListener('click', e => { e.stopPropagation(); teamOpen(false); menuOpen($('#videoMenu').hidden); });
 document.addEventListener('click', e => { if (!$('#videoGroup').contains(e.target)) menuOpen(false); });
 $('#vmodal').addEventListener('click', e => { if (e.target.id === 'vmodal') closeVideo(); });
 $('#vmodalClose').addEventListener('click', closeVideo);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeVideo(); menuOpen(false); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeVideo(); menuOpen(false); teamOpen(false); } });
 
 /* ---------------- behaviour ---------------- */
 let io;
@@ -388,7 +398,7 @@ function renderSections() {
   requestAnimationFrame(() => drawCoord());
 }
 function renderAll() {
-  renderStatic(); applyScene(); renderPanel(); renderSections(); renderFooter(); renderVideos();
+  renderStatic(); applyScene(); renderPanel(); renderSections(); renderFooter(); renderVideos(); renderTeam();
   map2d?.relabel();
   if (map) map.relabel(id => t(SHORT[id]), captions()); else if (fallbackOn) renderFallback($('#map'), LAYOUT);
   reveal(); scrollSpy(); clock();

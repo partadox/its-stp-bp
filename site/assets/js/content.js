@@ -20,6 +20,7 @@ export const UI = {
   view2d: { en: '2D map', id: 'Peta 2D' },
   viewGif: { en: 'Profile', id: 'Profil' },
   videosBtn: { en: 'Videos', id: 'Video' },
+  teamBtn: { en: 'STP team', id: 'Tim STP' },
   openYoutube: { en: 'Open on YouTube', id: 'Buka di YouTube' },
   gifCaption: { en: 'DIKST ITS profile video', id: 'Video profil DIKST ITS' },
   layerSat: { en: 'Satellite', id: 'Satelit' },
@@ -44,7 +45,7 @@ export const NAV = [
   { id: 'diagnosis', icon: 'alert', label: { en: 'Diagnosis', id: 'Diagnosis' }, modes: ['now'] },
   { id: 'plan', icon: 'calendar', label: { en: '100-day plan', id: 'Rencana 100 hari' }, modes: ['d100'] },
   { id: 'roadmap', icon: 'route', label: { en: 'Roadmap', id: 'Roadmap' }, modes: ['y2030'] },
-  { id: 'future', icon: 'bolt', label: { en: 'Future infrastructure', id: 'Infrastruktur masa depan' }, modes: ['y2030'] },
+  { id: 'future', icon: 'bolt', label: { en: 'Big projects', id: 'Big project' }, modes: ['y2030'] },
 ];
 
 /* ---------- Site map: buildings & status per mode ---------- */
@@ -63,7 +64,7 @@ export const SITES = {
     ],
     now: { en: 'Hardware and regulation exist; the operating “software” – people, decision rights, systems and follow-up – is missing.', id: 'Gedung dan regulasi sudah ada; “software” operasionalnya – orang, kewenangan, sistem, dan tindak lanjut – belum ada.' },
     d100: { en: 'A dedicated STP operating unit runs facilities, tenants, showcase and data, with clear asset roles and the first incubation cohort.', id: 'Unit operasional STP yang dedicated mengelola fasilitas, tenant, showcase, dan data, dengan pembagian aset yang jelas dan kohort inkubasi pertama.' },
-    y2030: { en: 'A self-sustaining park: revenue from services and tenants, licensed IP, growing start-ups and an eco AI data-centre living lab.', id: 'Kawasan yang mandiri: pendapatan dari layanan dan tenant, HKI terlisensi, startup tumbuh, dan living lab data center AI ramah lingkungan.' },
+    y2030: { en: 'A self-sustaining park: revenue from services and tenants, licensed IP, growing start-ups and two big projects running: a semiconductor & Eco AI Data Center area and the STP Living Lab.', id: 'Kawasan yang mandiri: pendapatan dari layanan dan tenant, HKI terlisensi, startup tumbuh, dan dua big project berjalan: area semikonduktor & Eco AI Data Center serta STP Living Lab.' },
     status: { now: 'issue', d100: 'active', y2030: 'mature' },
   },
   circuit: {
@@ -71,7 +72,7 @@ export const SITES = {
     kind: { en: 'Automotive Cluster asset', id: 'Aset Klaster Otomotif' },
     overview: { en: 'Vehicle test track belonging to the Automotive Innovation Cluster (PUI Automotive Control Systems, EV conversion). It has already hosted events.', id: 'Lintasan uji kendaraan milik Klaster Inovasi Otomotif (PUI Sistem Kontrol Otomotif, konversi kendaraan listrik). Sudah pernah dipakai untuk event.' },
     now: { en: 'Unclear who manages maintenance, booking, safety and tariffs – the Asset Management Bureau (BMA) or STP/cluster. Use is ad hoc and income is not recorded.', id: 'Belum jelas siapa yang mengelola perawatan, booking, keselamatan, dan tarif – Biro Manajemen Aset (BMA) atau STP/klaster. Pemakaian ad-hoc dan pendapatan tidak tercatat.' },
-    d100: { en: '“BMA owns, STP operates”: an asset agreement, booking SOP, safety rules and a tariff card. First “Circuit Open Day” with EV and industry partners.', id: '“BMA pemilik, STP operator”: kesepakatan aset, SOP booking, aturan keselamatan, dan daftar tarif. “Sirkuit Open Day” pertama bersama mitra EV dan industri.' },
+    d100: { en: 'Ownership settled: BMA is the asset owner, STP (with the Automotive Cluster) is the operator responsible for maintenance, booking, safety and tariffs – written into a BMA–STP agreement.', id: 'Kepemilikan jelas: BMA sebagai pemilik aset, STP (bersama Klaster Otomotif) sebagai operator yang bertanggung jawab atas perawatan, booking, keselamatan, dan tarif – dituangkan dalam kesepakatan BMA–STP.' },
     y2030: { en: 'Regular revenue-generating test and event venue for EV research, competitions and industry homologation trials.', id: 'Venue uji dan event rutin yang menghasilkan pendapatan untuk riset EV, kompetisi, dan uji coba industri.' },
     status: { now: 'issue', d100: 'active', y2030: 'mature' },
   },
@@ -90,7 +91,7 @@ export const SITES = {
     overview: { en: 'IoT, AI and big-data solutions; PUI Mechatronics & Industrial Automation, PUI AI for Healthcare & Society, PUI Smart & Resilient Infrastructure.', id: 'Solusi IoT, AI, dan big data; PUI Mekatronika & Otomasi Industri, PUI AI for Healthcare & Society, PUI Smart & Resilient Infrastructure.' },
     now: { en: 'Modern glass building; space use and tenant services are not tracked.', id: 'Gedung kaca modern; pemakaian ruang dan layanan tenant belum tercatat.' },
     d100: { en: 'Co-working and lab slots offered to the first incubation cohort.', id: 'Co-working dan slot lab ditawarkan ke kohort inkubasi pertama.' },
-    y2030: { en: 'AI and digital tenants linked to the eco AI data-centre living lab.', id: 'Tenant AI dan digital terhubung ke living lab data center AI ramah lingkungan.' },
+    y2030: { en: 'Host of Big Project 1: the semiconductor clean room and the Eco AI Data Center, serving AI, chip and digital tenants.', id: 'Lokasi Big Project 1: clean room semikonduktor dan Eco AI Data Center, melayani tenant AI, chip, dan digital.' },
     status: { now: 'issue', d100: 'active', y2030: 'mature' },
   },
   creative: {
@@ -144,22 +145,31 @@ export const SITES = {
     status: { now: 'active', d100: 'active', y2030: 'mature' },
   },
   ecodc: {
-    name: { en: 'Eco AI Data Center Living Lab', id: 'Eco AI Data Center Living Lab' },
-    kind: { en: 'Future infrastructure (aspiration)', id: 'Infrastruktur masa depan (aspirasi)' },
-    overview: { en: 'A small, modular AI data-centre testbed powered by solar PV and batteries, with low-water cooling and live PUE/WUE/CUE monitoring – a living lab for renewable energy, power electronics and AI research.', id: 'Testbed data center AI kecil dan modular bertenaga surya dan baterai, dengan pendinginan rendah air dan monitoring PUE/WUE/CUE real-time – living lab untuk riset energi terbarukan, elektronika daya, dan AI.' },
+    name: { en: 'Eco AI Data Center', id: 'Eco AI Data Center' },
+    kind: { en: 'Big Project 1 · Semiconductor & AI area – ICT & Robotics Cluster', id: 'Big Project 1 · Area semikonduktor & AI – Klaster TIK & Robotika' },
+    overview: { en: 'A modular AI data centre powered by solar PV and batteries, with low-water (dry / liquid) cooling and live PUE/WUE/CUE monitoring. Together with the clean room it forms the semiconductor & AI area of the ICT & Robotics Cluster.', id: 'Data center AI modular bertenaga surya dan baterai, dengan pendinginan hemat air (dry / liquid) dan monitoring PUE/WUE/CUE real-time. Bersama clean room membentuk area semikonduktor & AI di Klaster TIK & Robotika.' },
     now: { en: 'Not started – an aspiration.', id: 'Belum dimulai – masih aspirasi.' },
-    d100: { en: 'Concept note, research groups and partners mapped, funding options identified. No capex before the gate.', id: 'Concept note, pemetaan kelompok riset dan mitra, opsi pendanaan teridentifikasi. Tanpa capex sebelum gate.' },
-    y2030: { en: 'Pilot living lab operating; compute services for tenants cover running costs.', id: 'Living lab pilot beroperasi; layanan komputasi untuk tenant menutup biaya operasional.' },
-    status: { now: 'hidden', d100: 'plan', y2030: 'mature' },
+    d100: { en: 'Outside the 100-day scope. The 100 days prepare the ground: asset register, maintenance SOP and governance that a big project will need.', id: 'Di luar cakupan 100 hari. 100 hari menyiapkan dasarnya: register aset, SOP perawatan, dan tata kelola yang dibutuhkan big project.' },
+    y2030: { en: 'Operating; compute services for tenants and research cover running costs.', id: 'Beroperasi; layanan komputasi untuk tenant dan riset menutup biaya operasional.' },
+    status: { now: 'hidden', d100: 'hidden', y2030: 'mature' },
   },
   cleanroom: {
     name: { en: 'Semiconductor clean room', id: 'Clean room semikonduktor' },
-    kind: { en: 'Planned – PARTNER / defer', id: 'Rencana – PARTNER / tunda' },
-    overview: { en: 'A planned lab for semiconductor learning. Capital and maintenance costs are very high and demand is not yet proven.', id: 'Rencana lab pembelajaran semikonduktor. Biaya modal dan perawatan sangat tinggi dan permintaan belum terbukti.' },
+    kind: { en: 'Big Project 1 · Semiconductor & AI area – ICT & Robotics Cluster', id: 'Big Project 1 · Area semikonduktor & AI – Klaster TIK & Robotika' },
+    overview: { en: 'A clean room for semiconductor learning and prototyping, part of Big Project 1. Capital and maintenance costs are very high, so it is built in phases with partners and a maintenance budget from the start.', id: 'Clean room untuk pembelajaran dan prototipe semikonduktor, bagian dari Big Project 1. Biaya modal dan perawatan sangat tinggi, sehingga dibangun bertahap bersama mitra dan dengan anggaran perawatan sejak awal.' },
     now: { en: 'Planned, not started.', id: 'Rencana, belum berjalan.' },
-    d100: { en: 'Decision: PARTNER – secure access to an existing national or industry clean room; map users first.', id: 'Keputusan: PARTNER – akses clean room nasional atau industri yang sudah ada; petakan pengguna dulu.' },
-    y2030: { en: 'Build only if usage and funding justify it (evidence gate).', id: 'Dibangun hanya jika pemakaian dan pendanaan membenarkan (gate berbasis bukti).' },
-    status: { now: 'hidden', d100: 'plan', y2030: 'plan' },
+    d100: { en: 'Outside the 100-day scope.', id: 'Di luar cakupan 100 hari.' },
+    y2030: { en: 'First phase running with industry and national partners (shared access).', id: 'Fase pertama berjalan bersama mitra industri dan nasional (akses bersama).' },
+    status: { now: 'hidden', d100: 'hidden', y2030: 'mature' },
+  },
+  livinglab: {
+    name: { en: 'STP Living Lab', id: 'STP Living Lab' },
+    kind: { en: 'Big Project 2', id: 'Big Project 2' },
+    overview: { en: 'An open, real-world testbed inside the park where clusters and tenants pilot technologies with real users – smart energy and IoT, autonomous and electric mobility (with the circuit), maritime and smart-agriculture trials – with shared data and monitoring.', id: 'Testbed terbuka di dunia nyata di dalam kawasan, tempat klaster dan tenant menguji teknologi bersama pengguna nyata – energi pintar dan IoT, mobilitas listrik dan otonom (bersama sirkuit), uji coba maritim dan pertanian cerdas – dengan data dan monitoring bersama.' },
+    now: { en: 'Not started – an aspiration.', id: 'Belum dimulai – masih aspirasi.' },
+    d100: { en: 'Outside the 100-day scope.', id: 'Di luar cakupan 100 hari.' },
+    y2030: { en: 'Running: tenants book test zones and use the data platform; pilots feed licensing and start-ups.', id: 'Berjalan: tenant memesan zona uji dan memakai platform data; hasil pilot menjadi lisensi dan startup.' },
+    status: { now: 'hidden', d100: 'hidden', y2030: 'mature' },
   },
 };
 
@@ -171,24 +181,24 @@ export const ISSUES = [
   { n: 2, p: 'P1', t: { en: 'Managers are lecturers', id: 'Pejabat STP adalah dosen' },
     i: { en: 'Slow, inconsistent tenant services; overloaded staff.', id: 'Layanan tenant lambat dan tidak konsisten; beban berlebih.' },
     r: { en: 'No dedicated professional staff (park, tenant, facility, data).', id: 'Tidak ada staf profesional dedicated (kawasan, tenant, fasilitas, data).' } },
-  { n: 3, p: 'P2', t: { en: 'The circuit case', id: 'Kasus sirkuit' },
+  { n: 3, p: 'P2', t: { en: 'Unclear asset ownership', id: 'Kepemilikan aset tidak jelas' },
     i: { en: 'Ad-hoc use, safety and maintenance risk, unrecorded income.', id: 'Pemakaian ad-hoc, risiko keselamatan & perawatan, pendapatan tak tercatat.' },
-    r: { en: 'Asset roles between BMA and STP/cluster are undefined.', id: 'Peran aset antara BMA dan STP/klaster belum ditetapkan.' } },
+    r: { en: 'No rule on who owns and who operates each asset – e.g. the circuit: BMA or STP?', id: 'Tidak ada aturan siapa pemilik dan siapa pengelola tiap aset – contoh sirkuit: BMA atau STP?' } },
   { n: 4, p: 'P5', t: { en: '“Same faces again”', id: '“Lu lagi, lu lagi”' },
     i: { en: 'Few contributors, burnout risk, narrow ecosystem.', id: 'Kontributor sedikit, risiko burnout, ekosistem sempit.' },
     r: { en: 'No incentives or open pathway for new contributors.', id: 'Tidak ada insentif atau jalur terbuka untuk kontributor baru.' } },
   { n: 5, p: 'P5', t: { en: 'Systems not in place', id: 'Sistem belum terbangun' },
     i: { en: 'No performance data; decisions by anecdote.', id: 'Tidak ada data kinerja; keputusan berdasar anekdot.' },
     r: { en: 'No booking, tenant register, lead CRM or KPI dashboard.', id: 'Belum ada booking, register tenant, CRM lead, atau dashboard KPI.' } },
-  { n: 6, p: 'P4', t: { en: 'Gallery far from the park', id: 'Galeri terpisah dari kawasan' },
+  { n: 6, p: 'P4', t: { en: 'Showcase only at the Research Center', id: 'Galeri hanya di Research Center' },
     i: { en: 'Industry visits do not reach clusters or tenants.', id: 'Kunjungan industri tidak sampai ke klaster atau tenant.' },
-    r: { en: 'GRIT is run as a display, not as a pipeline entry point.', id: 'GRIT dikelola sebagai pajangan, bukan pintu masuk pipeline.' } },
+    r: { en: 'One display in GRIT, no showcase in the cluster buildings and no regular rotation.', id: 'Hanya satu galeri di GRIT, tidak ada showcase di gedung klaster dan tidak ada rotasi rutin.' } },
   { n: 7, p: 'P4', t: { en: 'Weak digital channels', id: 'Kanal digital kurang menarik' },
     i: { en: 'Low visibility to industry, investors and tenants.', id: 'Visibilitas rendah bagi industri, investor, dan tenant.' },
-    r: { en: 'No content strategy or channel owner for web and YouTube.', id: 'Tidak ada strategi konten atau pengelola kanal web dan YouTube.' } },
-  { n: 8, p: 'P2', t: { en: 'Costly infrastructure plans', id: 'Rencana infrastruktur mahal' },
+    r: { en: 'No content strategy or channel owner for the website, YouTube and Instagram.', id: 'Tidak ada strategi konten atau pengelola kanal web, YouTube, dan Instagram.' } },
+  { n: 8, p: 'P2', t: { en: 'Big infrastructure plans stalled', id: 'Rencana infrastruktur besar tertahan' },
     i: { en: 'Clean room stalled by capex and maintenance cost.', id: 'Clean room tertahan oleh biaya modal dan perawatan.' },
-    r: { en: 'Investments not screened by Build / Share / Partner.', id: 'Investasi belum disaring dengan Build / Share / Partner.' } },
+    r: { en: 'Clean room and data centre not packaged as big projects with phases, partners and a maintenance budget.', id: 'Clean room dan data center belum dikemas sebagai big project dengan tahapan, mitra, dan anggaran perawatan.' } },
 ];
 
 export const DIAG_QUOTE = {
@@ -293,13 +303,13 @@ export const PRIORITIES = [
     s2: { en: 'Assign or recruit a non-lecturer park manager, tenant, facility and data officers', id: 'Penugasan/rekrut park manager non-dosen, petugas tenant, fasilitas, dan data' },
     s3: { en: 'Unit operating; lecturers move to advisory roles in the clusters', id: 'Unit beroperasi; dosen beralih ke peran advisory di klaster' },
     qw: ['impact', 'policy'] },
-  { id: 'P2', days: [21, 40], site: 'circuit', solves: [3, 8],
-    t: { en: 'Asset clarity & future infrastructure', id: 'Kejelasan aset & infrastruktur masa depan' },
-    why: { en: 'Idle or unmanaged assets cost money; unclear roles block revenue.', id: 'Aset yang menganggur atau tidak terkelola membebani biaya; peran tak jelas menghambat pendapatan.' },
-    owner: { en: 'Director of DIKST + Head of BMA + Automotive Cluster Manager', id: 'Direktur DIKST + Kepala BMA + Manajer Klaster Otomotif' },
-    s1: { en: 'Register of park assets (buildings, labs, circuit, equipment) and who manages each', id: 'Register aset kawasan (gedung, lab, sirkuit, peralatan) dan pengelolanya' },
-    s2: { en: 'BMA–STP agreement: “BMA owns, STP operates”, tariff card and safety SOP', id: 'Kesepakatan BMA–STP: “BMA pemilik, STP operator”, daftar tarif, SOP keselamatan' },
-    s3: { en: 'Circuit Open Day; concept note for the Eco AI Data Center Living Lab; clean room decision = PARTNER', id: 'Sirkuit Open Day; concept note Eco AI Data Center Living Lab; keputusan clean room = PARTNER' },
+  { id: 'P2', days: [21, 40], site: 'circuit', solves: [3],
+    t: { en: 'Asset ownership & facility maintenance', id: 'Kepemilikan aset & perawatan fasilitas' },
+    why: { en: 'Every asset needs one owner and one operator. Today nobody knows whether BMA or STP looks after some assets (the circuit is the clearest case), so maintenance, booking and income fall between the cracks.', id: 'Setiap aset perlu satu pemilik dan satu pengelola. Saat ini tidak jelas apakah BMA atau STP yang mengurus sebagian aset (sirkuit contoh paling jelas), sehingga perawatan, booking, dan pendapatan terabaikan.' },
+    owner: { en: 'Director of DIKST + Head of BMA + Cluster Managers', id: 'Direktur DIKST + Kepala BMA + Manajer Klaster' },
+    s1: { en: 'Register every park asset and facility (buildings, labs, circuit, equipment) with its current owner and operator', id: 'Register semua aset dan fasilitas kawasan (gedung, lab, sirkuit, peralatan) beserta pemilik dan pengelolanya saat ini' },
+    s2: { en: 'BMA–STP agreement: an owner / operator matrix for every asset – BMA owns, STP operates – starting with the circuit case', id: 'Kesepakatan BMA–STP: matriks pemilik / pengelola untuk setiap aset – BMA pemilik, STP pengelola – dimulai dari kasus sirkuit' },
+    s3: { en: 'Facility maintenance SOP: preventive schedule, booking and safety rules, tariff card and a maintenance budget line', id: 'SOP perawatan fasilitas: jadwal perawatan rutin, aturan booking dan keselamatan, daftar tarif, dan pos anggaran perawatan' },
     qw: ['impact', 'visible', 'policy', 'revenue', 'partner'] },
   { id: 'P3', days: [41, 60], site: 'ilbi', solves: [5],
     t: { en: 'Tenant & incubation launch', id: 'Peluncuran tenant & inkubasi' },
@@ -310,12 +320,12 @@ export const PRIORITIES = [
     s3: { en: 'Incubation begins: ≥ 5 tenants onboarded with signed agreements', id: 'Inkubasi dimulai: ≥ 5 tenant onboarding dengan perjanjian ditandatangani' },
     qw: ['impact', 'visible', 'pipeline', 'revenue', 'partner'] },
   { id: 'P4', days: [61, 80], site: 'rc', solves: [6, 7],
-    t: { en: 'GRIT innovation gateway & digital revamp', id: 'GRIT sebagai gateway inovasi & pembaruan digital' },
-    why: { en: 'Visible early credibility; turns visits into pipeline.', id: 'Kredibilitas yang terlihat sejak awal; mengubah kunjungan menjadi pipeline.' },
-    owner: { en: 'Gallery coordinator (STP unit) + Senior Manager, TTO', id: 'Koordinator galeri (unit STP) + Manajer Senior KTT' },
-    s1: { en: 'Gallery mandate, exhibit register, IP / disclosure clearance form', id: 'Mandat galeri, register exhibit, form IP / disclosure clearance' },
-    s2: { en: 'Re-curate by cluster, QR tech sheets, GRIT → STP visit route, new STP web & YouTube content calendar', id: 'Kurasi ulang per klaster, tech sheet ber-QR, rute GRIT → STP, web STP baru & kalender konten YouTube' },
-    s3: { en: 'ITS Technology Industry Day: 10 technologies × 20 companies, MoU/NDA; every lead followed up ≤ 5 working days', id: 'ITS Technology Industry Day: 10 teknologi × 20 perusahaan, MoU/NDA; setiap lead ditindaklanjuti ≤ 5 hari kerja' },
+    t: { en: 'Showcase in every cluster & promotion revamp', id: 'Showcase di tiap klaster & pembaruan promosi' },
+    why: { en: 'Visible early credibility: innovations shown where they are made, and channels that reach industry, investors and future tenants.', id: 'Kredibilitas yang terlihat sejak awal: inovasi dipamerkan di tempat dibuatnya, dan kanal yang menjangkau industri, investor, dan calon tenant.' },
+    owner: { en: 'Gallery & communications coordinator (STP unit) + Cluster Managers + Senior Manager, TTO', id: 'Koordinator galeri & komunikasi (unit STP) + Manajer Klaster + Manajer Senior KTT' },
+    s1: { en: 'Gallery SOP: exhibit register, IP / disclosure clearance, rotation at least once per semester', id: 'SOP galeri: register exhibit, IP / disclosure clearance, rotasi minimal satu kali per semester' },
+    s2: { en: 'A showcase corner in each cluster building (Automotive, ICT & Robotics, Maritime, Creative) linked to GRIT as the hub; QR tech sheets', id: 'Pojok showcase di tiap gedung klaster (Otomotif, TIK & Robotika, Maritim, Kreatif) terhubung ke GRIT sebagai pusat; tech sheet ber-QR' },
+    s3: { en: 'Promotion relaunch: new STP website, YouTube, Instagram and LinkedIn content calendar; ITS Technology Industry Day (10 technologies × 20 companies)', id: 'Peluncuran ulang promosi: web STP baru, kalender konten YouTube, Instagram, dan LinkedIn; ITS Technology Industry Day (10 teknologi × 20 perusahaan)' },
     qw: ['impact', 'low', 'visible', 'pipeline', 'partner'] },
   { id: 'P5', days: [81, 100], site: 'labs', solves: [4, 5],
     t: { en: 'Operating system, KPIs & STP Fellows', id: 'Sistem operasi, KPI & STP Fellows' },
@@ -339,9 +349,11 @@ export const QW = {
 
 export const MILESTONES = [
   { d: 20, p: 'P1', t: { en: 'STP Operating Unit running', id: 'Unit Pengelola STP berjalan' } },
-  { d: 40, p: 'P2', id: 'circuit', t: { en: 'Circuit Open Day', id: 'Sirkuit Open Day' } },
+  { d: 40, p: 'P2', id: 'assets', t: { en: 'Asset ownership settled', id: 'Kepemilikan aset jelas' },
+    desc: { en: 'Every park asset and facility has one owner and one operator in a signed BMA–STP agreement, so a case like the circuit – BMA or STP? – no longer happens. Maintenance, booking and tariffs follow from it.', id: 'Setiap aset dan fasilitas kawasan memiliki satu pemilik dan satu pengelola dalam kesepakatan BMA–STP yang ditandatangani, sehingga kasus seperti sirkuit – BMA atau STP? – tidak terulang. Perawatan, booking, dan tarif mengikuti dari situ.' } },
   { d: 60, p: 'P3', t: { en: 'First tenant cohort onboarded', id: 'Kohort tenant pertama masuk' } },
-  { d: 80, p: 'P4', id: 'industry', t: { en: 'ITS Technology Industry Day', id: 'ITS Technology Industry Day' } },
+  { d: 80, p: 'P4', id: 'industry', t: { en: 'ITS Technology Industry Day', id: 'ITS Technology Industry Day' },
+    desc: { en: 'Showcase of ITS’s top 10 technologies to 20 companies, starting at GRIT and continuing to the cluster showcase corners, ending with MoU/NDA signing.', id: 'Showcase 10 teknologi terbaik ITS kepada 20 perusahaan, mulai di GRIT dan berlanjut ke pojok showcase klaster, diakhiri penandatanganan MoU/NDA.' } },
   { d: 100, p: 'P5', t: { en: 'First KPI report', id: 'Laporan KPI pertama' } },
 ];
 
@@ -370,45 +382,47 @@ export const RES = {
     [{ en: 'Systems & data', id: 'Sistem & data' }, { en: 'Spreadsheets, SIPENSI', id: 'Spreadsheet, SIPENSI' }, { en: 'No booking, tenant register, CRM, dashboard', id: 'Belum ada booking, register tenant, CRM, dashboard' }, { en: 'Start low-code; integrate later', id: 'Mulai low-code; integrasi kemudian' }],
     [{ en: 'Facilities', id: 'Fasilitas' }, { en: '4 cluster buildings, circuit, GRIT', id: '4 gedung klaster, sirkuit, GRIT' }, { en: 'Under-used; no access rules', id: 'Kurang termanfaatkan; tanpa aturan akses' }, { en: 'SHARE first – no new building in 100 days', id: 'SHARE dulu – tanpa gedung baru dalam 100 hari' }],
     [{ en: 'Network', id: 'Jejaring' }, { en: 'Cluster partners, alumni, KSTI 2026 host role', id: 'Mitra klaster, alumni, tuan rumah KSTI 2026' }, { en: 'Leads not followed up', id: 'Lead tidak ditindaklanjuti' }, { en: 'Industry Day + CRM + 5-day follow-up rule', id: 'Industry Day + CRM + aturan tindak lanjut 5 hari' }],
-    [{ en: 'Digital channels', id: 'Kanal digital' }, { en: 'STP website, DIKST YouTube', id: 'Web STP, YouTube DIKST' }, { en: 'Unattractive, irregular content', id: 'Kurang menarik, konten tidak rutin' }, { en: 'New web (this blueprint) + monthly content calendar', id: 'Web baru (blueprint ini) + kalender konten bulanan' }],
+    [{ en: 'Digital channels', id: 'Kanal digital' }, { en: 'STP website, DIKST YouTube, Instagram', id: 'Web STP, YouTube & Instagram DIKST' }, { en: 'Unattractive, irregular content', id: 'Kurang menarik, konten tidak rutin' }, { en: 'New web (this blueprint) + monthly content calendar', id: 'Web baru (blueprint ini) + kalender konten bulanan' }],
   ],
 };
 export const RISK = {
   head: [{ en: 'Risk', id: 'Risiko' }, { en: 'Mitigation', id: 'Mitigasi' }, { en: 'Owner', id: 'Pemilik' }],
   rows: [
     [{ en: 'Decree and staffing approved late', id: 'SK dan penugasan staf terlambat' }, { en: 'Derive directly from Regulation 22/2026; start with staff re-assignment', id: 'Turunkan langsung dari Perek 22/2026; mulai dengan penugasan staf' }, { en: 'Director of DIKST', id: 'Direktur DIKST' }],
-    [{ en: 'BMA and STP disagree on the circuit', id: 'BMA dan STP tidak sepakat soal sirkuit' }, { en: 'Joint forum at vice-rector level; “BMA owns, STP operates” with income sharing', id: 'Forum bersama tingkat WR; “BMA pemilik, STP operator” dengan bagi hasil' }, { en: 'Vice Rector IV', id: 'Wakil Rektor IV' }],
+    [{ en: 'BMA and STP disagree on who owns or operates an asset', id: 'BMA dan STP tidak sepakat siapa pemilik atau pengelola aset' }, { en: 'Joint forum at vice-rector level; one owner / operator matrix for all assets, starting with the circuit', id: 'Forum bersama tingkat WR; satu matriks pemilik / pengelola untuk semua aset, dimulai dari sirkuit' }, { en: 'Vice Rector IV', id: 'Wakil Rektor IV' }],
     [{ en: 'Few first tenants', id: 'Tenant pertama sedikit' }, { en: 'Prioritise ILBI alumni (126 SIPENSI tenants) and cluster partners', id: 'Prioritaskan alumni ILBI (126 tenant SIPENSI) dan mitra klaster' }, { en: 'Senior Manager, ILBI', id: 'Manajer Senior ILBI' }],
     [{ en: 'Industry Day without follow-up', id: 'Industry Day tanpa tindak lanjut' }, { en: 'Lead CRM, named owner per lead, 5-working-day rule', id: 'CRM lead, pemilik per lead, aturan 5 hari kerja' }, { en: 'Senior Manager, TTO', id: 'Manajer Senior KTT' }],
     [{ en: 'Still the same few contributors', id: 'Kontributor tetap itu-itu saja' }, { en: 'Workload credit / honorarium; open STP Fellows call', id: 'Kredit beban kerja / honor; open call STP Fellows' }, { en: 'Director of DIKST', id: 'Direktur DIKST' }],
-    [{ en: 'Costly infrastructure becomes a burden', id: 'Infrastruktur mahal jadi beban' }, { en: 'Evidence gates: concept → partners & funding → small pilot; clean room via PARTNER', id: 'Gate bukti: konsep → mitra & dana → pilot kecil; clean room via PARTNER' }, { en: 'Director of DIKST', id: 'Direktur DIKST' }],
+    [{ en: 'Big projects become a cost burden', id: 'Big project menjadi beban biaya' }, { en: 'Run them as two big projects with phases, partners (grant / co-funding / PPP) and a maintenance budget from day one', id: 'Jalankan sebagai dua big project dengan tahapan, mitra (hibah / co-funding / KPBU), dan anggaran perawatan sejak awal' }, { en: 'Director of DIKST', id: 'Direktur DIKST' }],
   ],
 };
 export const POLICY = [
   { en: 'Rector decree: STP Operating Unit and job descriptions (derived from Regulation 22/2026)', id: 'SK Rektor: Unit Pengelola STP dan job description (turunan Perek 22/2026)' },
-  { en: 'BMA–STP asset agreement incl. the circuit, tariff card and safety SOP', id: 'Kesepakatan aset BMA–STP termasuk sirkuit, daftar tarif, dan SOP keselamatan' },
+  { en: 'BMA–STP asset agreement: owner / operator matrix for every asset (incl. the circuit)', id: 'Kesepakatan aset BMA–STP: matriks pemilik / pengelola untuk setiap aset (termasuk sirkuit)' },
+  { en: 'Facility maintenance SOP: preventive schedule, booking, safety rules and tariff card', id: 'SOP perawatan fasilitas: jadwal perawatan rutin, booking, aturan keselamatan, dan daftar tarif' },
   { en: 'Tenancy SOP: enquiry → application → screening → agreement → handover → monitoring → exit', id: 'SOP tenancy: enquiry → aplikasi → seleksi → perjanjian → serah terima → monitoring → exit' },
   { en: 'Incubation SOP: admission, milestones, graduation / exit', id: 'SOP inkubasi: admisi, milestone, kelulusan / exit' },
-  { en: 'Gallery SOP: curation, exhibit loans, IP clearance, visits and lead follow-up', id: 'SOP galeri: kurasi, peminjaman exhibit, IP clearance, kunjungan, dan tindak lanjut lead' },
+  { en: 'Gallery SOP for GRIT and the cluster showcase corners: curation, IP clearance, rotation at least once per semester, visits and lead follow-up', id: 'SOP galeri untuk GRIT dan pojok showcase klaster: kurasi, IP clearance, rotasi minimal satu kali per semester, kunjungan, dan tindak lanjut lead' },
   { en: 'STP Fellows incentive policy', id: 'Kebijakan insentif STP Fellows' },
   { en: 'STP KPI framework and reporting cycle', id: 'Kerangka KPI STP dan siklus pelaporan' },
-  { en: 'Concept note: Eco AI Data Center Living Lab + clean room investment decision', id: 'Concept note: Eco AI Data Center Living Lab + keputusan investasi clean room' },
+  { en: 'Communication SOP: content calendar and owners for the website, YouTube, Instagram and LinkedIn', id: 'SOP komunikasi: kalender konten dan pengelola web, YouTube, Instagram, dan LinkedIn' },
 ];
 
 /* ---------- Module 6 & 10 ---------- */
 export const SHOWCASE = {
-  lead: { en: 'Module 6: a showcase is a managed institutional platform, not a display room. GRIT becomes the front door that routes every visitor into the park.', id: 'Module 6: showcase adalah platform institusi yang dikelola, bukan ruang pajang. GRIT menjadi pintu depan yang mengarahkan setiap pengunjung ke kawasan.' },
+  lead: { en: 'Module 6: a showcase is a managed institutional platform, not a display room. GRIT is the hub, and every cluster building gets its own showcase corner, refreshed at least once per semester.', id: 'Module 6: showcase adalah platform institusi yang dikelola, bukan ruang pajang. GRIT menjadi pusat, dan setiap gedung klaster memiliki pojok showcase sendiri yang diperbarui minimal satu kali per semester.' },
   visit: [
     { h: { en: 'Before the visit', id: 'Sebelum kunjungan' }, d: { en: 'Online booking, visitor profile, objectives, matching exhibits', id: 'Booking online, profil pengunjung, tujuan, exhibit yang relevan' } },
-    { h: { en: 'During the visit', id: 'Saat kunjungan' }, d: { en: 'GRIT tour by cluster → walk to STP buildings → meet the researcher', id: 'Tur GRIT per klaster → ke gedung STP → bertemu peneliti' } },
+    { h: { en: 'During the visit', id: 'Saat kunjungan' }, d: { en: 'GRIT hub → cluster showcase corners → meet the researcher in the lab', id: 'Pusat GRIT → pojok showcase klaster → bertemu peneliti di lab' } },
     { h: { en: 'After the visit', id: 'Setelah kunjungan' }, d: { en: 'Interest form via QR, lead in CRM, follow-up ≤ 5 working days', id: 'Form minat via QR, lead di CRM, tindak lanjut ≤ 5 hari kerja' } },
   ],
   path: [{ en: 'Discover', id: 'Discover' }, { en: 'Connect', id: 'Connect' }, { en: 'Qualify', id: 'Qualify' }, { en: 'Follow up', id: 'Follow up' }],
   kpi: [
     { v: '100%', t: { en: 'exhibits with verified info & IP clearance', id: 'exhibit dengan info terverifikasi & IP clearance' } },
     { v: '≤ 5', t: { en: 'working days to follow up a lead', id: 'hari kerja untuk menindaklanjuti lead' } },
-    { v: '20', t: { en: 'companies at Industry Day', id: 'perusahaan di Industry Day' } },
-    { v: '10', t: { en: 'MoU / NDA signed', id: 'MoU / NDA ditandatangani' } },
+    { v: '4 + 1', t: { en: 'showcases: 4 cluster corners + GRIT hub', id: 'showcase: 4 pojok klaster + pusat GRIT' } },
+    { v: '≥ 1×', t: { en: 'exhibit rotation per semester', id: 'rotasi exhibit per semester' } },
+    
   ],
 };
 export const OPMODEL = {
@@ -419,8 +433,8 @@ export const OPMODEL = {
     [{ en: 'Test circuit & EV services', id: 'Sirkuit uji & layanan EV' }, 'SHARE', { en: 'BMA asset operated by STP with the Automotive Cluster', id: 'Aset BMA dioperasikan STP bersama Klaster Otomotif' }],
     [{ en: 'Incubation programme & mentoring', id: 'Program inkubasi & mentoring' }, 'BUILD', { en: 'Core mission; repeat demand from ILBI pipeline', id: 'Misi inti; permintaan rutin dari pipeline ILBI' }],
     [{ en: 'Testing & certification', id: 'Pengujian & sertifikasi' }, 'PARTNER', { en: 'Costly, infrequent; use accredited labs', id: 'Mahal dan jarang; pakai lab terakreditasi' }],
-    [{ en: 'Semiconductor clean room', id: 'Clean room semikonduktor' }, 'PARTNER', { en: 'Very high capex and maintenance; access existing facilities first', id: 'Capex & perawatan sangat tinggi; akses fasilitas yang ada dulu' }],
-    [{ en: 'Eco AI Data Center Living Lab', id: 'Eco AI Data Center Living Lab' }, 'BUILD (pilot)', { en: 'Distinctive research testbed; start small and modular after the evidence gate', id: 'Testbed riset yang khas; mulai kecil & modular setelah gate bukti' }],
+    [{ en: 'Big Project 1 – semiconductor clean room + Eco AI Data Center (ICT & Robotics Cluster)', id: 'Big Project 1 – clean room semikonduktor + Eco AI Data Center (Klaster TIK & Robotika)' }, 'BUILD + PARTNER', { en: 'Distinctive capability; phased build with industry and national partners, maintenance budget from day one', id: 'Kapabilitas khas; dibangun bertahap bersama mitra industri dan nasional, anggaran perawatan sejak awal' }],
+    [{ en: 'Big Project 2 – STP Living Lab', id: 'Big Project 2 – STP Living Lab' }, 'BUILD + SHARE', { en: 'Uses park land and the circuit; test zones and data platform shared by clusters and tenants', id: 'Memakai lahan kawasan dan sirkuit; zona uji dan platform data dipakai bersama klaster dan tenant' }],
   ],
   layers: [
     { h: { en: 'Physical', id: 'Fisik' }, d: { en: 'Cluster buildings, labs, circuit, gallery', id: 'Gedung klaster, lab, sirkuit, galeri' } },
@@ -431,20 +445,27 @@ export const OPMODEL = {
 
 /* ---------- Future infrastructure ---------- */
 export const FUTURE = {
-  lead: { en: 'An aspiration, not a 100-day commitment: a small, modular AI data-centre living lab that proves renewable, low-water computing on campus – instead of starting with an expensive clean room.', id: 'Aspirasi, bukan komitmen 100 hari: living lab data center AI kecil dan modular untuk membuktikan komputasi terbarukan dan hemat air di kampus – bukan memulai dari clean room yang mahal.' },
+  lead: { en: 'New facilities are grouped into two big projects that follow the 100 days. The 100 days do not build them – they put in place the governance, asset rules, maintenance SOPs and promotion that a big project needs to succeed.', id: 'Fasilitas baru dikelompokkan menjadi dua big project setelah 100 hari. 100 hari tidak membangunnya – melainkan menyiapkan tata kelola, aturan aset, SOP perawatan, dan promosi yang dibutuhkan agar big project berhasil.' },
+  projects: [
+    { n: 'BP1', h: { en: 'Semiconductor & Eco AI Data Center area', id: 'Area semikonduktor & Eco AI Data Center' }, where: { en: 'ICT & Robotics Cluster', id: 'Klaster TIK & Robotika' },
+      d: { en: 'A clean room for semiconductor learning and prototyping, and a renewable, low-water Eco AI Data Center – one technology area serving chip, AI and digital research and tenants.', id: 'Clean room untuk pembelajaran dan prototipe semikonduktor, serta Eco AI Data Center yang terbarukan dan hemat air – satu area teknologi untuk riset dan tenant chip, AI, dan digital.' },
+      items: [{ en: 'Semiconductor clean room', id: 'Clean room semikonduktor' }, { en: 'Eco AI Data Center (solar PV + battery, dry / liquid cooling)', id: 'Eco AI Data Center (PV surya + baterai, dry / liquid cooling)' }, { en: 'Shared access for industry and national partners', id: 'Akses bersama untuk mitra industri dan nasional' }] },
+    { n: 'BP2', h: { en: 'STP Living Lab', id: 'STP Living Lab' }, where: { en: 'Park-wide, with the test circuit', id: 'Seluruh kawasan, bersama sirkuit uji' },
+      d: { en: 'An open, real-world testbed where clusters and tenants pilot technologies with real users and shared data.', id: 'Testbed terbuka di dunia nyata tempat klaster dan tenant menguji teknologi bersama pengguna nyata dan data bersama.' },
+      items: [{ en: 'Smart energy & IoT test zones', id: 'Zona uji energi pintar & IoT' }, { en: 'Electric & autonomous mobility on the circuit', id: 'Mobilitas listrik & otonom di sirkuit' }, { en: 'Maritime and smart-agriculture trials', id: 'Uji coba maritim dan pertanian cerdas' }, { en: 'Shared data & monitoring platform', id: 'Platform data & monitoring bersama' }] },
+  ],
   parts: [
     { k: 'pv', h: { en: 'Solar PV + battery', id: 'PV surya + baterai' }, d: { en: 'Rooftop / ground-mount solar with battery storage; grid as backup', id: 'Panel surya atap / tanah dengan baterai; jaringan PLN sebagai cadangan' } },
     { k: 'cool', h: { en: 'Low-water cooling', id: 'Pendinginan hemat air' }, d: { en: 'Direct-to-chip liquid or dry cooling, free cooling at night; no evaporative towers', id: 'Liquid cooling direct-to-chip atau dry cooling, free cooling malam hari; tanpa menara evaporatif' } },
     { k: 'gpu', h: { en: 'Modular GPU racks', id: 'Rak GPU modular' }, d: { en: 'Start with 1–2 racks for AI research and tenant compute services', id: 'Mulai 1–2 rak untuk riset AI dan layanan komputasi tenant' } },
     { k: 'mon', h: { en: 'Live metrics', id: 'Metrik real-time' }, d: { en: 'PUE, WUE and CUE dashboards as open data for research and teaching', id: 'Dashboard PUE, WUE, dan CUE sebagai data terbuka untuk riset dan pengajaran' } },
-    { k: 'heat', h: { en: 'Heat reuse', id: 'Pemanfaatan panas' }, d: { en: 'Experiments on waste-heat reuse (e.g. drying, water heating)', id: 'Eksperimen pemanfaatan panas buang (mis. pengeringan, pemanas air)' } },
   ],
   gates: [
-    { en: '≥ 3 research groups (energy, electrical, informatics) and 2 partners committed', id: '≥ 3 kelompok riset (energi, elektro, informatika) dan 2 mitra berkomitmen' },
-    { en: 'Funding scheme secured (grant, partner co-funding or PPP)', id: 'Skema pendanaan aman (hibah, co-funding mitra, atau KPBU)' },
-    { en: 'Service model shows compute income covering running costs', id: 'Model layanan menunjukkan pendapatan komputasi menutup biaya operasional' },
+    { en: 'Governance, asset rules and maintenance SOPs from the 100 days in place', id: 'Tata kelola, aturan aset, dan SOP perawatan hasil 100 hari sudah berjalan' },
+    { en: 'Committed research groups and partners for each big project', id: 'Kelompok riset dan mitra berkomitmen untuk tiap big project' },
+    { en: 'Funding scheme (grant, partner co-funding or PPP) including the maintenance budget', id: 'Skema pendanaan (hibah, co-funding mitra, atau KPBU) termasuk anggaran perawatan' },
   ],
-  digital: { en: 'Digital revamp: this blueprint doubles as a prototype for a new STP website – interactive map, live tenant directory, technology catalogue and a monthly YouTube series (“Inside the Clusters”, tenant stories, lab demos).', id: 'Pembaruan digital: blueprint ini sekaligus prototipe web STP baru – peta interaktif, direktori tenant, katalog teknologi, dan seri YouTube bulanan (“Inside the Clusters”, kisah tenant, demo lab).' },
+  digital: { en: 'Promotion revamp (P4): this blueprint doubles as a prototype for a new STP website – interactive map, tenant directory and technology catalogue – backed by a regular content calendar for YouTube, Instagram and LinkedIn (“Inside the Clusters”, tenant stories, lab demos).', id: 'Pembaruan promosi (P4): blueprint ini sekaligus prototipe web STP baru – peta interaktif, direktori tenant, dan katalog teknologi – didukung kalender konten rutin untuk YouTube, Instagram, dan LinkedIn (“Inside the Clusters”, kisah tenant, demo lab).' },
 };
 
 export const SOURCES = [
@@ -460,4 +481,12 @@ export const VIDEOS = [
   { yt: 'wJPKQwYSAaE', t: { en: 'DIKST ITS profile', id: 'Profil DIKST ITS' }, d: { en: 'Units, clusters and the STP area', id: 'Unit, klaster, dan kawasan STP' } },
   { yt: 'VtaKhcIeEHw', t: { en: 'GRIT gallery inauguration', id: 'Peresmian galeri GRIT' }, d: { en: 'Galeri Riset dan Inovasi Teknologi, 28 Dec 2021', id: 'Galeri Riset dan Inovasi Teknologi, 28 Des 2021' } },
   { href: 'https://www.youtube.com/@DIKSTITS/videos', t: { en: 'DIKST ITS YouTube channel', id: 'Kanal YouTube DIKST ITS' }, d: { en: 'All videos – opens YouTube', id: 'Semua video – membuka YouTube' } },
+];
+
+/* STP team (floating people button) */
+export const TEAM = [
+  { n: 'Nur Hidayatul Alam', u: { en: 'Biology', id: 'Biologi' } },
+  { n: 'Rio Tria Hardhitya', u: { en: 'Faculty of Electrical Engineering', id: 'Fakultas Teknologi Elektro' } },
+  { n: 'Arta Kusuma Hernanda', u: { en: 'Computer Engineering', id: 'Teknik Komputer' } },
+  { n: 'Muhamad Syukron', u: { en: 'Data Science', id: 'Sains Data' } },
 ];

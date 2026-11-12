@@ -143,7 +143,8 @@ export function createMap(container, { onSelect, labelFor }) {
   /* ---------- context ---------- */
   const rnd = seeded(11);
   const keyRects = LAYOUT.key.flatMap(k => (k.parts || []).concat(k.rcTower ? [{ x: k.rcTower.x, z: k.rcTower.z, w: 28, d: 26 }] : []))
-    .concat(LAYOUT.key.filter(k => k.solar).map(k => ({ x: k.solar.x, z: k.solar.z, w: k.solar.cols * 3.6, d: k.solar.rows * 2.8 })));
+    .concat(LAYOUT.key.filter(k => k.solar).map(k => ({ x: k.solar.x, z: k.solar.z, w: k.solar.cols * 3.6, d: k.solar.rows * 2.8 })))
+    .concat(LAYOUT.key.filter(k => k.livingLab).map(k => ({ ...k.livingLab })));
   const inRect = (r, x, z, pad) => { const c = Math.cos(-(r.ry || 0)), s = Math.sin(-(r.ry || 0)); const dx = x - r.x, dz = z - r.z; const lx = dx * c - dz * s, lz = dx * s + dz * c; return Math.abs(lx) < r.w / 2 + pad && Math.abs(lz) < r.d / 2 + pad; };
   const occupied = (x, z, pad = 4) => keyRects.some(p => inRect(p, x, z, pad)) || LAYOUT.context.some(p => inRect(p, x, z, pad)) ||
     LAYOUT.roads.some(r => inRect(r, x, z, 2)) || LAYOUT.water.some(r => inRect(r, x, z, 0)) ||
@@ -236,6 +237,18 @@ export function createMap(container, { onSelect, labelFor }) {
         const pnl = box(3, 0.2, 2, M.solar); pnl.position.set(S.x - S.cols * 1.8 + i * 3.6 + 1.8, 1.2, S.z - S.rows * 1.4 + j * 2.8 + 1.4); pnl.rotation.x = -0.35; pnl.castShadow = true; grp.add(pnl); picks.push(pnl);
       }
       const tank = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 4, 16), M.body); tank.position.set(S.x + 12, 2, S.z - 14); withEdges(tank, edgeKey); grp.add(tank);
+    }
+    if (k.livingLab) {
+      const LB = k.livingLab, cols = [0xcfe8d8, 0xd6e7f6, 0xf3e3cf, 0xe2dcf3];
+      for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) {
+        const pw = LB.w / 4 - 1.2, pd = LB.d / 3 - 1.2;
+        const plot = box(pw, 0.25, pd, std(cols[(i + j) % 4], { roughness: 1 }));
+        plot.position.set(LB.x - LB.w / 2 + (i + 0.5) * LB.w / 4, 0.15, LB.z - LB.d / 2 + (j + 0.5) * LB.d / 3); plot.receiveShadow = true; grp.add(plot); picks.push(plot);
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 3, 8), M.body); pole.position.set(plot.position.x + pw / 2 - 0.6, 1.5, plot.position.z - pd / 2 + 0.6); grp.add(pole);
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.4, 10, 8), std(0x0067ac, { roughness: 0.4 })); head.position.set(pole.position.x, 3.1, pole.position.z); grp.add(head);
+      }
+      const edge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => new THREE.Vector3(LB.x + a * LB.w / 2, 0.35, LB.z + b * LB.d / 2))), new THREE.LineDashedMaterial({ color: 0x2e9e6b, dashSize: 1.6, gapSize: 1 }));
+      edge.computeLineDistances(); grp.add(edge);
     }
     if (k.track) { scene.remove(circuitGroup); grp.add(circuitGroup); circuitGroup.traverse(c => { if (c.isMesh) picks.push(c); }); cx = k.anchor.x; cz = k.anchor.z; n = 1; top = 1; }
     cx /= n || 1; cz /= n || 1;

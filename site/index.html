@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261112180000">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261112141038">
   <script type="importmap">
     { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
   </script>
@@ -122,6 +122,12 @@
   </main>
 
   <div class="float-dock">
+    <div class="team-group" id="teamGroup">
+      <div class="team-menu" id="teamMenu" role="list" hidden></div>
+      <button class="team-toggle" type="button" id="teamToggle" aria-expanded="false" aria-controls="teamMenu" data-i18n-aria="teamBtn" aria-label="STP team">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg>
+      </button>
+    </div>
     <div class="video-group" id="videoGroup">
       <div class="video-menu" id="videoMenu" role="menu" hidden></div>
       <button class="video-toggle" type="button" id="videoToggle" aria-haspopup="menu" aria-expanded="false" aria-controls="videoMenu">
@@ -145,6 +151,6 @@
     </div>
   </div>
 
-  <script type="module" src="assets/js/app.js?v=20261112180000"></script>
+  <script type="module" src="assets/js/app.js?v=20261112141038"></script>
 </body>
 </html>

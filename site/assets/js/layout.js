@@ -36,8 +36,11 @@ export const LAYOUT = {
     // Research Center tower – DIKST, TTO and GRIT (south-west, main campus)
     { id: 'rc', rcTower: { x: -38, z: 74 } },
     // future (shown in Day 100 / 2030)
-    { id: 'ecodc', future: true, solar: { x: -96, z: 6, cols: 8, rows: 4 }, parts: [{ x: -96, z: -12, w: 12, d: 9, h: 5 }] },
-    { id: 'cleanroom', ghost: true, parts: [{ x: -68, z: -30, w: 12, d: 9, h: 6 }] },
+    // Big Project 1 – semiconductor & AI area inside the ICT & Robotics cluster (2030)
+    { id: 'cleanroom', parts: [{ x: -14, z: -82, w: 13, d: 9, h: 6 }] },
+    { id: 'ecodc', solar: { x: -1, z: -97, cols: 8, rows: 3 }, parts: [{ x: 6, z: -83, w: 11, d: 8, h: 5 }] },
+    // Big Project 2 – STP Living Lab (open test zones west of the park, 2030)
+    { id: 'livinglab', livingLab: { x: -96, z: 2, w: 34, d: 30 }, parts: [{ x: -96, z: -16, w: 10, d: 6, h: 4, glassBand: true }] },
   ],
   context: [],
   roads: [
